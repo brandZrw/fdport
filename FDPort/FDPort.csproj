@@ -65,6 +65,9 @@
   <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>20240106144528_27ed2e09923a494db68ae4e69e156dd0.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DynamicExpresso.Core, Version=2.16.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DynamicExpresso.Core.2.16.1\lib\netstandard2.0\DynamicExpresso.Core.dll</HintPath>
@@ -99,6 +102,7 @@
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -123,6 +127,12 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
+      <HintPath>..\packages\DockPanelSuite.3.1.0\lib\net40\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
+    <Reference Include="WeifenLuo.WinFormsUI.Docking.ThemeVS2015, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
+      <HintPath>..\packages\DockPanelSuite.ThemeVS2015.3.1.0\lib\net40\WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -170,6 +180,36 @@
     <Compile Include="Controls\MyDataGridView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="DockPanel\ChartDock.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockPanel\ChartDock.Designer.cs">
+      <DependentUpon>ChartDock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DockPanel\CommonArea.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockPanel\CommonArea.Designer.cs">
+      <DependentUpon>CommonArea.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DockPanel\RecListDock.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockPanel\RecListDock.Designer.cs">
+      <DependentUpon>RecListDock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DockPanel\SendCmdDock.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockPanel\SendCmdDock.Designer.cs">
+      <DependentUpon>SendCmdDock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DockPanel\SendListDock.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockPanel\SendListDock.Designer.cs">
+      <DependentUpon>SendListDock.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\CmdNew.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -188,11 +228,11 @@
     <Compile Include="Forms\CmdSendStruct.Designer.cs">
       <DependentUpon>CmdSendStruct.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Form1.cs">
+    <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Forms\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\UartMore.cs">
       <SubType>Form</SubType>
@@ -232,6 +272,21 @@
     <EmbeddedResource Include="Controls\FieldStaticControl.resx">
       <DependentUpon>FieldStaticControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="DockPanel\ChartDock.resx">
+      <DependentUpon>ChartDock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DockPanel\CommonArea.resx">
+      <DependentUpon>CommonArea.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DockPanel\RecListDock.resx">
+      <DependentUpon>RecListDock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DockPanel\SendCmdDock.resx">
+      <DependentUpon>SendCmdDock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DockPanel\SendListDock.resx">
+      <DependentUpon>SendListDock.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\CmdNew.resx">
       <DependentUpon>CmdNew.cs</DependentUpon>
     </EmbeddedResource>
@@ -241,8 +296,8 @@
     <EmbeddedResource Include="Forms\CmdSendStruct.resx">
       <DependentUpon>CmdSendStruct.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\UnitTest.resx">
       <DependentUpon>UnitTest.cs</DependentUpon>
@@ -289,6 +344,8 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="20240106144528_27ed2e09923a494db68ae4e69e156dd0.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

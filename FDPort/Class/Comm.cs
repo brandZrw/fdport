@@ -9,6 +9,10 @@ using static FDPort.Class.FieldByte;
 
 namespace FDPort.Class
 {
+
+    /// <summary>
+    /// 接收参数
+    /// </summary>
     public class FieldRecvParam
     {
         private CM_BYTE_TYPE valueType { get; set; }
@@ -56,6 +60,7 @@ namespace FDPort.Class
                     break;
             }
         }
+        #region 操作符
         public static FieldRecvParam operator+(FieldRecvParam t, decimal num)
         {
             switch (t.valueType)
@@ -108,6 +113,7 @@ namespace FDPort.Class
                     return t;
             }
         }
+        #endregion
 
         public string toHex(bool hex)
         {
@@ -141,6 +147,10 @@ namespace FDPort.Class
             }
         }
     }
+
+    /// <summary>
+    /// 发送参数
+    /// </summary>
     public class FieldSendParam
     {
         public string value { get; set; }
@@ -252,8 +262,7 @@ namespace FDPort.Class
 
 
         public bool autoSend { get => _autoSend;
-                               set
-        {
+                               set{
             _autoSend = value;
             if (_autoSend)
             {
@@ -266,19 +275,19 @@ namespace FDPort.Class
                 cmdTimer.Stop();
             }
         }
-                             }
+        }
 
         public int sendTime { get {return _sendTime; }
                               set { _sendTime = value;
                                     if (value == 0)
-    {
-        cmdTimer.Interval = 1000;
-        _autoSend = false;
-    }
-    else
-    {
-        cmdTimer.Interval = value;
-    }
+                                    {
+                                        cmdTimer.Interval = 1000;
+                                        _autoSend = false;
+                                    }
+                                    else
+                                    {
+                                        cmdTimer.Interval = value;
+                                    }
 
                               }
                         }
@@ -354,7 +363,7 @@ namespace FDPort.Class
                                             {
                                                 if (Project.param.sendMap.Keys.ElementAt(i).Equals(varStr))
                                                 {
-                                                    Project.mainForm.SendList_Change(i, Project.param.sendMap[varStr].ToString());
+                                                    Project.mainForm.sendListDock.SendList_Change(i, Project.param.sendMap[varStr].ToString());
                                                     break;
                                                 }
                                             }
@@ -384,8 +393,6 @@ namespace FDPort.Class
                             }
 
                         }
-
-
                         if (b != null)
                         {
                             vs.AddRange(b);
@@ -407,7 +414,7 @@ namespace FDPort.Class
                         break;
                 }
             }
-            Project.mainForm.sendData(vs.ToArray());
+            Project.mainForm.commonArea.sendData(vs.ToArray());
         }
     }
 }

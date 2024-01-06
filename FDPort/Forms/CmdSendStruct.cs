@@ -18,12 +18,16 @@ namespace FDPort.Forms
     {
         public CmdSend item = new CmdSend();
         private int index = -1;
+        private static CmdSendStruct instance;
+        private static object _lock = new object();
+
 
         public CmdSendStruct()
         {
             InitializeComponent();
             cmdDataGridList.SetItems(item.list);
         }
+
         public CmdSendStruct(int index)
         {
             InitializeComponent();
@@ -37,6 +41,38 @@ namespace FDPort.Forms
             autoSendTime.Text = item.sendTime.ToString();
         }
 
+        #region 一次窗口
+        public static CmdSendStruct GetInstance()
+        {
+            if (instance == null || instance.IsDisposed)
+            {
+                lock (_lock)
+                {
+                    if (instance == null || instance.IsDisposed)
+                    {
+                        instance = new CmdSendStruct();
+                    }
+                }
+            }
+            return instance;
+        }
+        public static CmdSendStruct GetInstance(int index)
+        {
+            if (instance == null || instance.IsDisposed)
+            {
+                lock (_lock)
+                {
+                    if (instance == null || instance.IsDisposed)
+                    {
+                        instance = new CmdSendStruct(index);
+                    }
+                }
+            }
+            return instance;
+        }
+        #endregion
+
+        #region event
         private void uiButton1_Click(object sender, EventArgs e)
         {
             cmdDataGridList.CmdNewPage();
@@ -62,7 +98,7 @@ namespace FDPort.Forms
                 {
                     item.sendTime = Convert.ToInt32(autoSendTime.Text);
                 }
-                System.Windows.Forms.DataGridView cmdList = Project.mainForm.getCmdList();
+                System.Windows.Forms.DataGridView cmdList = Project.mainForm.sendCmdDock.cmdList;
 
                 if (index == -1)
                 {
@@ -137,5 +173,6 @@ namespace FDPort.Forms
         {
 
         }
+        #endregion
     }
 }

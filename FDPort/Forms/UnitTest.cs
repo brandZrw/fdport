@@ -14,6 +14,7 @@ namespace FDPort.Forms
 {
     public partial class UnitTest : System.Windows.Forms.Form
     {
+        
         private ObservableCollection<UnitTestObject> unitTests;
         public UnitTest(ObservableCollection<UnitTestObject> lists)
         {
@@ -27,6 +28,26 @@ namespace FDPort.Forms
             fieldTest.DataSource = Project.param.sendMap.Keys.ToArray();
         }
 
+        #region 一次窗口
+        private static UnitTest instance;
+        private static object _lock = new object();
+        public static UnitTest GetInstance(ObservableCollection<UnitTestObject> lists)
+        {
+            if (instance == null || instance.IsDisposed)
+            {
+                lock (_lock)
+                {
+                    if (instance == null || instance.IsDisposed)
+                    {
+                        instance = new UnitTest(lists);
+                    }
+                }
+            }
+            return instance;
+        }
+        #endregion
+
+        #region event
         /// <summary>
         /// 项目改变
         /// </summary>
@@ -133,6 +154,7 @@ namespace FDPort.Forms
             Project.param.unitTests = unitTests;
             Close();
         }
+        #endregion
     }
 
     public class UnitTestObject

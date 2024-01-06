@@ -11,6 +11,7 @@ namespace FDPort.Logic
         public delegate int DataDealCb(byte[] b, int len);
         public DataDealCb dataDealFunc;
         UInt32 timeout = 20;
+
         public DataRec()
         {
             timer = new System.Threading.Timer((state) =>
@@ -41,6 +42,11 @@ namespace FDPort.Logic
             timeout = t;
         }
 
+        /// <summary>
+        /// 接收到数据进行处理
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="len"></param>
         public void Rec(byte[] data, int len)
         {
             needDeal = true;

@@ -14,6 +14,7 @@ namespace FDPort.Forms
     public partial class UartMore : System.Windows.Forms.Form
     {
         SerialPort serial;
+        
         public UartMore(SerialPort serial)
         {
             InitializeComponent();
@@ -52,6 +53,26 @@ namespace FDPort.Forms
 
         }
 
+        #region 一次窗口
+        private static UartMore instance;
+        private static object _lock = new object();
+        public static UartMore GetInstance(SerialPort serial)
+        {
+            if (instance == null || instance.IsDisposed)
+            {
+                lock (_lock)
+                {
+                    if (instance == null || instance.IsDisposed)
+                    {
+                        instance = new UartMore(serial);
+                    }
+                }
+            }
+            return instance;
+        }
+        #endregion
+
+        #region event
         private void button1_Click(object sender, EventArgs e)
         {
             serial.DataBits = 8 - dataBits.SelectedIndex;
@@ -87,5 +108,6 @@ namespace FDPort.Forms
             }
             this.Close();
         }
+        #endregion
     }
 }

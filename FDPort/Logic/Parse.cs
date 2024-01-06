@@ -9,19 +9,21 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FDPort.Forms;
 using FDPort.Class;
-using static FDPort.Forms.Form1;
 
 namespace FDPort.Logic
 {
     public class Parse
     {
         public Dictionary<string, object> Param = new Dictionary<string, object>();
-
-
         public delegate void DataIsParse(string name);
         public DataIsParse dataIsParse;
 
-        // 接收匹配
+        /// <summary>
+        /// 接收匹配数据
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="len"></param>
+        /// <returns></returns>
         public int dataParsing(byte[] data, int len)
         {
 
@@ -42,7 +44,7 @@ namespace FDPort.Logic
                     {
                         parsed = m.IsParse(data.Skip(index).ToArray(), ref useLen);
                     }
-                    if (parsed == true)
+                    if (parsed == true)//匹配成功
                     {
                         index += useLen;
                     }

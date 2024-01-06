@@ -19,21 +19,16 @@ namespace FDPort.Forms
 
         public delegate void ItemChanged(int index, CmdRecv item);
         public ItemChanged itemChanged;
+        private static CmdRecvStruct instance;
+        private static object _lock = new object();
 
-        private void AddReply()
-        {
-            foreach (CmdSend cmd in Project.param.cmdSend)
-            {
-                replyCmd.Items.Add(cmd.name);
-            }
-        }
+        
         public CmdRecvStruct()
         {
             InitializeComponent();
             cmdDataGridList.SetItems(item.list);
             AddReply();
         }
-
 
         public CmdRecvStruct(int index)
         {
@@ -52,6 +47,45 @@ namespace FDPort.Forms
             CmdSendName.Text = item.name;
         }
 
+        #region 一次窗口
+        public static CmdRecvStruct GetInstance()
+        {
+            if (instance == null || instance.IsDisposed)
+            {
+                lock (_lock)
+                {
+                    if (instance == null || instance.IsDisposed)
+                    {
+                        instance = new CmdRecvStruct();
+                    }
+                }
+            }
+            return instance;
+        }
+        public static CmdRecvStruct GetInstance(int index)
+        {
+            if (instance == null || instance.IsDisposed)
+            {
+                lock (_lock)
+                {
+                    if (instance == null || instance.IsDisposed)
+                    {
+                        instance = new CmdRecvStruct(index);
+                    }
+                }
+            }
+            return instance;
+        }
+        #endregion
+
+        #region event
+        private void AddReply()
+        {
+            foreach (CmdSend cmd in Project.param.cmdSend)
+            {
+                replyCmd.Items.Add(cmd.name);
+            }
+        }
         private void uiButton1_Click(object sender, EventArgs e)
         {
             cmdDataGridList.CmdNewPage();
@@ -83,7 +117,7 @@ namespace FDPort.Forms
                             if (t.type == FieldModule.CM_Type.CM_BYTE)
                             {
                                 Project.param.recvMap[pair.Key].SetValueType(((FieldByte)t).byteType);
-                                Project.mainForm.RecList_AddRow(pair);
+                                Project.mainForm.recListDock.RecList_AddRow(pair);
                             }
                         }
                     }
@@ -122,5 +156,6 @@ namespace FDPort.Forms
 
             }
         }
+        #endregion
     }
 }

@@ -44,6 +44,11 @@ namespace FDPort.Class
             return false;
         }
 
+        /// <summary>
+        /// 计算表达式
+        /// </summary>
+        /// <param name="link"></param>
+        /// <returns></returns>
         public object calc(string link)
         {
             var interpreter = new Interpreter();

@@ -78,6 +78,7 @@ namespace FDPort.Class
         public ObservableDictionary<string, FieldRecvParam> recvMap = new ObservableDictionary<string, FieldRecvParam>();
         public List<string> showRecMap = new List<string>();
         public ObservableCollection<UnitTestObject> unitTests { get => _unitTests; set => _unitTests = value; }
+        public string layout { get; set; }
         #endregion
     }
 
@@ -200,7 +201,7 @@ next:
     static class Project
     {
         private static ProjectParam _param = new ProjectParam();
-        public static Form1 mainForm { get; set; }
+        public static MainForm mainForm { get; set; }
         public static ProjectParam param { get => _param; set { _param = value; } }
         public static ScriptEngine pyEngine;
         public static ScriptScope scope;

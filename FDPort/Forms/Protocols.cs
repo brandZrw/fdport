@@ -14,6 +14,9 @@ namespace FDPort.Forms
 {
     public partial class Protocols : System.Windows.Forms.Form
     {
+
+
+
         public Protocols()
         {
             InitializeComponent();
@@ -27,12 +30,31 @@ namespace FDPort.Forms
             }
         }
 
-
         public System.Windows.Forms.DataGridView getParsingList()
         {
             return parsingList;
         }
 
+        #region 一次窗口
+        private static Protocols instance;
+        private static object _lock = new object();
+        public static Protocols GetInstance()
+        {
+            if (instance == null || instance.IsDisposed)
+            {
+                lock (_lock)
+                {
+                    if (instance == null || instance.IsDisposed)
+                    {
+                        instance = new Protocols();
+                    }
+                }
+            }
+            return instance;
+        }
+        #endregion
+
+        #region event
         private void parsingList_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
         {
             if (e.RowIndex < Project.param.cmdRecv.Count)
@@ -62,18 +84,19 @@ namespace FDPort.Forms
             {
                 if (e.RowIndex >= Project.param.cmdRecv.Count) // 新增
                 {
-                    CmdRecvStruct cmdStruct = new CmdRecvStruct();
+                    CmdRecvStruct cmdStruct = CmdRecvStruct.GetInstance();
                     cmdStruct.itemChanged += ItemChanged;
                     cmdStruct.Show();
                 }
                 else
                 {
-                    CmdRecvStruct cmdStruct = new CmdRecvStruct(e.RowIndex);
+                    CmdRecvStruct cmdStruct = CmdRecvStruct.GetInstance(e.RowIndex);
                     cmdStruct.itemChanged += ItemChanged;
                     cmdStruct.Show();
                 }
             }
         }
+        #endregion
 
     }
 }

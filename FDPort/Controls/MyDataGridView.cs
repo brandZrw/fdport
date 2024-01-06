@@ -40,7 +40,7 @@ namespace FDPort.Controls
             base.OnCellContentDoubleClick(e);
             if (e.RowIndex != -1 && e.ColumnIndex != -1)
             {
-                CmdNew cmd = new CmdNew(items.ElementAt(e.RowIndex), e.RowIndex);
+                CmdNew cmd = CmdNew.GetInstance(items.ElementAt(e.RowIndex), e.RowIndex);
                 cmd.pageConfirm += pageConfirm;
                 cmd.Show();
             }
@@ -150,14 +150,14 @@ namespace FDPort.Controls
 
         public void CmdNewPage()
         {
-            CmdNew cmd = new CmdNew();
+            CmdNew cmd = CmdNew.GetInstance();
             cmd.pageConfirm += pageConfirm;
             cmd.Show();
         }
 
         public void CmdNewPage(int i)
         {
-            CmdNew cmd = new CmdNew(i);
+            CmdNew cmd = CmdNew.GetInstance(i);
             cmd.pageConfirm += pageConfirm;
             cmd.Show();
         }
