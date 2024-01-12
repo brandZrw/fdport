@@ -62,7 +62,7 @@ namespace FDPort.DockPanel
             this.uiButton1 = new System.Windows.Forms.Button();
             this.tcpTimeout = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.recBox = new FDPort.Controls.WaterTextBox();
+            this.recBox = new System.Windows.Forms.RichTextBox();
             this.sendBox = new FDPort.Controls.WaterTextBox();
             this.serialPort = new System.IO.Ports.SerialPort(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
@@ -594,11 +594,11 @@ namespace FDPort.DockPanel
             this.recBox.Location = new System.Drawing.Point(549, 2);
             this.recBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.recBox.MinimumSize = new System.Drawing.Size(4, 4);
-            this.recBox.Multiline = true;
             this.recBox.Name = "recBox";
+            this.recBox.ReadOnly = true;
             this.recBox.Size = new System.Drawing.Size(540, 222);
             this.recBox.TabIndex = 1;
-            this.recBox.WaterText = "接收区域";
+            this.recBox.Text = "";
             // 
             // sendBox
             // 
@@ -681,7 +681,7 @@ namespace FDPort.DockPanel
         private System.Windows.Forms.Label uiLabel5;
         private System.Windows.Forms.Button uiButton2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private WaterTextBox recBox;
+        private System.Windows.Forms.RichTextBox recBox;
         private WaterTextBox sendBox;
         private System.IO.Ports.SerialPort serialPort;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;

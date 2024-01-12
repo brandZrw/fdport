@@ -30,7 +30,6 @@ namespace FDPort.Class
                 sb.Append(vs[i].ToString("X2"));
                 sb.Append(' ');
             }
-            sb.AppendLine();
             return sb.ToString();
         }
         /// 将DataTable中数据写入到CSV文件中

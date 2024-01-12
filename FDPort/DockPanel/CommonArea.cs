@@ -133,13 +133,18 @@ namespace FDPort.DockPanel
 
             string bs = common.byteArrayToString(vs, vs.Length);
             StringBuilder sb = new StringBuilder();
+            if (!string.IsNullOrEmpty(recBox.Text))
+            {
+                sb.AppendLine();
+            }
             if (Project.param.addTimestamp) // 启用时间戳
             {
                 sb.Append(DateTime.Now.ToString("HH:mm:ss.fff"));
             }
             sb.Append("发:");
             sb.Append(bs);
-            UIControl.AddTextBoxValue(recBox, sb.ToString());//发送窗口显示
+            
+            UIControl.AddRichTextBoxValue(recBox, sb.ToString(),Color.Black);//发送窗口显示
             if (needSave)
             {
                 writeFile(sb.ToString());
@@ -150,13 +155,17 @@ namespace FDPort.DockPanel
         {
             string bs = common.byteArrayToString(vs, len);
             StringBuilder sb = new StringBuilder();
+            if (!string.IsNullOrEmpty(UIControl.GetText(recBox)))
+            {
+                sb.AppendLine();
+            }
             if (Project.param.addTimestamp)
             {
                 sb.Append(DateTime.Now.ToString("HH:mm:ss.fff"));
             }
             sb.Append("收:");
             sb.Append(bs);
-            UIControl.AddTextBoxValue(recBox, sb.ToString());
+            UIControl.AddRichTextBoxValue(recBox, sb.ToString(),Color.Green);
             if (needSave)
             {
                writeFile(sb.ToString());
@@ -202,7 +211,7 @@ namespace FDPort.DockPanel
         /// <param name="e"></param>
         private void uiButton2_Click(object sender, EventArgs e)
         {
-            UIControl.ClearTextBoxValue(recBox);
+            UIControl.ClearRichTextBoxValue(recBox);
         }
 
         /// <summary>
