@@ -43,7 +43,7 @@ namespace FDPort.Forms
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.autoSendTime = new System.Windows.Forms.TextBox();
             this.autoSend = new System.Windows.Forms.CheckBox();
-            this.CmdSendName = new System.Windows.Forms.TextBox();
+            this.CmdSendName = new FDPort.Controls.WaterTextBox();
             this.cmdDataGridList = new FDPort.Controls.MyDataGridView();
             this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.note = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -64,11 +64,11 @@ namespace FDPort.Forms
             this.uiButton1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.uiButton1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.uiButton1.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiButton1.Location = new System.Drawing.Point(642, 2);
-            this.uiButton1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.uiButton1.Location = new System.Drawing.Point(856, 2);
+            this.uiButton1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.uiButton1.MinimumSize = new System.Drawing.Size(1, 1);
             this.uiButton1.Name = "uiButton1";
-            this.uiButton1.Size = new System.Drawing.Size(56, 32);
+            this.uiButton1.Size = new System.Drawing.Size(74, 42);
             this.uiButton1.TabIndex = 1;
             this.uiButton1.Text = "新建";
             this.uiButton1.Click += new System.EventHandler(this.uiButton1_Click);
@@ -82,33 +82,33 @@ namespace FDPort.Forms
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 0, 2);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(704, 366);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(939, 458);
             this.tableLayoutPanel1.TabIndex = 3;
             // 
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.ColumnCount = 4;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 133F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel2.Controls.Add(this.autoSendTime, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.uiButton1, 3, 0);
             this.tableLayoutPanel2.Controls.Add(this.autoSend, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.CmdSendName, 0, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 2);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 2);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(700, 36);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(933, 46);
             this.tableLayoutPanel2.TabIndex = 4;
             // 
             // autoSendTime
@@ -116,11 +116,11 @@ namespace FDPort.Forms
             this.autoSendTime.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.autoSendTime.Dock = System.Windows.Forms.DockStyle.Fill;
             this.autoSendTime.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.autoSendTime.Location = new System.Drawing.Point(102, 2);
-            this.autoSendTime.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.autoSendTime.Location = new System.Drawing.Point(136, 2);
+            this.autoSendTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.autoSendTime.MinimumSize = new System.Drawing.Size(4, 4);
             this.autoSendTime.Name = "autoSendTime";
-            this.autoSendTime.Size = new System.Drawing.Size(416, 29);
+            this.autoSendTime.Size = new System.Drawing.Size(554, 34);
             this.autoSendTime.TabIndex = 7;
             this.autoSendTime.Text = "1000";
             // 
@@ -129,12 +129,12 @@ namespace FDPort.Forms
             this.autoSend.Cursor = System.Windows.Forms.Cursors.Hand;
             this.autoSend.Dock = System.Windows.Forms.DockStyle.Fill;
             this.autoSend.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.autoSend.Location = new System.Drawing.Point(522, 2);
-            this.autoSend.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.autoSend.Location = new System.Drawing.Point(696, 2);
+            this.autoSend.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.autoSend.MinimumSize = new System.Drawing.Size(1, 1);
             this.autoSend.Name = "autoSend";
-            this.autoSend.Padding = new System.Windows.Forms.Padding(11, 0, 0, 0);
-            this.autoSend.Size = new System.Drawing.Size(116, 32);
+            this.autoSend.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
+            this.autoSend.Size = new System.Drawing.Size(154, 42);
             this.autoSend.TabIndex = 6;
             this.autoSend.Text = "是否连发";
             // 
@@ -143,12 +143,13 @@ namespace FDPort.Forms
             this.CmdSendName.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.CmdSendName.Dock = System.Windows.Forms.DockStyle.Fill;
             this.CmdSendName.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.CmdSendName.Location = new System.Drawing.Point(2, 2);
-            this.CmdSendName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.CmdSendName.Location = new System.Drawing.Point(3, 2);
+            this.CmdSendName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.CmdSendName.MinimumSize = new System.Drawing.Size(4, 4);
             this.CmdSendName.Name = "CmdSendName";
-            this.CmdSendName.Size = new System.Drawing.Size(96, 29);
+            this.CmdSendName.Size = new System.Drawing.Size(127, 34);
             this.CmdSendName.TabIndex = 8;
+            this.CmdSendName.WaterText = "命令名称";
             // 
             // cmdDataGridList
             // 
@@ -186,8 +187,8 @@ namespace FDPort.Forms
             this.cmdDataGridList.EnableHeadersVisualStyles = false;
             this.cmdDataGridList.Font = new System.Drawing.Font("微软雅黑", 12F);
             this.cmdDataGridList.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
-            this.cmdDataGridList.Location = new System.Drawing.Point(2, 42);
-            this.cmdDataGridList.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cmdDataGridList.Location = new System.Drawing.Point(3, 52);
+            this.cmdDataGridList.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cmdDataGridList.MultiSelect = false;
             this.cmdDataGridList.Name = "cmdDataGridList";
             this.cmdDataGridList.ReadOnly = true;
@@ -204,7 +205,7 @@ namespace FDPort.Forms
             this.cmdDataGridList.RowsDefaultCellStyle = dataGridViewCellStyle6;
             this.cmdDataGridList.RowTemplate.Height = 27;
             this.cmdDataGridList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.cmdDataGridList.Size = new System.Drawing.Size(700, 282);
+            this.cmdDataGridList.Size = new System.Drawing.Size(933, 354);
             this.cmdDataGridList.TabIndex = 2;
             this.cmdDataGridList.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.cmdDataGridList_RowsRemoved);
             // 
@@ -217,7 +218,7 @@ namespace FDPort.Forms
             this.name.Name = "name";
             this.name.ReadOnly = true;
             this.name.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.name.Width = 98;
+            this.name.Width = 120;
             // 
             // note
             // 
@@ -252,12 +253,12 @@ namespace FDPort.Forms
             this.tableLayoutPanel3.Controls.Add(this.uiButton2, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.uiButton3, 1, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(512, 328);
-            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(683, 410);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(190, 36);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(253, 46);
             this.tableLayoutPanel3.TabIndex = 5;
             // 
             // uiButton2
@@ -265,11 +266,11 @@ namespace FDPort.Forms
             this.uiButton2.Cursor = System.Windows.Forms.Cursors.Hand;
             this.uiButton2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.uiButton2.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiButton2.Location = new System.Drawing.Point(2, 2);
-            this.uiButton2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.uiButton2.Location = new System.Drawing.Point(3, 2);
+            this.uiButton2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.uiButton2.MinimumSize = new System.Drawing.Size(1, 1);
             this.uiButton2.Name = "uiButton2";
-            this.uiButton2.Size = new System.Drawing.Size(66, 32);
+            this.uiButton2.Size = new System.Drawing.Size(88, 40);
             this.uiButton2.TabIndex = 0;
             this.uiButton2.Text = "取消";
             this.uiButton2.Click += new System.EventHandler(this.uiButton2_Click);
@@ -280,11 +281,11 @@ namespace FDPort.Forms
             this.uiButton3.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.uiButton3.Dock = System.Windows.Forms.DockStyle.Right;
             this.uiButton3.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiButton3.Location = new System.Drawing.Point(122, 2);
-            this.uiButton3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.uiButton3.Location = new System.Drawing.Point(162, 2);
+            this.uiButton3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.uiButton3.MinimumSize = new System.Drawing.Size(1, 1);
             this.uiButton3.Name = "uiButton3";
-            this.uiButton3.Size = new System.Drawing.Size(66, 32);
+            this.uiButton3.Size = new System.Drawing.Size(88, 42);
             this.uiButton3.TabIndex = 1;
             this.uiButton3.Text = "确定";
             this.uiButton3.Click += new System.EventHandler(this.uiButton3_Click);
@@ -292,12 +293,12 @@ namespace FDPort.Forms
             // CmdSendStruct
             // 
             this.AcceptButton = this.uiButton3;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(704, 366);
+            this.ClientSize = new System.Drawing.Size(939, 458);
             this.Controls.Add(this.tableLayoutPanel1);
             this.KeyPreview = true;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "CmdSendStruct";
             this.Text = "发送命令";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CmdSendStruct_KeyDown);
@@ -321,10 +322,10 @@ namespace FDPort.Forms
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Button uiButton2;
         private System.Windows.Forms.Button uiButton3;
-        private System.Windows.Forms.TextBox CmdSendName;
         private System.Windows.Forms.DataGridViewTextBoxColumn name;
         private System.Windows.Forms.DataGridViewTextBoxColumn note;
         private System.Windows.Forms.DataGridViewButtonColumn delete;
         private MyDataGridView cmdDataGridList;
+        private WaterTextBox CmdSendName;
     }
 }

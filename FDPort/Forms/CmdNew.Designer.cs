@@ -1,4 +1,6 @@
 ﻿
+using FDPort.Controls;
+
 namespace FDPort.Forms
 {
     partial class CmdNew
@@ -30,7 +32,7 @@ namespace FDPort.Forms
         private void InitializeComponent()
         {
             this.uiLabel1 = new System.Windows.Forms.Label();
-            this.cmdName = new System.Windows.Forms.TextBox();
+            this.cmdName = new FDPort.Controls.WaterTextBox();
             this.cmdTypeChoose = new System.Windows.Forms.ComboBox();
             this.panel = new System.Windows.Forms.Panel();
             this.cmdByte1 = new FDPort.Controls.FieldByteControl();
@@ -50,10 +52,10 @@ namespace FDPort.Forms
             // 
             this.uiLabel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.uiLabel1.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel1.Location = new System.Drawing.Point(3, 4);
-            this.uiLabel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.uiLabel1.Location = new System.Drawing.Point(4, 5);
+            this.uiLabel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.uiLabel1.Name = "uiLabel1";
-            this.uiLabel1.Size = new System.Drawing.Size(57, 33);
+            this.uiLabel1.Size = new System.Drawing.Size(76, 42);
             this.uiLabel1.TabIndex = 0;
             this.uiLabel1.Text = "字段名";
             this.uiLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -63,12 +65,13 @@ namespace FDPort.Forms
             this.cmdName.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.cmdName.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmdName.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.cmdName.Location = new System.Drawing.Point(66, 4);
-            this.cmdName.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cmdName.Location = new System.Drawing.Point(88, 5);
+            this.cmdName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmdName.MinimumSize = new System.Drawing.Size(4, 4);
             this.cmdName.Name = "cmdName";
-            this.cmdName.Size = new System.Drawing.Size(114, 29);
+            this.cmdName.Size = new System.Drawing.Size(151, 34);
             this.cmdName.TabIndex = 0;
+            this.cmdName.WaterText = "字段名称";
             // 
             // cmdTypeChoose
             // 
@@ -81,11 +84,11 @@ namespace FDPort.Forms
             "位域（必须先定义一个整型）",
             "函数",
             "设置的参数"});
-            this.cmdTypeChoose.Location = new System.Drawing.Point(186, 4);
-            this.cmdTypeChoose.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.cmdTypeChoose.MinimumSize = new System.Drawing.Size(48, 0);
+            this.cmdTypeChoose.Location = new System.Drawing.Point(247, 5);
+            this.cmdTypeChoose.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmdTypeChoose.MinimumSize = new System.Drawing.Size(63, 0);
             this.cmdTypeChoose.Name = "cmdTypeChoose";
-            this.cmdTypeChoose.Size = new System.Drawing.Size(393, 29);
+            this.cmdTypeChoose.Size = new System.Drawing.Size(525, 35);
             this.cmdTypeChoose.TabIndex = 2;
             this.cmdTypeChoose.SelectedIndexChanged += new System.EventHandler(this.cmdTypeChoose_SelectedIndexChanged);
             // 
@@ -97,55 +100,55 @@ namespace FDPort.Forms
             this.panel.Controls.Add(this.cmdFuncControl1);
             this.panel.Controls.Add(this.cmdBitControl1);
             this.panel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel.Location = new System.Drawing.Point(2, 47);
-            this.panel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel.Location = new System.Drawing.Point(3, 58);
+            this.panel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel.Name = "panel";
-            this.panel.Size = new System.Drawing.Size(700, 317);
+            this.panel.Size = new System.Drawing.Size(933, 398);
             this.panel.TabIndex = 3;
             // 
             // cmdByte1
             // 
             this.cmdByte1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmdByte1.Location = new System.Drawing.Point(0, 0);
-            this.cmdByte1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cmdByte1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmdByte1.Name = "cmdByte1";
-            this.cmdByte1.Size = new System.Drawing.Size(700, 317);
+            this.cmdByte1.Size = new System.Drawing.Size(933, 398);
             this.cmdByte1.TabIndex = 1;
             // 
             // cmdStatic1
             // 
             this.cmdStatic1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmdStatic1.Location = new System.Drawing.Point(0, 0);
-            this.cmdStatic1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cmdStatic1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmdStatic1.Name = "cmdStatic1";
-            this.cmdStatic1.Size = new System.Drawing.Size(700, 317);
+            this.cmdStatic1.Size = new System.Drawing.Size(933, 398);
             this.cmdStatic1.TabIndex = 0;
             // 
             // cmdDataControl1
             // 
             this.cmdDataControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmdDataControl1.Location = new System.Drawing.Point(0, 0);
-            this.cmdDataControl1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cmdDataControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmdDataControl1.Name = "cmdDataControl1";
-            this.cmdDataControl1.Size = new System.Drawing.Size(700, 317);
+            this.cmdDataControl1.Size = new System.Drawing.Size(933, 398);
             this.cmdDataControl1.TabIndex = 5;
             // 
             // cmdFuncControl1
             // 
             this.cmdFuncControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmdFuncControl1.Location = new System.Drawing.Point(0, 0);
-            this.cmdFuncControl1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cmdFuncControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmdFuncControl1.Name = "cmdFuncControl1";
-            this.cmdFuncControl1.Size = new System.Drawing.Size(700, 317);
+            this.cmdFuncControl1.Size = new System.Drawing.Size(933, 398);
             this.cmdFuncControl1.TabIndex = 3;
             // 
             // cmdBitControl1
             // 
             this.cmdBitControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmdBitControl1.Location = new System.Drawing.Point(0, 0);
-            this.cmdBitControl1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cmdBitControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmdBitControl1.Name = "cmdBitControl1";
-            this.cmdBitControl1.Size = new System.Drawing.Size(700, 317);
+            this.cmdBitControl1.Size = new System.Drawing.Size(933, 398);
             this.cmdBitControl1.TabIndex = 2;
             // 
             // tableLayoutPanel1
@@ -156,12 +159,12 @@ namespace FDPort.Forms
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 56F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(704, 366);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(939, 458);
             this.tableLayoutPanel1.TabIndex = 4;
             // 
             // tableLayoutPanel2
@@ -176,12 +179,12 @@ namespace FDPort.Forms
             this.tableLayoutPanel2.Controls.Add(this.uiButton1, 3, 0);
             this.tableLayoutPanel2.Controls.Add(this.uiLabel1, 0, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 2);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 2);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(700, 41);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(933, 52);
             this.tableLayoutPanel2.TabIndex = 4;
             // 
             // uiButton1
@@ -189,11 +192,11 @@ namespace FDPort.Forms
             this.uiButton1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.uiButton1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.uiButton1.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiButton1.Location = new System.Drawing.Point(585, 4);
-            this.uiButton1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.uiButton1.Location = new System.Drawing.Point(780, 5);
+            this.uiButton1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.uiButton1.MinimumSize = new System.Drawing.Size(1, 1);
             this.uiButton1.Name = "uiButton1";
-            this.uiButton1.Size = new System.Drawing.Size(112, 33);
+            this.uiButton1.Size = new System.Drawing.Size(149, 42);
             this.uiButton1.TabIndex = 3;
             this.uiButton1.Text = "确定";
             this.uiButton1.Click += new System.EventHandler(this.uiButton1_Click);
@@ -201,11 +204,11 @@ namespace FDPort.Forms
             // CmdNew
             // 
             this.AcceptButton = this.uiButton1;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(704, 366);
+            this.ClientSize = new System.Drawing.Size(939, 458);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "CmdNew";
             this.TabText = "CmdNew";
             this.Text = "CmdNew";
@@ -221,7 +224,7 @@ namespace FDPort.Forms
         #endregion
 
         private System.Windows.Forms.Label uiLabel1;
-        private System.Windows.Forms.TextBox cmdName;
+        private WaterTextBox cmdName;
         private System.Windows.Forms.ComboBox cmdTypeChoose;
         private System.Windows.Forms.Panel panel;
         private Controls.FieldStaticControl cmdStatic1;

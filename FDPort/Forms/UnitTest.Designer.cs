@@ -93,7 +93,7 @@ namespace FDPort.Forms
             this.tableLayoutPanel1.Controls.Add(this.decRadio, 10, 8);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 13;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692544F));
@@ -109,7 +109,7 @@ namespace FDPort.Forms
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692544F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692544F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.689466F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(704, 366);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(939, 458);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // dataGridView1
@@ -149,8 +149,8 @@ namespace FDPort.Forms
             this.dataGridView1.EnableHeadersVisualStyles = false;
             this.dataGridView1.Font = new System.Drawing.Font("微软雅黑", 12F);
             this.dataGridView1.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
-            this.dataGridView1.Location = new System.Drawing.Point(2, 2);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dataGridView1.Location = new System.Drawing.Point(3, 2);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridView1.Name = "dataGridView1";
             dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(243)))), ((int)(((byte)(255)))));
@@ -166,7 +166,7 @@ namespace FDPort.Forms
             this.tableLayoutPanel1.SetRowSpan(this.dataGridView1, 6);
             this.dataGridView1.RowTemplate.Height = 27;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(700, 164);
+            this.dataGridView1.Size = new System.Drawing.Size(933, 206);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             this.dataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEndEdit);
@@ -243,10 +243,10 @@ namespace FDPort.Forms
             this.tableLayoutPanel1.SetColumnSpan(this.uiLabel1, 2);
             this.uiLabel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.uiLabel1.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel1.Location = new System.Drawing.Point(58, 168);
+            this.uiLabel1.Location = new System.Drawing.Point(78, 210);
             this.uiLabel1.Margin = new System.Windows.Forms.Padding(0);
             this.uiLabel1.Name = "uiLabel1";
-            this.uiLabel1.Size = new System.Drawing.Size(116, 28);
+            this.uiLabel1.Size = new System.Drawing.Size(156, 35);
             this.uiLabel1.TabIndex = 1;
             this.uiLabel1.Text = "测试字段";
             this.uiLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -256,10 +256,10 @@ namespace FDPort.Forms
             this.tableLayoutPanel1.SetColumnSpan(this.uiLabel2, 2);
             this.uiLabel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.uiLabel2.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel2.Location = new System.Drawing.Point(58, 224);
+            this.uiLabel2.Location = new System.Drawing.Point(78, 280);
             this.uiLabel2.Margin = new System.Windows.Forms.Padding(0);
             this.uiLabel2.Name = "uiLabel2";
-            this.uiLabel2.Size = new System.Drawing.Size(116, 28);
+            this.uiLabel2.Size = new System.Drawing.Size(156, 35);
             this.uiLabel2.TabIndex = 3;
             this.uiLabel2.Text = "起始值";
             this.uiLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -269,11 +269,11 @@ namespace FDPort.Forms
             this.tableLayoutPanel1.SetColumnSpan(this.testStart, 2);
             this.testStart.Dock = System.Windows.Forms.DockStyle.Fill;
             this.testStart.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.testStart.Location = new System.Drawing.Point(174, 224);
+            this.testStart.Location = new System.Drawing.Point(234, 280);
             this.testStart.Margin = new System.Windows.Forms.Padding(0);
-            this.testStart.MinimumSize = new System.Drawing.Size(50, 0);
+            this.testStart.MinimumSize = new System.Drawing.Size(67, 0);
             this.testStart.Name = "testStart";
-            this.testStart.Size = new System.Drawing.Size(116, 29);
+            this.testStart.Size = new System.Drawing.Size(156, 34);
             this.testStart.TabIndex = 4;
             // 
             // fieldTest
@@ -281,11 +281,11 @@ namespace FDPort.Forms
             this.tableLayoutPanel1.SetColumnSpan(this.fieldTest, 8);
             this.fieldTest.Dock = System.Windows.Forms.DockStyle.Fill;
             this.fieldTest.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.fieldTest.Location = new System.Drawing.Point(174, 168);
+            this.fieldTest.Location = new System.Drawing.Point(234, 210);
             this.fieldTest.Margin = new System.Windows.Forms.Padding(0);
-            this.fieldTest.MinimumSize = new System.Drawing.Size(33, 0);
+            this.fieldTest.MinimumSize = new System.Drawing.Size(43, 0);
             this.fieldTest.Name = "fieldTest";
-            this.fieldTest.Size = new System.Drawing.Size(464, 29);
+            this.fieldTest.Size = new System.Drawing.Size(624, 35);
             this.fieldTest.TabIndex = 13;
             this.fieldTest.Text = "uiComboBox1";
             // 
@@ -296,11 +296,11 @@ namespace FDPort.Forms
             this.uiButton2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.uiButton2.Font = new System.Drawing.Font("微软雅黑", 12F);
             this.uiButton2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
-            this.uiButton2.Location = new System.Drawing.Point(60, 338);
-            this.uiButton2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.uiButton2.Location = new System.Drawing.Point(81, 422);
+            this.uiButton2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.uiButton2.MinimumSize = new System.Drawing.Size(1, 1);
             this.uiButton2.Name = "uiButton2";
-            this.uiButton2.Size = new System.Drawing.Size(112, 26);
+            this.uiButton2.Size = new System.Drawing.Size(150, 34);
             this.uiButton2.TabIndex = 15;
             this.uiButton2.Text = "取消";
             this.uiButton2.Click += new System.EventHandler(this.uiButton2_Click);
@@ -311,11 +311,11 @@ namespace FDPort.Forms
             this.uiButton1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.uiButton1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.uiButton1.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiButton1.Location = new System.Drawing.Point(582, 338);
-            this.uiButton1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.uiButton1.Location = new System.Drawing.Point(783, 422);
+            this.uiButton1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.uiButton1.MinimumSize = new System.Drawing.Size(1, 1);
             this.uiButton1.Name = "uiButton1";
-            this.uiButton1.Size = new System.Drawing.Size(120, 26);
+            this.uiButton1.Size = new System.Drawing.Size(153, 34);
             this.uiButton1.TabIndex = 14;
             this.uiButton1.Text = "确定";
             this.uiButton1.Click += new System.EventHandler(this.uiButton1_Click);
@@ -325,10 +325,10 @@ namespace FDPort.Forms
             this.tableLayoutPanel1.SetColumnSpan(this.uiLabel3, 2);
             this.uiLabel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.uiLabel3.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel3.Location = new System.Drawing.Point(58, 280);
+            this.uiLabel3.Location = new System.Drawing.Point(78, 350);
             this.uiLabel3.Margin = new System.Windows.Forms.Padding(0);
             this.uiLabel3.Name = "uiLabel3";
-            this.uiLabel3.Size = new System.Drawing.Size(116, 28);
+            this.uiLabel3.Size = new System.Drawing.Size(156, 35);
             this.uiLabel3.TabIndex = 5;
             this.uiLabel3.Text = "结束值";
             this.uiLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -338,11 +338,11 @@ namespace FDPort.Forms
             this.tableLayoutPanel1.SetColumnSpan(this.testEnd, 2);
             this.testEnd.Dock = System.Windows.Forms.DockStyle.Fill;
             this.testEnd.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.testEnd.Location = new System.Drawing.Point(174, 280);
+            this.testEnd.Location = new System.Drawing.Point(234, 350);
             this.testEnd.Margin = new System.Windows.Forms.Padding(0);
-            this.testEnd.MinimumSize = new System.Drawing.Size(50, 0);
+            this.testEnd.MinimumSize = new System.Drawing.Size(67, 0);
             this.testEnd.Name = "testEnd";
-            this.testEnd.Size = new System.Drawing.Size(116, 29);
+            this.testEnd.Size = new System.Drawing.Size(156, 34);
             this.testEnd.TabIndex = 6;
             // 
             // uiLabel4
@@ -350,10 +350,10 @@ namespace FDPort.Forms
             this.tableLayoutPanel1.SetColumnSpan(this.uiLabel4, 2);
             this.uiLabel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.uiLabel4.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel4.Location = new System.Drawing.Point(348, 224);
+            this.uiLabel4.Location = new System.Drawing.Point(468, 280);
             this.uiLabel4.Margin = new System.Windows.Forms.Padding(0);
             this.uiLabel4.Name = "uiLabel4";
-            this.uiLabel4.Size = new System.Drawing.Size(116, 28);
+            this.uiLabel4.Size = new System.Drawing.Size(156, 35);
             this.uiLabel4.TabIndex = 7;
             this.uiLabel4.Text = "步进值";
             this.uiLabel4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -363,11 +363,11 @@ namespace FDPort.Forms
             this.tableLayoutPanel1.SetColumnSpan(this.testStep, 2);
             this.testStep.Dock = System.Windows.Forms.DockStyle.Fill;
             this.testStep.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.testStep.Location = new System.Drawing.Point(464, 224);
+            this.testStep.Location = new System.Drawing.Point(624, 280);
             this.testStep.Margin = new System.Windows.Forms.Padding(0);
-            this.testStep.MinimumSize = new System.Drawing.Size(50, 0);
+            this.testStep.MinimumSize = new System.Drawing.Size(67, 0);
             this.testStep.Name = "testStep";
-            this.testStep.Size = new System.Drawing.Size(116, 29);
+            this.testStep.Size = new System.Drawing.Size(156, 34);
             this.testStep.TabIndex = 7;
             // 
             // EditAddBtn
@@ -376,11 +376,11 @@ namespace FDPort.Forms
             this.EditAddBtn.Cursor = System.Windows.Forms.Cursors.Hand;
             this.EditAddBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.EditAddBtn.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.EditAddBtn.Location = new System.Drawing.Point(464, 280);
+            this.EditAddBtn.Location = new System.Drawing.Point(624, 350);
             this.EditAddBtn.Margin = new System.Windows.Forms.Padding(0);
             this.EditAddBtn.MinimumSize = new System.Drawing.Size(1, 1);
             this.EditAddBtn.Name = "EditAddBtn";
-            this.EditAddBtn.Size = new System.Drawing.Size(116, 28);
+            this.EditAddBtn.Size = new System.Drawing.Size(156, 35);
             this.EditAddBtn.TabIndex = 12;
             this.EditAddBtn.Text = "添加";
             this.EditAddBtn.Click += new System.EventHandler(this.EditAddBtn_Click);
@@ -391,22 +391,22 @@ namespace FDPort.Forms
             this.decRadio.Cursor = System.Windows.Forms.Cursors.Hand;
             this.decRadio.Dock = System.Windows.Forms.DockStyle.Fill;
             this.decRadio.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.decRadio.Location = new System.Drawing.Point(582, 226);
-            this.decRadio.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.decRadio.Location = new System.Drawing.Point(783, 282);
+            this.decRadio.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.decRadio.MinimumSize = new System.Drawing.Size(1, 1);
             this.decRadio.Name = "decRadio";
-            this.decRadio.Padding = new System.Windows.Forms.Padding(11, 0, 0, 0);
-            this.decRadio.Size = new System.Drawing.Size(120, 24);
+            this.decRadio.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
+            this.decRadio.Size = new System.Drawing.Size(153, 31);
             this.decRadio.TabIndex = 16;
             this.decRadio.Text = "递减";
             // 
             // UnitTest
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(704, 366);
+            this.ClientSize = new System.Drawing.Size(939, 458);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "UnitTest";
             this.Text = "UnitTest";
             this.tableLayoutPanel1.ResumeLayout(false);

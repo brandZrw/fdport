@@ -180,6 +180,12 @@
     <Compile Include="Controls\MyDataGridView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\WaterTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\WaterTextBox.Designer.cs">
+      <DependentUpon>WaterTextBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="DockPanel\ChartDock.cs">
       <SubType>Form</SubType>
     </Compile>
