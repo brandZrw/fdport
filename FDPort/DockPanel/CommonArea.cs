@@ -1,4 +1,5 @@
 ﻿using FDPort.Class;
+using FDPort.Communication;
 using FDPort.Forms;
 using FDPort.Logic;
 using System;
@@ -23,10 +24,11 @@ namespace FDPort.DockPanel
 
         public StreamWriter sw;
         UartMore um;
-        public bool isReceiving = false;/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
         public bool needSave = false; // 是否需要保存数据
-        AsyncSocketTCPServer tcpServer;
-        AsyncTCPClient tcpClient;
+
+        PortSerial serial = new PortSerial();
+        PortTCPClient client = new PortTCPClient();
+        PortTCPService service = new PortTCPService();
 
         #region public
         public CommonArea()
@@ -44,6 +46,10 @@ namespace FDPort.DockPanel
 
             Project.mainForm.dataRec.dataDealFunc += recData;
 
+            client.ConnectedChangedEvent += TcpClient_ConnectedChanged;
+            client.DataRecEvent += DataRecEvent;
+            service.DataRecEvent += DataRecEvent;
+            serial.DataRecEvent += DataRecEvent;
             // 数据绑定
 
             cmbPort.DataBindings.Add("Text", Project.param, "com");
@@ -90,14 +96,9 @@ namespace FDPort.DockPanel
 
         public void close()
         {
-            if (tcpClient != null)
-            {
-                tcpClient.Stop();
-            }
-            if (tcpServer != null)
-            {
-                tcpServer.Stop();
-            }
+            service.close();
+            client.close();
+            serial.close();
         }
         #endregion
 
@@ -117,23 +118,20 @@ namespace FDPort.DockPanel
             switch (Project.param.portChoose)
             {
                 case 0:
-                    if (serialPort.IsOpen)
-                    {
-                        serialPort?.Write(vs, 0, vs.Length);
-                    }
+                    serial.write(vs);
                     break;
                 case 1:
-                    tcpServer?.SendAll(vs);
+                    service.write(vs);
                     break;
                 case 2:
-                    tcpClient?.Send(vs);
+                    client.write(vs);
                     break;
             }
 
 
             string bs = common.byteArrayToString(vs, vs.Length);
             StringBuilder sb = new StringBuilder();
-            if (!string.IsNullOrEmpty(recBox.Text))
+            if (!string.IsNullOrEmpty(recBox.textBox.Text))
             {
                 sb.AppendLine();
             }
@@ -144,7 +142,7 @@ namespace FDPort.DockPanel
             sb.Append("发:");
             sb.Append(bs);
             
-            UIControl.AddRichTextBoxValue(recBox, sb.ToString(),Color.Black);//发送窗口显示
+            UIControl.AddRichTextBoxValue(recBox.textBox, sb.ToString(),Color.Black);//发送窗口显示
             if (needSave)
             {
                 writeFile(sb.ToString());
@@ -155,7 +153,7 @@ namespace FDPort.DockPanel
         {
             string bs = common.byteArrayToString(vs, len);
             StringBuilder sb = new StringBuilder();
-            if (!string.IsNullOrEmpty(UIControl.GetText(recBox)))
+            if (!string.IsNullOrEmpty(UIControl.GetText(recBox.textBox)))
             {
                 sb.AppendLine();
             }
@@ -165,7 +163,7 @@ namespace FDPort.DockPanel
             }
             sb.Append("收:");
             sb.Append(bs);
-            UIControl.AddRichTextBoxValue(recBox, sb.ToString(),Color.Green);
+            UIControl.AddRichTextBoxValue(recBox.textBox, sb.ToString(),Color.Green);
             if (needSave)
             {
                writeFile(sb.ToString());
@@ -174,6 +172,12 @@ namespace FDPort.DockPanel
             return Project.mainForm.parse.dataParsing(vs, len);
 
         }
+
+        private void DataRecEvent(object sender, PortBase from, byte[] b)
+        {
+            Project.mainForm.dataRec.Rec(b, b.Length);
+        }
+
         #endregion
 
         #region event
@@ -184,25 +188,7 @@ namespace FDPort.DockPanel
         /// <param name="e"></param>
         private void uiButton1_Click(object sender, EventArgs e)
         {
-            string hex = sendBox.Text.Trim(' ');
-            if (string.IsNullOrEmpty(hex))
-            {
-                return;
-            }
-            string[] hexarray = hex.Split(' ');
-            List<byte> bs = new List<byte>();
-            try
-            {
-                foreach (string a in hexarray)
-                {
-                    bs.Add(Convert.ToByte(a, 16));
-                }
-                sendData(bs.ToArray());
-            }
-            catch (Exception exp)
-            {
-                System.Windows.Forms.MessageBox.Show(exp.Message);
-            }
+            
         }
         /// <summary>
         /// 清空按钮
@@ -211,7 +197,7 @@ namespace FDPort.DockPanel
         /// <param name="e"></param>
         private void uiButton2_Click(object sender, EventArgs e)
         {
-            UIControl.ClearRichTextBoxValue(recBox);
+            UIControl.ClearRichTextBoxValue(recBox.textBox);
         }
 
         /// <summary>
@@ -288,79 +274,33 @@ namespace FDPort.DockPanel
         
         private void uart_more_Click(object sender, EventArgs e)
         {
-            um = UartMore.GetInstance(serialPort);
+            um = UartMore.GetInstance(serial.port);
 
             um.TopMost = true;
             um.TopMost = false;
 
             um.ShowDialog();
-            if (serialPort.IsOpen) //如果串口已经打开
-            {
-                serialPort.DiscardInBuffer();
-                serialPort.DiscardOutBuffer();
-
-                while (isReceiving)
-                {
-                    Application.DoEvents();
-                }
-                serialPort.Close();
-                serialPort.Open();//重新打开串口
-            }
         }
         
-        private void serialPort_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
-        {
-            try
-            {
-                int len = serialPort.BytesToRead;
-
-                if (len <= 0)
-                {
-                    return;
-                }
-                byte[] vs = new byte[len];
-                serialPort.Read(vs, 0, len);
-                Project.mainForm.dataRec.Rec(vs, len);
-            }
-            catch (Exception exp)
-            {
-                System.Windows.Forms.MessageBox.Show(exp.Message);
-            }
-            finally
-            {
-                isReceiving = false;/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
-            }
-        }
+      
         private void button1_Click(object sender, EventArgs e)
         {
-            if (serialPort.IsOpen)
+            if(serial != null && serial.Connected())
             {
-
                 cmbPort.Enabled = true;
                 baudCombo.Enabled = true;
                 button1.Text = "打开串口";
 
-                serialPort.DiscardInBuffer();
-                serialPort.DiscardOutBuffer();
-
-                while (isReceiving)
-                {
-                    Application.DoEvents();
-                }
-                serialPort.Close();
-
+                serial.close();
             }
             else
             {
                 try
                 {
-                    serialPort.PortName = cmbPort.Text;
-                    serialPort.BaudRate = Convert.ToInt32(baudCombo.Text);
-                    serialPort.Open();
-                    isReceiving = false;
+                    serial.SetPort(cmbPort.Text, Convert.ToInt32(baudCombo.Text));
+                    serial.open();
                     cmbPort.Enabled = false;
                     baudCombo.Enabled = false;
-                    //serialPort.ReadTimeout = -1;
                     button1.Text = "关闭串口";
                 }
                 catch (Exception exp)
@@ -383,10 +323,9 @@ namespace FDPort.DockPanel
                 {
                     if (IPAddress.TryParse(tcpCliIP.Text, out ip))
                     {
-                        tcpClient = new AsyncTCPClient(ip, Convert.ToInt32(tcpCliPort.Text));
-                        tcpClient.ConnectedChanged += TcpClient_ConnectedChanged;
-                        tcpClient.dataReceived += TCP_DataRecv;
-                        tcpClient.Start();
+                        client.SetIP(ip, Convert.ToInt32(tcpCliPort.Text));
+                        client.open();
+                        
                     }
                     else
                     {
@@ -400,17 +339,14 @@ namespace FDPort.DockPanel
             }
             else
             {
-                if (tcpClient != null)
+                if (client != null)
                 {
-                    tcpClient.Stop();
+                    client.close();
                 }
             }
         }
 
-        private void TCP_DataRecv(byte[] vs, int len)
-        {
-            Project.mainForm.dataRec.Rec(vs, len);
-        }
+
         private void TcpClient_ConnectedChanged(object sender, ConnctedChangedArg e)
         {
             if (e.Connected)
@@ -435,9 +371,9 @@ namespace FDPort.DockPanel
                     IPAddress ip;
                     if (IPAddress.TryParse(serIP.Text, out ip))
                     {
-                        tcpServer = new AsyncSocketTCPServer(ip, Convert.ToInt32(serPort.Text), 1024);
-                        tcpServer.DataReceived += TcpServer_DataReceived;
-                        tcpServer.Start();
+                        service.SetIP(new IPEndPoint(ip, Convert.ToInt32(serPort.Text)));
+
+                        service.open();
                         uiButton3.Text = "断开";
 
                     }
@@ -450,9 +386,9 @@ namespace FDPort.DockPanel
                 else if (uiButton3.Text.Equals("断开"))
                 {
                     //
-                    if (tcpServer != null)
+                    if (service != null)
                     {
-                        tcpServer.Stop();
+                        service.close();
                     }
                     uiButton3.Text = "侦听";
                 }
@@ -462,11 +398,34 @@ namespace FDPort.DockPanel
                 System.Windows.Forms.MessageBox.Show(exp.Message);
             }
         }
-        private void TcpServer_DataReceived(object sender, AsyncSocketEventArgs e)
-        {
-            byte[] b = e._state.RecvDataBuffer.Take(e._state.recvLen).ToArray();
-            Project.mainForm.dataRec.Rec(b, e._state.recvLen);
-        }
         #endregion
+
+        private void sendBox_ButtonClick(object sender, EventArgs e)
+        {
+            string hex = sendBox.textBox.Text.Trim(' ');
+            if (string.IsNullOrEmpty(hex))
+            {
+                return;
+            }
+            string[] hexarray = hex.Split(' ');
+            List<byte> bs = new List<byte>();
+            try
+            {
+                foreach (string a in hexarray)
+                {
+                    bs.Add(Convert.ToByte(a, 16));
+                }
+                sendData(bs.ToArray());
+            }
+            catch (Exception exp)
+            {
+                System.Windows.Forms.MessageBox.Show(exp.Message);
+            }
+        }
+
+        private void recBox_ButtonClick(object sender, EventArgs e)
+        {
+            UIControl.ClearRichTextBoxValue(recBox.textBox);
+        }
     }
 }

@@ -69,12 +69,6 @@
     <ApplicationIcon>20240106144528_27ed2e09923a494db68ae4e69e156dd0.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Common.Logging.3.3.1\lib\net40\Common.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="Common.Logging.Core, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
-    </Reference>
     <Reference Include="DynamicExpresso.Core, Version=2.16.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DynamicExpresso.Core.2.16.1\lib\netstandard2.0\DynamicExpresso.Core.dll</HintPath>
     </Reference>
@@ -142,14 +136,15 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class\AsyncSocketTCPServer.cs" />
+    <Compile Include="Communication\AsyncSocketTCPServer.cs" />
     <Compile Include="Class\common.cs" />
     <Compile Include="Class\FieldModule.cs" />
     <Compile Include="Class\Comm.cs" />
     <Compile Include="Class\JsonHelper.cs" />
     <Compile Include="Class\ObservableDictionary.cs" />
     <Compile Include="Class\Project.cs" />
-    <Compile Include="Class\AsyncTCPClient.cs" />
+    <Compile Include="Communication\AsyncTCPClient.cs" />
+    <Compile Include="Communication\IPort.cs" />
     <Compile Include="Controls\FieldBaseControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -185,6 +180,12 @@
     </Compile>
     <Compile Include="Controls\MyDataGridView.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TitleTextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\TitleTextBox.Designer.cs">
+      <DependentUpon>TitleTextBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\WaterTextBox.cs">
       <SubType>Component</SubType>
@@ -283,6 +284,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\FieldStaticControl.resx">
       <DependentUpon>FieldStaticControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\TitleTextBox.resx">
+      <DependentUpon>TitleTextBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DockPanel\ChartDock.resx">
       <DependentUpon>ChartDock.cs</DependentUpon>

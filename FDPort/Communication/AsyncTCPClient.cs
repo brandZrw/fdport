@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FDPort.Class
 {
-    class AsyncTCPClient
+    public class AsyncTCPClient
     {
         public class ConnctedChangedArg : EventArgs
         {

@@ -29,12 +29,12 @@ namespace FDPort.Class
         /// <summary>
         /// 客户端会话列表
         /// </summary>
-        private List<AsyncSocketState> _clients;
+        private Dictionary<EndPoint,AsyncSocketState> _clients;
 
         private bool disposed = false;
 
 
-        public List<AsyncSocketState> clients { get => _clients; set => _clients = value; }
+        public Dictionary<EndPoint, AsyncSocketState> clients { get => _clients; set => _clients = value; }
         #endregion
 
         #region Properties
@@ -93,7 +93,7 @@ namespace FDPort.Class
             this.Encoding = Encoding.Default;
 
             _maxClient = maxClient;
-            _clients = new List<AsyncSocketState>();
+            _clients = new Dictionary<EndPoint, AsyncSocketState>();
             CanSend = true;
             _serverSock = new Socket(localIPAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
         }
@@ -169,7 +169,7 @@ namespace FDPort.Class
                     AsyncSocketState state = new AsyncSocketState(client);
                     lock(_clients)
                     {
-                        _clients.Add(state);
+                        _clients.Add(client.RemoteEndPoint,state);
                         _clientCount++;
                         RaiseClientConnected(state); //触发客户端连接事件
                     }
@@ -239,7 +239,7 @@ namespace FDPort.Class
 
         public void SendAll(byte[] data)
         {
-            foreach (AsyncSocketState asyncSocket in clients)
+            foreach (AsyncSocketState asyncSocket in clients.Values)
             {
                 Send(asyncSocket, data);
             }
@@ -415,7 +415,7 @@ namespace FDPort.Class
                 state.Datagram = null;
                 state.RecvDataBuffer = null;
 
-                _clients.Remove(state);
+                _clients.Remove(state.ClientSocket.RemoteEndPoint);
                 _clientCount--;
                 //TODO 触发关闭事件
                 state.Close();
@@ -426,7 +426,7 @@ namespace FDPort.Class
         /// </summary>
         public void CloseAllClient()
         {
-            foreach (AsyncSocketState client in _clients)
+            foreach (AsyncSocketState client in _clients.Values)
             {
                 Close(client);
             }
