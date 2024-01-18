@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using FDPort.Communication;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -32,21 +33,39 @@ namespace FDPort.Class
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
                                         JsonSerializer serializer)
         {
-            var jobj = serializer.Deserialize<JObject>(reader);
-            var type = jobj.Value<int>("type");
-            switch (type)
+            if(objectType == typeof(FieldModule))
             {
-                case 0:
-                    return jobj.ToObject<FieldStatic>();
-                case 1:
-                    return jobj.ToObject<FieldByte>();
-                case 2:
-                    return jobj.ToObject<FieldBit>();
-                case 3:
-                    return jobj.ToObject<FieldFunc>();
-                case 4:
-                    return jobj.ToObject<FieldData>();
+                var jobj = serializer.Deserialize<JObject>(reader);
+                var type = jobj.Value<int>("type");
+                switch (type)
+                {
+                    case 0:
+                        return jobj.ToObject<FieldStatic>();
+                    case 1:
+                        return jobj.ToObject<FieldByte>();
+                    case 2:
+                        return jobj.ToObject<FieldBit>();
+                    case 3:
+                        return jobj.ToObject<FieldFunc>();
+                    case 4:
+                        return jobj.ToObject<FieldData>();
+                }
             }
+            else if(objectType == typeof(PortBase))
+            {
+                var jobj = serializer.Deserialize<JObject>(reader);
+                var type = jobj.Value<int>("type");
+                switch (type)
+                {
+                    case 1:
+                        return jobj.ToObject<PortSerial>();
+                    case 2:
+                        return jobj.ToObject<PortTCPClient>();
+                    case 3:
+                        return jobj.ToObject<PortTCPService>();
+                }
+            }
+            
             return null;
         }
 
@@ -57,7 +76,7 @@ namespace FDPort.Class
         /// <returns></returns>
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(FieldModule);
+            return objectType == typeof(FieldModule) || objectType == typeof(PortBase);
         }
     }
 

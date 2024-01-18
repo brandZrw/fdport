@@ -30,7 +30,7 @@ namespace FDPort.DockPanel
             if (cmdList.Columns[e.ColumnIndex].Name == "cmdSend" && Project.param.cmdSend.Count > 0 && e.RowIndex >= 0 && e.RowIndex < Project.param.cmdSend.Count)
             {
                 //说明点击的列是DataGridViewButtonColumn列
-                Project.param.cmdSend[e.RowIndex].Send();
+                Project.param.cmdSend[e.RowIndex].Send(common.GetPort(Project.param.portNow));
             }
             else if (cmdList.Columns[e.ColumnIndex].Name == "cmdTimer" && Project.param.cmdSend.Count > 0 && e.RowIndex >= 0 && e.RowIndex < Project.param.cmdSend.Count)
             {

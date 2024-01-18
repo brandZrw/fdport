@@ -21,7 +21,6 @@ namespace FDPort.DockPanel
     public partial class CommonArea : DockContent
     {
 
-
         public StreamWriter sw;
         UartMore um;
         public bool needSave = false; // 是否需要保存数据
@@ -29,7 +28,7 @@ namespace FDPort.DockPanel
         PortSerial serial = new PortSerial();
         PortTCPClient client = new PortTCPClient();
         PortTCPService service = new PortTCPService();
-
+        
         #region public
         public CommonArea()
         {
@@ -37,7 +36,12 @@ namespace FDPort.DockPanel
             TabText = "收发配置";
             CloseButton = false;
             CloseButtonVisible = false;
-            GetComList();
+            string[] str = common.GetComList();
+            cmbPort.Items.Clear();
+            for (int i = 0; i < str.Length; i++)
+            {
+                cmbPort.Items.Add(str[i]);
+            }
             if (cmbPort.Items.Count > 0)
             {
                 cmbPort.SelectedIndex = 0;
@@ -47,9 +51,7 @@ namespace FDPort.DockPanel
             Project.mainForm.dataRec.dataDealFunc += recData;
 
             client.ConnectedChangedEvent += TcpClient_ConnectedChanged;
-            client.DataRecEvent += DataRecEvent;
-            service.DataRecEvent += DataRecEvent;
-            serial.DataRecEvent += DataRecEvent;
+
             // 数据绑定
 
             cmbPort.DataBindings.Add("Text", Project.param, "com");
@@ -59,6 +61,8 @@ namespace FDPort.DockPanel
             tcpCliPort.DataBindings.Add("Text", Project.param, "cPort");
             serIP.DataBindings.Add("Text", Project.param, "sIP");
             serPort.DataBindings.Add("Text", Project.param, "sPort");
+            recBox.textBox.ReadOnly = true;
+            Project.param.portNow = serial;
         }
 
         public void ShowCommType(int type)
@@ -69,16 +73,19 @@ namespace FDPort.DockPanel
                     serialPanel.Visible = true;
                     socketSerPanel.Visible = false;
                     socketCliPanel.Visible = false;
+                    Project.param.portNow = serial;
                     break;
                 case 1:
                     serialPanel.Visible = false;
                     socketSerPanel.Visible = true;
                     socketCliPanel.Visible = false;
+                    Project.param.portNow = service;
                     break;
                 case 2:
                     serialPanel.Visible = false;
                     socketSerPanel.Visible = false;
                     socketCliPanel.Visible = true;
+                    Project.param.portNow = client;
                     break;
             }
 
@@ -99,6 +106,9 @@ namespace FDPort.DockPanel
             service.close();
             client.close();
             serial.close();
+            button1.Text = "打开串口";
+            uiButton3.Text = "侦听";
+            uiButton5.Text = "连接";
         }
         #endregion
 
@@ -113,25 +123,15 @@ namespace FDPort.DockPanel
         /// 发送数据
         /// </summary>
         /// <param name="vs"></param>
-        public void sendData(byte[] vs)
+        public void sendData(byte[] vs,PortBase port)
         {
-            switch (Project.param.portChoose)
-            {
-                case 0:
-                    serial.write(vs);
-                    break;
-                case 1:
-                    service.write(vs);
-                    break;
-                case 2:
-                    client.write(vs);
-                    break;
-            }
 
+            port?.write(vs);
+            
 
             string bs = common.byteArrayToString(vs, vs.Length);
             StringBuilder sb = new StringBuilder();
-            if (!string.IsNullOrEmpty(recBox.textBox.Text))
+            if (!string.IsNullOrEmpty(UIControl.GetText(recBox.textBox)))
             {
                 sb.AppendLine();
             }
@@ -149,7 +149,7 @@ namespace FDPort.DockPanel
             }
 
         }
-        private int recData(byte[] vs, int len)
+        private int recData(PortBase from,byte[] vs, int len)
         {
             string bs = common.byteArrayToString(vs, len);
             StringBuilder sb = new StringBuilder();
@@ -169,33 +169,37 @@ namespace FDPort.DockPanel
                writeFile(sb.ToString());
             }
 
-            return Project.mainForm.parse.dataParsing(vs, len);
+            return Project.mainForm.parse.dataParsing(from,vs, len);
 
-        }
-
-        private void DataRecEvent(object sender, PortBase from, byte[] b)
-        {
-            Project.mainForm.dataRec.Rec(b, b.Length);
         }
 
         #endregion
 
         #region event
-        /// <summary>
-        /// 发送按钮
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void uiButton1_Click(object sender, EventArgs e)
+        private void sendBox_ButtonClick(object sender, EventArgs e)
         {
-            
+            string hex = sendBox.textBox.Text.Trim(' ');
+            if (string.IsNullOrEmpty(hex))
+            {
+                return;
+            }
+            string[] hexarray = hex.Split(' ');
+            List<byte> bs = new List<byte>();
+            try
+            {
+                foreach (string a in hexarray)
+                {
+                    bs.Add(Convert.ToByte(a, 16));
+                }
+                sendData(bs.ToArray(),Project.param.needForwrding?Project.param.portForwarding:Project.param.portNow);
+            }
+            catch (Exception exp)
+            {
+                System.Windows.Forms.MessageBox.Show(exp.Message);
+            }
         }
-        /// <summary>
-        /// 清空按钮
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void uiButton2_Click(object sender, EventArgs e)
+
+        private void recBox_ButtonClick(object sender, EventArgs e)
         {
             UIControl.ClearRichTextBoxValue(recBox.textBox);
         }
@@ -220,32 +224,15 @@ namespace FDPort.DockPanel
         #endregion
 
         #region 串口相关
-        /// <summary>
-        /// 从注册表获取系统串口列表
-        /// </summary>
-        private void GetComList()
-        {
-            Microsoft.Win32.RegistryKey keyCom = Microsoft.Win32.Registry.LocalMachine.OpenSubKey("Hardware\\DeviceMap\\SerialComm");
-            if (keyCom != null)
-            {
-                string[] sSubKeys = keyCom.GetValueNames();
-                string[] str = new string[sSubKeys.Length];
-                for (int i = 0; i < sSubKeys.Length; i++)
-                {
-                    str[i] = (string)keyCom.GetValue(sSubKeys[i]);
-                }
-                cmbPort.Items.Clear();
-                for (int i = 0; i < str.Length; i++)
-                {
-                    cmbPort.Items.Add(str[i]);
-                }
-            }
-
-        }
         public void FreshComList()
         {
             string selectStr = cmbPort.Text;
-            GetComList();
+            string[] str = common.GetComList();
+            cmbPort.Items.Clear();
+            for (int i = 0; i < str.Length; i++)
+            {
+                cmbPort.Items.Add(str[i]);
+            }
             if (cmbPort.Items.Contains(selectStr) == false)
             {
                 if (cmbPort.Items.Count > 0)
@@ -297,7 +284,7 @@ namespace FDPort.DockPanel
             {
                 try
                 {
-                    serial.SetPort(cmbPort.Text, Convert.ToInt32(baudCombo.Text));
+                    serial.setParam(cmbPort.Text, baudCombo.Text);
                     serial.open();
                     cmbPort.Enabled = false;
                     baudCombo.Enabled = false;
@@ -318,19 +305,10 @@ namespace FDPort.DockPanel
         {
             if (uiButton5.Text.Equals("连接"))
             {
-                IPAddress ip;
                 try
                 {
-                    if (IPAddress.TryParse(tcpCliIP.Text, out ip))
-                    {
-                        client.SetIP(ip, Convert.ToInt32(tcpCliPort.Text));
-                        client.open();
-                        
-                    }
-                    else
-                    {
-                        throw new Exception("非法IP");
-                    }
+                    client.setParam(tcpCliIP.Text, tcpCliPort.Text);
+                    client.open();  
                 }
                 catch (Exception exp)
                 {
@@ -367,21 +345,10 @@ namespace FDPort.DockPanel
             {
                 if (uiButton3.Text.Equals("侦听"))
                 {
+                    service.setParam(serIP.Text, serPort.Text);
 
-                    IPAddress ip;
-                    if (IPAddress.TryParse(serIP.Text, out ip))
-                    {
-                        service.SetIP(new IPEndPoint(ip, Convert.ToInt32(serPort.Text)));
-
-                        service.open();
-                        uiButton3.Text = "断开";
-
-                    }
-                    else
-                    {
-                        throw new Exception("非法IP");
-                    }
-
+                    service.open();
+                    uiButton3.Text = "断开";
                 }
                 else if (uiButton3.Text.Equals("断开"))
                 {
@@ -400,32 +367,6 @@ namespace FDPort.DockPanel
         }
         #endregion
 
-        private void sendBox_ButtonClick(object sender, EventArgs e)
-        {
-            string hex = sendBox.textBox.Text.Trim(' ');
-            if (string.IsNullOrEmpty(hex))
-            {
-                return;
-            }
-            string[] hexarray = hex.Split(' ');
-            List<byte> bs = new List<byte>();
-            try
-            {
-                foreach (string a in hexarray)
-                {
-                    bs.Add(Convert.ToByte(a, 16));
-                }
-                sendData(bs.ToArray());
-            }
-            catch (Exception exp)
-            {
-                System.Windows.Forms.MessageBox.Show(exp.Message);
-            }
-        }
-
-        private void recBox_ButtonClick(object sender, EventArgs e)
-        {
-            UIControl.ClearRichTextBoxValue(recBox.textBox);
-        }
+        
     }
 }

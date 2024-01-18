@@ -1,4 +1,5 @@
 ﻿using FDPort.Class;
+using FDPort.Communication;
 using FDPort.DockPanel;
 using FDPort.Logic;
 using System;
@@ -132,10 +133,13 @@ namespace FDPort.Forms
             dialog.Filter = "FDPort(*.FDPort)|*.FDPort";
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
+                commonArea.close();
                 loadParam(dialog.FileName);
+                
                 Project.param.sendMap.CollectionChanged -= sendListDock.SendMap_CollectionChanged;
                 Project.param.sendMap.CollectionChanged += sendListDock.SendMap_CollectionChanged;
             }
+
         }
 
         /// <summary>
@@ -148,8 +152,16 @@ namespace FDPort.Forms
             sendListDock.sendList.Rows.Clear();
             sendCmdDock.cmdList.Rows.Clear();
             chartDock.chart_clear();
+            if(Project.param.needForwrding)
+            {
+                Project.param.portForwarding?.close();
+            }
+            Project.param.portForwarding = null;
+            Project.param.needForwrding = false;
 
             Project.load(path);
+
+            
 
             Project.param.PropertyChanged += Param_PropertyChanged;
             switch (Project.param.portChoose)
@@ -165,6 +177,22 @@ namespace FDPort.Forms
                     break;
 
             }
+
+            Project.param.portForwarding?.setParam(Project.param.portForwarding.param1, Project.param.portForwarding.param2);
+            if (Project.param.portForwarding != null)
+            {
+                端口选择ToolStripMenuItem.Text = "端口选择:" + Project.param.portForwarding.name;
+            }
+            是否转发ToolStripMenuItem.Checked = false;
+            if (Project.param.needForwrding)// 端口转发开启就使用端口转发
+            {
+                Project.param.portForwarding.open();
+                if(Project.param.portForwarding.Connected())
+                {
+                    是否转发ToolStripMenuItem.Checked = true;
+                }
+            }
+            Project.param.needForwrding = 是否转发ToolStripMenuItem.Checked;
             高位在前ToolStripMenuItem.Checked = !Project.param.isLittleEndian;
             低位在前ToolStripMenuItem.Checked = Project.param.isLittleEndian;
             添加时间戳ToolStripMenuItem.Checked = Project.param.addTimestamp;
@@ -195,6 +223,8 @@ namespace FDPort.Forms
                     }
                 }
             }
+
+            // 导入布局
             if (!string.IsNullOrEmpty(Project.param.layout))
             {
                 if (File.Exists("tempreader.xml"))
@@ -218,6 +248,11 @@ namespace FDPort.Forms
                 File.Delete("tempreader.xml");
             }
         }
+
+        /// <summary>
+        /// 保存参数
+        /// </summary>
+        /// <param name="path"></param>
         void saveParam(string path)
         {
             using (MemoryStream st = new MemoryStream())
@@ -227,9 +262,9 @@ namespace FDPort.Forms
                 File.Delete("temp.xml");
                 Project.save(path);
             }
-
-
         }
+
+
         private IDockContent GetContentFromPersistString(string persistString)
         {
             if (persistString == typeof(ChartDock).ToString())
@@ -433,6 +468,43 @@ namespace FDPort.Forms
             低位在前ToolStripMenuItem.Checked = true;
             Project.param.isLittleEndian = true;
         }
-#endregion
+        #endregion
+
+        private void 端口选择ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NewPort newPort = new NewPort();
+            newPort.OnPortOpenOk += NewPort_OnPortOpenOk;
+            newPort.Show();
+        }
+
+        private void NewPort_OnPortOpenOk(PortBase port)
+        {
+            是否转发ToolStripMenuItem.Checked = true;
+            端口选择ToolStripMenuItem.Text = "端口:" + port.name;
+        }
+
+        private void 是否转发ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(是否转发ToolStripMenuItem.Checked)
+            {
+                Project.param.portForwarding.close();
+                是否转发ToolStripMenuItem.Checked = false;
+                Project.param.needForwrding = false;
+            }
+            else
+            {
+                
+                if(Project.param.portForwarding == null)
+                {
+                    MessageBox.Show("请先选择端口");
+                }
+                else
+                {
+                    Project.param.portForwarding.open();
+                    是否转发ToolStripMenuItem.Checked = true;
+                    Project.param.needForwrding = true;
+                }
+            }
+        }
     }
 }

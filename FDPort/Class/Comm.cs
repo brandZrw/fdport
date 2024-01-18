@@ -1,4 +1,5 @@
 ﻿using DynamicExpresso;
+using FDPort.Communication;
 using FDPort.Forms;
 using System;
 using System.Collections.Generic;
@@ -302,11 +303,11 @@ namespace FDPort.Class
         private void TimerUp(object sender, EventArgs e)
         {
             cmdTimer.Stop();
-            Send();
+            Send(common.GetPort(Project.param.portNow));
             cmdTimer.Start();
         }
 
-        public void Send()//发送该条命令
+        public void Send(PortBase port)//发送该条命令
         {
             List<byte> vs = new List<byte>();
             foreach (FieldModule field in list)
@@ -414,7 +415,7 @@ namespace FDPort.Class
                         break;
                 }
             }
-            Project.mainForm.commonArea.sendData(vs.ToArray());
+            Project.mainForm.commonArea.sendData(vs.ToArray(),port);
         }
     }
 }

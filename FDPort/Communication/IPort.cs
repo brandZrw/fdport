@@ -1,4 +1,5 @@
 ﻿using FDPort.Class;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO.Ports;
@@ -11,7 +12,12 @@ namespace FDPort.Communication
 {
     abstract public class PortBase
     {
-
+        /// <summary>
+        /// 设置参数
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        abstract public void setParam(string a, string b);
         /// <summary>
         /// 发送函数
         /// </summary>
@@ -41,23 +47,36 @@ namespace FDPort.Communication
         protected virtual void OnDataRec(object sender, PortBase from,byte[] b)
         {
             DataRecEvent?.Invoke(sender,from,b);
+            Project.mainForm.dataRec.Rec(from, b, b.Length);
         }
 
         public string name { get; set; }
+        public string param1 { get; set; }
+        public string param2 { get; set; }
+
+        /// <summary>
+        /// 类型，1.串口，2.客户端，3.服务端
+        /// </summary>
+        public int type { get; set; }
     }
 
     public class PortSerial : PortBase
     {
+        [JsonIgnore]
         public SerialPort port;
-        public void SetPort(string com, int baud)
+        public override void setParam(string com, string baud)
         {
+            param1 = com;
+            param2 = baud;
             port.PortName = com;
-            port.BaudRate = baud;
-            name = "serial-" + com + ":" + baud.ToString();
+            port.BaudRate = Convert.ToInt32( baud);
+            name = "serial-" + com + ":" + param2;
         }
         public PortSerial()
         {
             port = new SerialPort();
+            
+            type = 1;
             port.DataReceived += SerialPort_DataReceived;
         }
 
@@ -102,16 +121,78 @@ namespace FDPort.Communication
             port?.Open();
         }
     }
+    public class PortTCPClient : PortBase
+    {
+        [JsonIgnore]
+        AsyncTCPClient tcpClient;
 
+        public delegate void ConnectedChangedHandler(object sender, AsyncTCPClient.ConnctedChangedArg e);
+        public event ConnectedChangedHandler ConnectedChangedEvent;
+
+        public override void setParam(string iP, string port)
+        {
+            IPAddress address;
+            param1 = iP;
+            param2 = port;
+            if( IPAddress.TryParse(iP,out address))
+            {
+                tcpClient = new AsyncTCPClient(address,Convert.ToInt32(port));
+                name = "client-" + iP.ToString() + ":" + port.ToString();
+                tcpClient.dataReceived += TCP_DataRecv;
+                tcpClient.ConnectedChanged += TcpClient_ConnectedChanged;
+            }
+        }
+        public PortTCPClient()
+        {
+            type = 2;
+        }
+        private void TcpClient_ConnectedChanged(object sender, AsyncTCPClient.ConnctedChangedArg e)
+        {
+            ConnectedChangedEvent?.Invoke(sender, e);
+        }
+
+        private void TCP_DataRecv(byte[] vs, int len)
+        {
+            OnDataRec(this, this, vs);
+        }
+
+        public override bool Connected()
+        {
+            return tcpClient.IsConnected;
+        }
+
+        public override void write(byte[] b, IPEndPoint iP = null)
+        {
+            tcpClient?.Send(b);
+        }
+
+        public override void close()
+        {
+            tcpClient?.Stop();
+        }
+
+        public override void open()
+        {
+            tcpClient.Start();
+        }
+    }
     public class PortTCPService:PortBase
     {
+        [JsonIgnore]
         AsyncSocketTCPServer tcpServer;
 
-        public void SetIP(IPEndPoint localEP)
+        public override void setParam(string ip,string port)
         {
-            tcpServer = new AsyncSocketTCPServer(localEP);
-            name = "service-" + localEP.ToString();
-            tcpServer.DataReceived += TcpServer_DataReceived;
+            param1 = ip;
+            param2 = port;
+            IPAddress address;
+            if(IPAddress.TryParse(ip,out address))
+            {
+                IPEndPoint localEP = new IPEndPoint(address,Convert.ToInt32(port));
+                tcpServer = new AsyncSocketTCPServer(localEP);
+                name = "service-" + localEP.ToString();
+                tcpServer.DataReceived += TcpServer_DataReceived;
+            }
         }
 
         private void TcpServer_DataReceived(object sender, AsyncSocketEventArgs e)
@@ -119,7 +200,10 @@ namespace FDPort.Communication
             byte[] b = e._state.RecvDataBuffer.Take(e._state.recvLen).ToArray();
             OnDataRec(this,this,b);
         }
-
+        public PortTCPService()
+        {
+            type = 3;
+        }
         public override bool Connected()
         {
             return tcpServer.IsRunning;
@@ -147,49 +231,5 @@ namespace FDPort.Communication
             tcpServer?.Start();
         }
     }
-    public class PortTCPClient : PortBase
-    {
-        AsyncTCPClient tcpClient;
-
-        public delegate void ConnectedChangedHandler(object sender, AsyncTCPClient.ConnctedChangedArg e);
-        public event ConnectedChangedHandler ConnectedChangedEvent;
-
-        public void SetIP(IPAddress iP, int port)
-        {
-            tcpClient = new AsyncTCPClient(iP,  port);
-            name = "client-"+iP.ToString()+":" + port.ToString();
-            tcpClient.dataReceived += TCP_DataRecv;
-            tcpClient.ConnectedChanged += TcpClient_ConnectedChanged;
-        }
-
-        private void TcpClient_ConnectedChanged(object sender, AsyncTCPClient.ConnctedChangedArg e)
-        {
-            ConnectedChangedEvent?.Invoke(sender, e);
-        }
-
-        private void TCP_DataRecv(byte[] vs, int len)
-        {
-            OnDataRec(this,this,vs);
-        }
-
-        public override bool Connected()
-        {
-            return tcpClient.IsConnected;
-        }
-
-        public override void write(byte[] b, IPEndPoint iP = null)
-        {
-            tcpClient?.Send(b);
-        }
-
-        public override void close()
-        {
-            tcpClient?.Stop();
-        }
-
-        public override void open()
-        {
-            tcpClient.Start();
-        }
-    }
+    
 }

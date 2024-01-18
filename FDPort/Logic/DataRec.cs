@@ -1,37 +1,50 @@
+using FDPort.Communication;
 using System;
+using System.Collections.Generic;
 
 namespace FDPort.Logic
 {
-    public class DataRec
+    public class DataRecParam
     {
         System.Threading.Timer timer;
-        DateTime dtLast;
-        bool needDeal;
-        byte[] dataCache;
-        public delegate int DataDealCb(byte[] b, int len);
-        public DataDealCb dataDealFunc;
-        UInt32 timeout = 20;
-
-        public DataRec()
+        public DateTime dtLast;
+        public bool needDeal;
+        public byte[] dataCache;
+        public PortBase from;
+        private DataRec parent;
+        public DataRecParam(DataRec parent)
         {
+            this.parent = parent;
             timer = new System.Threading.Timer((state) =>
             {
                 if (needDeal)
                 {
                     TimeSpan ts = DateTime.Now - dtLast;
-                    if (ts.TotalMilliseconds >= timeout)
+                    if (ts.TotalMilliseconds >= parent.timeout)
                     {
                         needDeal = false;
                         if (dataCache != null)
                         {
 
-                            dataDealFunc?.Invoke(dataCache, dataCache.Length);
+                            parent.dataDealFunc?.Invoke(from, dataCache, dataCache.Length);
                             dataCache = null;
 
                         }
                     }
                 }
             }, "timer event", 0, 1);
+        }
+    }
+    public class DataRec
+    {
+        Dictionary<PortBase, DataRecParam> map = new Dictionary<PortBase, DataRecParam>();
+        public delegate int DataDealCb(PortBase from,byte[] b, int len);
+        public DataDealCb dataDealFunc;
+        public UInt32 timeout = 20;
+
+        public DataRec()
+        {
+            
         }
         /// <summary>
         /// 设置超时时间，超过这些时间算一帧
@@ -47,20 +60,25 @@ namespace FDPort.Logic
         /// </summary>
         /// <param name="data"></param>
         /// <param name="len"></param>
-        public void Rec(byte[] data, int len)
+        public void Rec(PortBase from,byte[] data, int len)
         {
-            needDeal = true;
-            dtLast = DateTime.Now;
-            if (dataCache == null)
+            if(!map.ContainsKey(from))
             {
-                dataCache = data;
+                map.Add(from,new DataRecParam(this));
+            }
+            map[from].from = from;
+            map[from].needDeal = true;
+            map[from].dtLast = DateTime.Now;
+            if (map[from].dataCache == null)
+            {
+                map[from].dataCache = data;
             }
             else
             {
-                byte[] temp = new byte[dataCache.Length + len];
-                dataCache.CopyTo(temp, 0);
-                data.CopyTo(temp, dataCache.Length);
-                dataCache = temp;//包拼接
+                byte[] temp = new byte[map[from].dataCache.Length + len];
+                map[from].dataCache.CopyTo(temp, 0);
+                data.CopyTo(temp, map[from].dataCache.Length);
+                map[from].dataCache = temp;//包拼接
             }
         }
     }

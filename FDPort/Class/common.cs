@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FDPort.Communication;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -234,6 +235,33 @@ namespace FDPort.Class
                     itemOut.SetValue(tOut, itemIn.GetValue(tIn));
                 }
             }
+        }
+        public static PortBase GetPort(PortBase from)
+        {
+            if (Project.param.needForwrding)
+            {
+                return from == Project.param.portNow ? Project.param.portForwarding : Project.param.portNow;
+            }
+            else
+            {
+                return from;
+            }
+        }
+        public static string[] GetComList()
+        {
+            Microsoft.Win32.RegistryKey keyCom = Microsoft.Win32.Registry.LocalMachine.OpenSubKey("Hardware\\DeviceMap\\SerialComm");
+            if (keyCom != null)
+            {
+                string[] sSubKeys = keyCom.GetValueNames();
+                string[] str = new string[sSubKeys.Length];
+                for (int i = 0; i < sSubKeys.Length; i++)
+                {
+                    str[i] = (string)keyCom.GetValue(sSubKeys[i]);
+                }
+                return str;
+            }
+            return null;
+
         }
     }
 }

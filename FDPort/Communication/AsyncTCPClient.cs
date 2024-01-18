@@ -59,8 +59,7 @@ namespace FDPort.Class
         private byte[] buffers = new byte[0x1000];
         public void Start()
         {
-            Task.Factory.StartNew(() =>
-            {
+            //Task.Factory.StartNew(() =>{
                 var result = ClientSocket.BeginConnect(Address, Port, null, null);
 
                 bool success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(1), true);//堵塞 直到收到反馈
@@ -85,10 +84,11 @@ namespace FDPort.Class
                 }
                 else
                 {
+                    
                     RaiseConnectedChanged(ClientSocket, false);
                 }
 
-            });
+           // });
 
 
         }
@@ -196,7 +196,8 @@ namespace FDPort.Class
             if (ClientSocket != null)
             {
                 RaiseConnectedChanged(ClientSocket, false);
-                ClientSocket.Shutdown(SocketShutdown.Both);//关闭发送和接收
+                    ClientSocket.Shutdown(SocketShutdown.Both);//关闭发送和接收
+                
                 ClientSocket.Close();
                 ClientSocket.Dispose();
             }

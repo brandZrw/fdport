@@ -247,6 +247,12 @@
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\NewPort.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\NewPort.Designer.cs">
+      <DependentUpon>NewPort.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\UartMore.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -314,6 +320,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NewPort.resx">
+      <DependentUpon>NewPort.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\UnitTest.resx">
       <DependentUpon>UnitTest.cs</DependentUpon>

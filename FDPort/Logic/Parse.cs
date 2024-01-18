@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FDPort.Forms;
 using FDPort.Class;
+using FDPort.Communication;
 
 namespace FDPort.Logic
 {
@@ -21,10 +22,11 @@ namespace FDPort.Logic
         /// <summary>
         /// 接收匹配数据
         /// </summary>
+        /// <param name="from">来自哪个端口</param>
         /// <param name="data"></param>
         /// <param name="len"></param>
         /// <returns></returns>
-        public int dataParsing(byte[] data, int len)
+        public int dataParsing(PortBase from,byte[] data, int len)
         {
 
             foreach (CmdRecv obj in Project.param.cmdRecv)
@@ -90,7 +92,7 @@ namespace FDPort.Logic
                         CmdSend cmd = Project.param.cmdSend.FirstOrDefault(t => t.name.Equals(obj.replyName));
                         if (cmd != null)
                         {
-                            cmd.Send();
+                            cmd.Send(common.GetPort(from));
                         }
                     }
                 }

@@ -32,17 +32,17 @@ namespace FDPort.Forms
         private void InitializeComponent()
         {
             this.uiLabel1 = new System.Windows.Forms.Label();
-            this.cmdName = new FDPort.Controls.WaterTextBox();
             this.cmdTypeChoose = new System.Windows.Forms.ComboBox();
             this.panel = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.uiButton1 = new System.Windows.Forms.Button();
             this.cmdByte1 = new FDPort.Controls.FieldByteControl();
             this.cmdStatic1 = new FDPort.Controls.FieldStaticControl();
             this.cmdDataControl1 = new FDPort.Controls.FieldDataControl();
             this.cmdFuncControl1 = new FDPort.Controls.FieldFuncControl();
             this.cmdBitControl1 = new FDPort.Controls.FieldBitControl();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.uiButton1 = new System.Windows.Forms.Button();
+            this.cmdName = new FDPort.Controls.WaterTextBox();
             this.panel.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -59,19 +59,6 @@ namespace FDPort.Forms
             this.uiLabel1.TabIndex = 0;
             this.uiLabel1.Text = "字段名";
             this.uiLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // cmdName
-            // 
-            this.cmdName.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.cmdName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmdName.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.cmdName.Location = new System.Drawing.Point(88, 5);
-            this.cmdName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cmdName.MinimumSize = new System.Drawing.Size(4, 4);
-            this.cmdName.Name = "cmdName";
-            this.cmdName.Size = new System.Drawing.Size(151, 34);
-            this.cmdName.TabIndex = 0;
-            this.cmdName.WaterText = "字段名称";
             // 
             // cmdTypeChoose
             // 
@@ -105,51 +92,6 @@ namespace FDPort.Forms
             this.panel.Name = "panel";
             this.panel.Size = new System.Drawing.Size(933, 398);
             this.panel.TabIndex = 3;
-            // 
-            // cmdByte1
-            // 
-            this.cmdByte1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmdByte1.Location = new System.Drawing.Point(0, 0);
-            this.cmdByte1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cmdByte1.Name = "cmdByte1";
-            this.cmdByte1.Size = new System.Drawing.Size(933, 398);
-            this.cmdByte1.TabIndex = 1;
-            // 
-            // cmdStatic1
-            // 
-            this.cmdStatic1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmdStatic1.Location = new System.Drawing.Point(0, 0);
-            this.cmdStatic1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cmdStatic1.Name = "cmdStatic1";
-            this.cmdStatic1.Size = new System.Drawing.Size(933, 398);
-            this.cmdStatic1.TabIndex = 0;
-            // 
-            // cmdDataControl1
-            // 
-            this.cmdDataControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmdDataControl1.Location = new System.Drawing.Point(0, 0);
-            this.cmdDataControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cmdDataControl1.Name = "cmdDataControl1";
-            this.cmdDataControl1.Size = new System.Drawing.Size(933, 398);
-            this.cmdDataControl1.TabIndex = 5;
-            // 
-            // cmdFuncControl1
-            // 
-            this.cmdFuncControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmdFuncControl1.Location = new System.Drawing.Point(0, 0);
-            this.cmdFuncControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cmdFuncControl1.Name = "cmdFuncControl1";
-            this.cmdFuncControl1.Size = new System.Drawing.Size(933, 398);
-            this.cmdFuncControl1.TabIndex = 3;
-            // 
-            // cmdBitControl1
-            // 
-            this.cmdBitControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmdBitControl1.Location = new System.Drawing.Point(0, 0);
-            this.cmdBitControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cmdBitControl1.Name = "cmdBitControl1";
-            this.cmdBitControl1.Size = new System.Drawing.Size(933, 398);
-            this.cmdBitControl1.TabIndex = 2;
             // 
             // tableLayoutPanel1
             // 
@@ -200,6 +142,64 @@ namespace FDPort.Forms
             this.uiButton1.TabIndex = 3;
             this.uiButton1.Text = "确定";
             this.uiButton1.Click += new System.EventHandler(this.uiButton1_Click);
+            // 
+            // cmdByte1
+            // 
+            this.cmdByte1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmdByte1.Location = new System.Drawing.Point(0, 0);
+            this.cmdByte1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmdByte1.Name = "cmdByte1";
+            this.cmdByte1.Size = new System.Drawing.Size(933, 398);
+            this.cmdByte1.TabIndex = 1;
+            // 
+            // cmdStatic1
+            // 
+            this.cmdStatic1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmdStatic1.Location = new System.Drawing.Point(0, 0);
+            this.cmdStatic1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmdStatic1.Name = "cmdStatic1";
+            this.cmdStatic1.Size = new System.Drawing.Size(933, 398);
+            this.cmdStatic1.TabIndex = 0;
+            // 
+            // cmdDataControl1
+            // 
+            this.cmdDataControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmdDataControl1.Location = new System.Drawing.Point(0, 0);
+            this.cmdDataControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmdDataControl1.Name = "cmdDataControl1";
+            this.cmdDataControl1.Size = new System.Drawing.Size(933, 398);
+            this.cmdDataControl1.TabIndex = 5;
+            // 
+            // cmdFuncControl1
+            // 
+            this.cmdFuncControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmdFuncControl1.Location = new System.Drawing.Point(0, 0);
+            this.cmdFuncControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmdFuncControl1.Name = "cmdFuncControl1";
+            this.cmdFuncControl1.Size = new System.Drawing.Size(933, 398);
+            this.cmdFuncControl1.TabIndex = 3;
+            // 
+            // cmdBitControl1
+            // 
+            this.cmdBitControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmdBitControl1.Location = new System.Drawing.Point(0, 0);
+            this.cmdBitControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmdBitControl1.Name = "cmdBitControl1";
+            this.cmdBitControl1.Size = new System.Drawing.Size(933, 398);
+            this.cmdBitControl1.TabIndex = 2;
+            // 
+            // cmdName
+            // 
+            this.cmdName.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.cmdName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmdName.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.cmdName.Location = new System.Drawing.Point(88, 5);
+            this.cmdName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmdName.MinimumSize = new System.Drawing.Size(4, 4);
+            this.cmdName.Name = "cmdName";
+            this.cmdName.Size = new System.Drawing.Size(151, 34);
+            this.cmdName.TabIndex = 0;
+            this.cmdName.WaterText = "字段名称";
             // 
             // CmdNew
             // 

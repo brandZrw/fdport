@@ -16,6 +16,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using FDPort.Communication;
 
 namespace FDPort.Class
 {
@@ -79,6 +80,9 @@ namespace FDPort.Class
         public List<string> showRecMap = new List<string>();
         public ObservableCollection<UnitTestObject> unitTests { get => _unitTests; set => _unitTests = value; }
         public string layout { get; set; }
+        public bool needForwrding { get; set; }
+        public PortBase portForwarding { get; set; }
+        public PortBase portNow { get; set; }
         #endregion
     }
 
@@ -266,11 +270,12 @@ next:
             {
                 param = (ProjectParam)JsonConvert.DeserializeObject(File.ReadAllText(t), typeof(ProjectParam), setting);
             }
-            catch
+            catch (Exception e)
             {
                 ProjectParamOldVersion type = (ProjectParamOldVersion)JsonConvert.DeserializeObject(File.ReadAllText(t), typeof(ProjectParamOldVersion), setting);
                 param = type.toParam();
             }
+            
         }
 
         public static void save(string t)
