@@ -255,17 +255,17 @@ namespace FDPort.Class
             if (!IsRunning)
             {
                 throw new InvalidProgramException("This TCP Scoket server has not been started.");
-
             }
 
             if (client == null)
-                throw new ArgumentNullException("client");
             {
-
-
+                throw new ArgumentNullException("client");
             }
             if (data == null)
+            {
                 throw new ArgumentNullException("data");
+            }
+                
             CanSend = false;
             
             client.BeginSend(data, 0, data.Length, SocketFlags.None,

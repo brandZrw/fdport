@@ -48,10 +48,11 @@ namespace FDPort.DockPanel
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(243)))), ((int)(((byte)(255)))));
             this.cmdList.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.cmdList.BackgroundColor = System.Drawing.Color.White;
+            this.cmdList.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
             this.cmdList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("微软雅黑", 12F);
             dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -91,6 +92,7 @@ namespace FDPort.DockPanel
             this.cmdList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.cmdList_CellContentClick);
             this.cmdList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.cmdList_CellContentDoubleClick);
             this.cmdList.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.cmdList_RowsRemoved);
+            this.cmdList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnKeyDown);
             // 
             // dataGridViewTextBoxColumn1
             // 
@@ -146,7 +148,7 @@ namespace FDPort.DockPanel
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(435, 562);
             this.Controls.Add(this.cmdList);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "SendCmdDock";
             this.TabText = "SendCmd";
             this.Text = "SendCmd";

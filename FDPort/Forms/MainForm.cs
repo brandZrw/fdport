@@ -75,13 +75,6 @@ namespace FDPort.Forms
             Project.param.sPort = "9000";
             Project.param.isLittleEndian = false;
             Project.param.portChoose = 0;
-            Project.param.recHex = true;
-            Project.param.recUI = true;
-            Project.param.sendHex = true;
-            Project.param.setUI = true;
-            Project.param.chartUI = true;
-            Project.param.cmdUI = true;
-            Project.param.configUI = true;
             Project.param.addTimestamp = true;
         }
         /// <summary>
@@ -468,7 +461,7 @@ namespace FDPort.Forms
             低位在前ToolStripMenuItem.Checked = true;
             Project.param.isLittleEndian = true;
         }
-        #endregion
+        
 
         private void 端口选择ToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -506,5 +499,6 @@ namespace FDPort.Forms
                 }
             }
         }
+        #endregion
     }
 }

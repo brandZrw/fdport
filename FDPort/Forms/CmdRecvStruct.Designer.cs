@@ -41,21 +41,21 @@ namespace FDPort.Forms
             this.uiButton1 = new System.Windows.Forms.Button();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.autoReply = new System.Windows.Forms.CheckBox();
-            this.CmdSendName = new FDPort.Controls.WaterTextBox();
             this.replyCmd = new System.Windows.Forms.ComboBox();
-            this.recObjBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.uiButton3 = new System.Windows.Forms.Button();
             this.uiButton2 = new System.Windows.Forms.Button();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.recObjBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.cmdDataGridList = new FDPort.Controls.MyDataGridView();
             this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.note = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.delete = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.CmdSendName = new FDPort.Controls.WaterTextBox();
             this.tableLayoutPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.recObjBindingSource)).BeginInit();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.recObjBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cmdDataGridList)).BeginInit();
             this.SuspendLayout();
             // 
@@ -106,19 +106,6 @@ namespace FDPort.Forms
             this.autoReply.Size = new System.Drawing.Size(154, 42);
             this.autoReply.TabIndex = 6;
             this.autoReply.Text = "是否回复";
-            // 
-            // CmdSendName
-            // 
-            this.CmdSendName.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.CmdSendName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CmdSendName.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.CmdSendName.Location = new System.Drawing.Point(3, 2);
-            this.CmdSendName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.CmdSendName.MinimumSize = new System.Drawing.Size(4, 4);
-            this.CmdSendName.Name = "CmdSendName";
-            this.CmdSendName.Size = new System.Drawing.Size(127, 34);
-            this.CmdSendName.TabIndex = 8;
-            this.CmdSendName.WaterText = "命令名称";
             // 
             // replyCmd
             // 
@@ -204,6 +191,7 @@ namespace FDPort.Forms
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(243)))), ((int)(((byte)(255)))));
             this.cmdDataGridList.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.cmdDataGridList.BackgroundColor = System.Drawing.Color.White;
+            this.cmdDataGridList.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             this.cmdDataGridList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
@@ -287,6 +275,19 @@ namespace FDPort.Forms
             this.delete.Text = "删除";
             this.delete.ToolTipText = "删除";
             // 
+            // CmdSendName
+            // 
+            this.CmdSendName.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.CmdSendName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CmdSendName.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.CmdSendName.Location = new System.Drawing.Point(3, 2);
+            this.CmdSendName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.CmdSendName.MinimumSize = new System.Drawing.Size(4, 4);
+            this.CmdSendName.Name = "CmdSendName";
+            this.CmdSendName.Size = new System.Drawing.Size(127, 34);
+            this.CmdSendName.TabIndex = 8;
+            this.CmdSendName.WaterText = "命令名称";
+            // 
             // CmdRecvStruct
             // 
             this.AcceptButton = this.uiButton3;
@@ -301,9 +302,9 @@ namespace FDPort.Forms
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CmdRecvStruct_KeyDown);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.recObjBindingSource)).EndInit();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.recObjBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cmdDataGridList)).EndInit();
             this.ResumeLayout(false);
 

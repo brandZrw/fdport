@@ -123,10 +123,10 @@ namespace FDPort.DockPanel
         /// 发送数据
         /// </summary>
         /// <param name="vs"></param>
-        public void sendData(byte[] vs,PortBase port)
+        public void sendData(byte[] vs,PortBase port,IPEndPoint point = null)
         {
 
-            port?.write(vs);
+            port?.write(vs, point);
             
 
             string bs = common.byteArrayToString(vs, vs.Length);
@@ -149,7 +149,7 @@ namespace FDPort.DockPanel
             }
 
         }
-        private int recData(PortBase from,byte[] vs, int len)
+        private int recData(PortBase from,byte[] vs, int len,IPEndPoint point)
         {
             string bs = common.byteArrayToString(vs, len);
             StringBuilder sb = new StringBuilder();
@@ -169,7 +169,7 @@ namespace FDPort.DockPanel
                writeFile(sb.ToString());
             }
 
-            return Project.mainForm.parse.dataParsing(from,vs, len);
+            return Project.mainForm.parse.dataParsing(from,vs, len, point);
 
         }
 

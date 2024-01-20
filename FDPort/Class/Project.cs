@@ -26,14 +26,7 @@ namespace FDPort.Class
         #region 序列化参数
         private bool _isLittleEndian { get; set; }
         private string _timeout { get; set; }
-        private bool _recHex { get; set; }
-        private bool _sendHex { get; set; }
         //ui
-        private bool _recUI { get; set; }
-        private bool _setUI { get; set; }
-        private bool _chartUI { get; set; }
-        private bool _cmdUI { get; set; }
-        private bool _configUI { get; set; }
         private bool _addTimestamp { get; set; }
         // serial
         private string _baud { get; set; }
@@ -53,14 +46,8 @@ namespace FDPort.Class
 
         public bool isLittleEndian { get => _isLittleEndian; set{_isLittleEndian = value; OnPropertyChanged();} }
         public string timeout { get => _timeout; set{_timeout = value; OnPropertyChanged();} }
-        public bool recHex { get => _recHex; set{_recHex = value; OnPropertyChanged();} }
-        public bool sendHex { get => _sendHex; set{_sendHex = value; OnPropertyChanged();} }
         //ui
-        public bool recUI { get => _recUI; set{_recUI = value; OnPropertyChanged();} }
-        public bool setUI { get => _setUI; set{_setUI = value; OnPropertyChanged();} }
-        public bool chartUI { get => _chartUI; set{_chartUI = value; OnPropertyChanged();} }
-        public bool cmdUI { get => _cmdUI; set{_cmdUI = value; OnPropertyChanged();} }
-        public bool configUI { get => _configUI; set{_configUI = value; OnPropertyChanged();} }
+
         public bool addTimestamp { get => _addTimestamp; set { _addTimestamp = value; OnPropertyChanged(); } }
         // serial
         public string baud { get => _baud; set{_baud = value; OnPropertyChanged();} }
@@ -151,18 +138,13 @@ namespace FDPort.Class
             ProjectParam temp = new ProjectParam();
             temp.isLittleEndian = isLittleEndian;
             temp.portChoose = portChoose;
-            temp.recUI = recUI;
             temp.addTimestamp = addTimestamp;
             temp.baud = baud;
-            temp.chartUI = chartUI;
             temp.cIP = cIP;
             temp.cmdRecv = new ObservableCollection<CmdRecv>(cmdRecv);
             temp.cmdSend = new ObservableCollection<CmdSend>(cmdSend);
-            temp.cmdUI = cmdUI;
             temp.com = com;
-            temp.configUI = configUI;
             temp.cPort = cPort;
-            temp.setUI = setUI;
             temp.showRecMap = new List<string>(showRecMap);
             temp.sIP = sIP;
             temp.sPort = sPort;
@@ -209,7 +191,7 @@ next:
         public static ProjectParam param { get => _param; set { _param = value; } }
         public static ScriptEngine pyEngine;
         public static ScriptScope scope;
-        public static string Version = "V1.0.0";
+        public static string Version = "V1.0.1";
         public static void init()
         {
             pyEngine = Python.CreateEngine();//创建Python解释器对象

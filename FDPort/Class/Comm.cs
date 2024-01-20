@@ -4,6 +4,7 @@ using FDPort.Forms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using static FDPort.Class.FieldByte;
@@ -307,7 +308,7 @@ namespace FDPort.Class
             cmdTimer.Start();
         }
 
-        public void Send(PortBase port)//发送该条命令
+        public void Send(PortBase port, IPEndPoint point = null)//发送该条命令
         {
             List<byte> vs = new List<byte>();
             foreach (FieldModule field in list)
@@ -415,7 +416,7 @@ namespace FDPort.Class
                         break;
                 }
             }
-            Project.mainForm.commonArea.sendData(vs.ToArray(),port);
+            Project.mainForm.commonArea.sendData(vs.ToArray(),port, point);
         }
     }
 }

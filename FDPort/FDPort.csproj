@@ -291,6 +291,9 @@
     <EmbeddedResource Include="Controls\FieldStaticControl.resx">
       <DependentUpon>FieldStaticControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MyDataGridView.resx">
+      <DependentUpon>MyDataGridView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\TitleTextBox.resx">
       <DependentUpon>TitleTextBox.cs</DependentUpon>
     </EmbeddedResource>

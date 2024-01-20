@@ -15,6 +15,7 @@ namespace FDPort.Class
         private string _name;
         public string name { get => _name; set { _name = value; OnPropertyChanged(); } }
     }
+
     public class FieldModule: NotifyClass
     {
         public enum CM_Type

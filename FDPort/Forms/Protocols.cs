@@ -4,11 +4,13 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using FDPort.Class;
 using FDPort.Forms;
+using Newtonsoft.Json;
 
 namespace FDPort.Forms
 {
@@ -97,6 +99,71 @@ namespace FDPort.Forms
             }
         }
         #endregion
+        #region 剪切板
+        [DllImport("User32")]
+        public static extern bool OpenClipboard(IntPtr hWndNewOwner);
 
+        [DllImport("User32")]
+        public static extern bool CloseClipboard();
+
+        [DllImport("User32")]
+        public static extern bool EmptyClipboard();
+
+        [DllImport("User32")]
+        public static extern bool IsClipboardFormatAvailable(int format);
+
+        [DllImport("User32")]
+        public static extern IntPtr GetClipboardData(int uFormat);
+
+        [DllImport("User32", CharSet = CharSet.Unicode)]
+        public static extern IntPtr SetClipboardData(int uFormat, IntPtr hMem);
+
+        private const int CF_UNICODETEXT = 13;
+        private void parsingList_KeyDown(object sender, KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+            if (e.Control && e.KeyCode == Keys.C)
+            {
+                if (OpenClipboard(IntPtr.Zero))
+                {
+                    if (parsingList.SelectedRows.Count > 0)
+                    {
+                        SetClipboardData(CF_UNICODETEXT, Marshal.StringToHGlobalUni(JsonConvert.SerializeObject(Project.param.cmdRecv[parsingList.SelectedRows[0].Index])));
+
+                    }
+
+                    CloseClipboard();
+                }
+            }
+            else if (e.Control && e.KeyCode == Keys.V)
+            {
+                if (OpenClipboard(IntPtr.Zero))
+                {
+                    try
+                    {
+                        string ss = Marshal.PtrToStringUni(GetClipboardData(CF_UNICODETEXT));
+                        var setting = new JsonSerializerSettings
+                        {
+                            Converters = new List<JsonConverter>
+                        {
+                            new JsonFieldModule()
+                        }
+                        };
+                        CmdRecv module = (CmdRecv)JsonConvert.DeserializeObject(ss, typeof(CmdRecv), setting);
+                        Project.param.cmdRecv.Add(module);
+                        parsingList.Rows.Add(module.name, module.needReply, module.replyName);
+                    }
+                    catch
+                    {
+
+                    }
+                    finally
+                    {
+                        CloseClipboard();
+                    }
+                }
+            }
+        }
+        #endregion
     }
 }

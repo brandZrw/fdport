@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using FDPort.Forms;
 using FDPort.Class;
 using FDPort.Communication;
+using System.Net;
 
 namespace FDPort.Logic
 {
@@ -26,7 +27,7 @@ namespace FDPort.Logic
         /// <param name="data"></param>
         /// <param name="len"></param>
         /// <returns></returns>
-        public int dataParsing(PortBase from,byte[] data, int len)
+        public int dataParsing(PortBase from,byte[] data, int len, IPEndPoint point)
         {
 
             foreach (CmdRecv obj in Project.param.cmdRecv)
@@ -92,7 +93,7 @@ namespace FDPort.Logic
                         CmdSend cmd = Project.param.cmdSend.FirstOrDefault(t => t.name.Equals(obj.replyName));
                         if (cmd != null)
                         {
-                            cmd.Send(common.GetPort(from));
+                            cmd.Send(common.GetPort(from), point);
                         }
                     }
                 }

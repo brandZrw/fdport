@@ -47,7 +47,7 @@ namespace FDPort.Communication
         protected virtual void OnDataRec(object sender, PortBase from,byte[] b)
         {
             DataRecEvent?.Invoke(sender,from,b);
-            Project.mainForm.dataRec.Rec(from, b, b.Length);
+            Project.mainForm.dataRec.Rec(sender,from, b, b.Length);
         }
 
         public string name { get; set; }
@@ -92,7 +92,7 @@ namespace FDPort.Communication
                 }
                 byte[] vs = new byte[len];
                 port.Read(vs, 0, len);
-                OnDataRec(this,this,vs);
+                OnDataRec(null,this,vs);
                 //Project.mainForm.dataRec.Rec(vs, len);
             }
             catch (Exception exp)
@@ -153,7 +153,7 @@ namespace FDPort.Communication
 
         private void TCP_DataRecv(byte[] vs, int len)
         {
-            OnDataRec(this, this, vs);
+            OnDataRec(null, this, vs);
         }
 
         public override bool Connected()
@@ -198,7 +198,7 @@ namespace FDPort.Communication
         private void TcpServer_DataReceived(object sender, AsyncSocketEventArgs e)
         {
             byte[] b = e._state.RecvDataBuffer.Take(e._state.recvLen).ToArray();
-            OnDataRec(this,this,b);
+            OnDataRec(e._state.ClientSocket.RemoteEndPoint, this,b);
         }
         public PortTCPService()
         {

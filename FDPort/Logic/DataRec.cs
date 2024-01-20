@@ -1,6 +1,7 @@
 using FDPort.Communication;
 using System;
 using System.Collections.Generic;
+using System.Net;
 
 namespace FDPort.Logic
 {
@@ -11,6 +12,7 @@ namespace FDPort.Logic
         public bool needDeal;
         public byte[] dataCache;
         public PortBase from;
+        public IPEndPoint point;
         private DataRec parent;
         public DataRecParam(DataRec parent)
         {
@@ -25,8 +27,7 @@ namespace FDPort.Logic
                         needDeal = false;
                         if (dataCache != null)
                         {
-
-                            parent.dataDealFunc?.Invoke(from, dataCache, dataCache.Length);
+                            parent.dataDealFunc?.Invoke(from, dataCache, dataCache.Length, point);
                             dataCache = null;
 
                         }
@@ -38,9 +39,10 @@ namespace FDPort.Logic
     public class DataRec
     {
         Dictionary<PortBase, DataRecParam> map = new Dictionary<PortBase, DataRecParam>();
-        public delegate int DataDealCb(PortBase from,byte[] b, int len);
+        public delegate int DataDealCb(PortBase from,byte[] b, int len,IPEndPoint point);
         public DataDealCb dataDealFunc;
         public UInt32 timeout = 20;
+        
 
         public DataRec()
         {
@@ -60,12 +62,17 @@ namespace FDPort.Logic
         /// </summary>
         /// <param name="data"></param>
         /// <param name="len"></param>
-        public void Rec(PortBase from,byte[] data, int len)
+        public void Rec(object sender, PortBase from,byte[] data, int len)
         {
             if(!map.ContainsKey(from))
             {
                 map.Add(from,new DataRecParam(this));
             }
+            if(sender != null)
+            {
+                map[from].point = (IPEndPoint)sender;
+            }
+            
             map[from].from = from;
             map[from].needDeal = true;
             map[from].dtLast = DateTime.Now;

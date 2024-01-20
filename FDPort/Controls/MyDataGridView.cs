@@ -1,10 +1,12 @@
 ﻿using FDPort.Class;
 using FDPort.Forms;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -93,7 +95,7 @@ namespace FDPort.Controls
             Rows.Clear();
             base.Dispose(disposing);
         }
-
+        
         /// <summary>
         /// 保证row选中
         /// </summary>
@@ -107,8 +109,78 @@ namespace FDPort.Controls
                 CurrentCell = Rows[selectionIdx].Cells[0];
             }
         }
+
+
+
         #endregion
 
+        #region 剪切板
+        [DllImport("User32")]
+        public static extern bool OpenClipboard(IntPtr hWndNewOwner);
+
+        [DllImport("User32")]
+        public static extern bool CloseClipboard();
+
+        [DllImport("User32")]
+        public static extern bool EmptyClipboard();
+
+        [DllImport("User32")]
+        public static extern bool IsClipboardFormatAvailable(int format);
+
+        [DllImport("User32")]
+        public static extern IntPtr GetClipboardData(int uFormat);
+
+        [DllImport("User32", CharSet = CharSet.Unicode)]
+        public static extern IntPtr SetClipboardData(int uFormat, IntPtr hMem);
+
+        private const int CF_UNICODETEXT = 13;
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+            if (e.Control && e.KeyCode == Keys.C)
+            {
+                if (OpenClipboard(IntPtr.Zero))
+                {
+                    if(SelectedRows.Count > 0)
+                    {
+                        SetClipboardData(CF_UNICODETEXT, Marshal.StringToHGlobalAnsi(JsonConvert.SerializeObject(items[SelectedRows[0].Index])));
+                        string ss = Marshal.PtrToStringAnsi(GetClipboardData(CF_UNICODETEXT));
+                        Console.WriteLine(ss);
+                        
+                    }
+                    
+                    CloseClipboard();
+                }
+            }
+            else if(e.Control && e.KeyCode == Keys.V)
+            {
+                if (OpenClipboard(IntPtr.Zero))
+                {
+                    try
+                    {
+                        string ss = Marshal.PtrToStringAnsi(GetClipboardData(CF_UNICODETEXT));
+                        var setting = new JsonSerializerSettings
+                        {
+                            Converters = new List<JsonConverter>
+                        {
+                            new JsonFieldModule()
+                        }
+                        };
+                        FieldModule module = (FieldModule)JsonConvert.DeserializeObject(ss, typeof(FieldModule), setting);
+                        items.Add(module);
+                    }
+                    catch
+                    {
+
+                    }
+                    finally
+                    {
+                        CloseClipboard();
+                    }
+                }
+            }
+        }
+        #endregion
         /// <summary>
         /// 设置items
         /// </summary>
@@ -183,6 +255,20 @@ namespace FDPort.Controls
             {
                 Rows.RemoveAt(e.OldStartingIndex);
             }
+        }
+
+        private void InitializeComponent()
+        {
+            ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // MyDataGridView
+            // 
+            this.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
+            this.RowTemplate.Height = 27;
+            ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
+            this.ResumeLayout(false);
+
         }
     }
 }

@@ -43,20 +43,20 @@ namespace FDPort.Forms
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.autoSendTime = new System.Windows.Forms.TextBox();
             this.autoSend = new System.Windows.Forms.CheckBox();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.uiButton2 = new System.Windows.Forms.Button();
-            this.uiButton3 = new System.Windows.Forms.Button();
-            this.recObjBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.CmdSendName = new FDPort.Controls.WaterTextBox();
             this.cmdDataGridList = new FDPort.Controls.MyDataGridView();
             this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.note = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.delete = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.uiButton2 = new System.Windows.Forms.Button();
+            this.uiButton3 = new System.Windows.Forms.Button();
+            this.recObjBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cmdDataGridList)).BeginInit();
             this.tableLayoutPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.recObjBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cmdDataGridList)).BeginInit();
             this.SuspendLayout();
             // 
             // uiButton1
@@ -137,51 +137,6 @@ namespace FDPort.Forms
             this.autoSend.Size = new System.Drawing.Size(154, 42);
             this.autoSend.TabIndex = 6;
             this.autoSend.Text = "是否连发";
-            // 
-            // tableLayoutPanel3
-            // 
-            this.tableLayoutPanel3.ColumnCount = 2;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Controls.Add(this.uiButton2, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.uiButton3, 1, 0);
-            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(683, 410);
-            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 1;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(253, 46);
-            this.tableLayoutPanel3.TabIndex = 5;
-            // 
-            // uiButton2
-            // 
-            this.uiButton2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.uiButton2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.uiButton2.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiButton2.Location = new System.Drawing.Point(3, 2);
-            this.uiButton2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.uiButton2.MinimumSize = new System.Drawing.Size(1, 1);
-            this.uiButton2.Name = "uiButton2";
-            this.uiButton2.Size = new System.Drawing.Size(88, 40);
-            this.uiButton2.TabIndex = 0;
-            this.uiButton2.Text = "取消";
-            this.uiButton2.Click += new System.EventHandler(this.uiButton2_Click);
-            // 
-            // uiButton3
-            // 
-            this.uiButton3.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.uiButton3.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.uiButton3.Dock = System.Windows.Forms.DockStyle.Right;
-            this.uiButton3.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiButton3.Location = new System.Drawing.Point(162, 2);
-            this.uiButton3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.uiButton3.MinimumSize = new System.Drawing.Size(1, 1);
-            this.uiButton3.Name = "uiButton3";
-            this.uiButton3.Size = new System.Drawing.Size(88, 42);
-            this.uiButton3.TabIndex = 1;
-            this.uiButton3.Text = "确定";
-            this.uiButton3.Click += new System.EventHandler(this.uiButton3_Click);
             // 
             // CmdSendName
             // 
@@ -290,6 +245,51 @@ namespace FDPort.Forms
             this.delete.ToolTipText = "删除";
             this.delete.Width = 60;
             // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 2;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.Controls.Add(this.uiButton2, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.uiButton3, 1, 0);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Right;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(683, 410);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 1;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(253, 46);
+            this.tableLayoutPanel3.TabIndex = 5;
+            // 
+            // uiButton2
+            // 
+            this.uiButton2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.uiButton2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.uiButton2.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiButton2.Location = new System.Drawing.Point(3, 2);
+            this.uiButton2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.uiButton2.MinimumSize = new System.Drawing.Size(1, 1);
+            this.uiButton2.Name = "uiButton2";
+            this.uiButton2.Size = new System.Drawing.Size(88, 40);
+            this.uiButton2.TabIndex = 0;
+            this.uiButton2.Text = "取消";
+            this.uiButton2.Click += new System.EventHandler(this.uiButton2_Click);
+            // 
+            // uiButton3
+            // 
+            this.uiButton3.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.uiButton3.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.uiButton3.Dock = System.Windows.Forms.DockStyle.Right;
+            this.uiButton3.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiButton3.Location = new System.Drawing.Point(162, 2);
+            this.uiButton3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.uiButton3.MinimumSize = new System.Drawing.Size(1, 1);
+            this.uiButton3.Name = "uiButton3";
+            this.uiButton3.Size = new System.Drawing.Size(88, 42);
+            this.uiButton3.TabIndex = 1;
+            this.uiButton3.Text = "确定";
+            this.uiButton3.Click += new System.EventHandler(this.uiButton3_Click);
+            // 
             // CmdSendStruct
             // 
             this.AcceptButton = this.uiButton3;
@@ -305,9 +305,9 @@ namespace FDPort.Forms
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cmdDataGridList)).EndInit();
             this.tableLayoutPanel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.recObjBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cmdDataGridList)).EndInit();
             this.ResumeLayout(false);
 
         }
