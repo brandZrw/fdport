@@ -297,6 +297,9 @@
     <EmbeddedResource Include="Controls\TitleTextBox.resx">
       <DependentUpon>TitleTextBox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WaterTextBox.resx">
+      <DependentUpon>WaterTextBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DockPanel\ChartDock.resx">
       <DependentUpon>ChartDock.cs</DependentUpon>
     </EmbeddedResource>

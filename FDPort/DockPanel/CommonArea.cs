@@ -189,7 +189,22 @@ namespace FDPort.DockPanel
             {
                 foreach (string a in hexarray)
                 {
-                    bs.Add(Convert.ToByte(a, 16));
+                    char[] ch = a.ToCharArray();
+                    StringBuilder sb = new StringBuilder();
+                    foreach(char c in ch)
+                    {
+                        sb.Append(c);
+                        if(sb.Length >= 2)
+                        {
+                            bs.Add(Convert.ToByte(sb.ToString(), 16));
+                            sb.Clear();
+                        }
+                    }
+                    if(sb.Length > 0)
+                    {
+                        bs.Add(Convert.ToByte(sb.ToString(), 16));
+                    }
+                    
                 }
                 sendData(bs.ToArray(),Project.param.needForwrding?Project.param.portForwarding:Project.param.portNow);
             }
@@ -365,8 +380,8 @@ namespace FDPort.DockPanel
                 System.Windows.Forms.MessageBox.Show(exp.Message);
             }
         }
+
         #endregion
 
-        
     }
 }
