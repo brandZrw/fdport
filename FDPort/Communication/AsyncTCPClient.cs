@@ -10,33 +10,33 @@ namespace FDPort.Class
 {
     public class AsyncTCPClient
     {
-        public class ConnctedChangedArg : EventArgs
+        public class ConnectedChangedArg : EventArgs
         {
-            public bool Connected { get; }
+            public bool connected { get; }
             public Socket socket { get; }
-            public ConnctedChangedArg(Socket s, bool e)
+            public ConnectedChangedArg(Socket s, bool e)
             {
-                Connected = e;
+                connected = e;
                 socket = s;
             }
         }
-        private Socket ClientSocket;
+        private Socket clientSocket;
 
-        public bool CanSend { get; set; }
-        public IPAddress Address { get; private set; }
+        public bool canSend { get; set; }
+        public IPAddress address { get; private set; }
 
-        public int Port { get; private set; }
+        public int port { get; private set; }
         private bool _IsConnected;
-        public bool IsConnected { get => _IsConnected; private set { _IsConnected = value;  } }
-        public event EventHandler<ConnctedChangedArg> ConnectedChanged;
+        public bool isConnected { get => _IsConnected; private set { _IsConnected = value;  } }
+        public event EventHandler<ConnectedChangedArg> ConnectedChanged;
         public delegate void DataReceived(byte[] vs, int len);
         public DataReceived dataReceived;
         public AsyncTCPClient(IPAddress iP, int port)
         {
-            ClientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            Address = iP;
-            Port = port;
-            CanSend = true;
+            clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            address = iP;
+            this.port = port;
+            canSend = true;
 
 
         }
@@ -49,7 +49,7 @@ namespace FDPort.Class
             _IsConnected = e;
             if (ConnectedChanged != null)
             {
-                ConnectedChanged(this, new ConnctedChangedArg(state, e));
+                ConnectedChanged(this, new ConnectedChangedArg(state, e));
             }
         }
         private IAsyncResult asyncResultRead;//接收数据的异步对象
@@ -60,18 +60,18 @@ namespace FDPort.Class
         public void Start()
         {
             //Task.Factory.StartNew(() =>{
-                var result = ClientSocket.BeginConnect(Address, Port, null, null);
+                var result = clientSocket.BeginConnect(address, port, null, null);
 
                 bool success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(1), true);//堵塞 直到收到反馈
 
-                if (success && ClientSocket.Connected)//成功连接
+                if (success && clientSocket.Connected)//成功连接
                 {
-                    ClientSocket.EndConnect(result);//关闭异步对象
-                    RaiseConnectedChanged(ClientSocket, true);
+                    clientSocket.EndConnect(result);//关闭异步对象
+                    RaiseConnectedChanged(clientSocket, true);
                     try
                     {
-                        tcpStream = new NetworkStream(ClientSocket);
-                        ClientSocket.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, true);//无延迟发送
+                        tcpStream = new NetworkStream(clientSocket);
+                        clientSocket.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, true);//无延迟发送
 
                         Receive();//开始接收
 
@@ -85,7 +85,7 @@ namespace FDPort.Class
                 else
                 {
                     
-                    RaiseConnectedChanged(ClientSocket, false);
+                    RaiseConnectedChanged(clientSocket, false);
                 }
 
            // });
@@ -97,14 +97,14 @@ namespace FDPort.Class
             try
             {
                 //异步从流中读取数据
-                asyncResultRead = tcpStream.BeginRead(buffers, 0, buffers.Length, EndReceive, ClientSocket);
+                asyncResultRead = tcpStream.BeginRead(buffers, 0, buffers.Length, EndReceive, clientSocket);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                if (ClientSocket.Connected == false)
+                if (clientSocket.Connected == false)
                 {
-                    RaiseConnectedChanged(ClientSocket, false);
+                    RaiseConnectedChanged(clientSocket, false);
                 }
             }
 
@@ -130,9 +130,9 @@ namespace FDPort.Class
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                if (ClientSocket.Connected == false)
+                if (clientSocket.Connected == false)
                 {
-                    RaiseConnectedChanged(ClientSocket, false);
+                    RaiseConnectedChanged(clientSocket, false);
                 }
             }
         }
@@ -141,15 +141,15 @@ namespace FDPort.Class
         {
             try
             {
-                CanSend = false;
-                asyncResultWrite = tcpStream.BeginWrite(bytes, 0, bytes.Length, EndSend, ClientSocket);
+                canSend = false;
+                asyncResultWrite = tcpStream.BeginWrite(bytes, 0, bytes.Length, EndSend, clientSocket);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                if (ClientSocket.Connected == false)
+                if (clientSocket.Connected == false)
                 {
-                    RaiseConnectedChanged(ClientSocket, false);
+                    RaiseConnectedChanged(clientSocket, false);
                 }
             }
         }
@@ -159,14 +159,14 @@ namespace FDPort.Class
             try
             {
                 tcpStream.EndWrite(ar);
-                CanSend = true;
+                canSend = true;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                if (ClientSocket.Connected == false)
+                if (clientSocket.Connected == false)
                 {
-                    RaiseConnectedChanged(ClientSocket, false);
+                    RaiseConnectedChanged(clientSocket, false);
                 }
             }
 
@@ -193,13 +193,13 @@ namespace FDPort.Class
                 tcpStream.Dispose();//释放流
             }
 
-            if (ClientSocket != null)
+            if (clientSocket != null)
             {
-                RaiseConnectedChanged(ClientSocket, false);
-                    ClientSocket.Shutdown(SocketShutdown.Both);//关闭发送和接收
+                RaiseConnectedChanged(clientSocket, false);
+                    clientSocket.Shutdown(SocketShutdown.Both);//关闭发送和接收
                 
-                ClientSocket.Close();
-                ClientSocket.Dispose();
+                clientSocket.Close();
+                clientSocket.Dispose();
             }
 
         }

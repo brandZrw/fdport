@@ -109,10 +109,10 @@ namespace FDPort.DockPanel
                 Project.param.cmdSend[e.RowIndex].autoSend = (bool)cmdList.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
             }
         }
-
-        private void cmdList_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        private void cmdList_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             //if (e.RowIndex != -1 && e.ColumnIndex != -1)
+            if (e.ColumnIndex != 1 && e.ColumnIndex != 2)
             {
                 if (e.RowIndex >= Project.param.cmdSend.Count || e.RowIndex == -1) // 新增
                 {
@@ -126,7 +126,6 @@ namespace FDPort.DockPanel
                 }
             }
         }
-
         private void cmdList_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
         {
             if (e.RowIndex < Project.param.cmdSend.Count)
@@ -136,5 +135,6 @@ namespace FDPort.DockPanel
         }
         #endregion
 
+        
     }
 }

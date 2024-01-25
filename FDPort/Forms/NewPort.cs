@@ -47,14 +47,14 @@ namespace FDPort.Forms
         {
             if (Project.param.portForwarding != null)
             {
-                Project.param.portForwarding.close();
+                Project.param.portForwarding.Close();
             }
-            port.open();
+            port.Open();
 
             if(port.Connected())
             {
                 Project.param.portForwarding = port;
-                Project.param.needForwrding = true;
+                Project.param.needForwarding = true;
                 OnPortOpenOk(port);
                 Close();
             }
@@ -68,7 +68,7 @@ namespace FDPort.Forms
         {
             try
             {
-                client.setParam(tcpCliIP.Text, tcpCliPort.Text);
+                client.SetParam(tcpCliIP.Text, tcpCliPort.Text);
                 port_open(client);
             }
             catch (Exception exp)
@@ -85,7 +85,7 @@ namespace FDPort.Forms
         {
             try
             {
-                service.setParam(serIP.Text, serPort.Text);
+                service.SetParam(serIP.Text, serPort.Text);
                 port_open(service);
             }
             catch (Exception exp)
@@ -101,7 +101,7 @@ namespace FDPort.Forms
         {
             try
             {
-                serial.setParam(cmbPort.Text, baudCombo.Text);
+                serial.SetParam(cmbPort.Text, baudCombo.Text);
                 port_open(serial);
             }
             catch (Exception exp)

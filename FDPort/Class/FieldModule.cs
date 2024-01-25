@@ -32,11 +32,11 @@ namespace FDPort.Class
         private string _name;
         public string name { get => _name; set { _name = value; OnPropertyChanged(); } }//字段名
 
-        public virtual object list2value(byte[] t)
+        public virtual object List2Value(byte[] t)
         {
             return null;
         }
-        public virtual byte[] value2list(object v)
+        public virtual byte[] Value2List(object v)
         {
             return null;
         }
@@ -59,7 +59,7 @@ namespace FDPort.Class
             {
                 if (Project.param.sendMap.ContainsKey(varStr))
                 {
-                    param.Add(new Parameter(varStr, Project.param.sendMap[varStr].getNumc()));
+                    param.Add(new Parameter(varStr, Project.param.sendMap[varStr].GetNumValue()));
                 }
                 else
                 {
@@ -137,7 +137,7 @@ namespace FDPort.Class
         /// </summary>
         /// <param name="temp"></param>
         /// <returns></returns>
-        public byte[] copyto(byte[] temp)
+        public byte[] CopyTo(byte[] temp)
         {
             byte[] res = ByteArrChangeLen(temp, len, false);
             return res;
@@ -152,17 +152,17 @@ namespace FDPort.Class
         public bool isString { get; set; }
         private List<byte> _array = new List<byte>();
         public List<byte> array { get => _array; set { _array = value; } }
-        public override object list2value(byte[] t)
+        public override object List2Value(byte[] t)
         {
             return array;
         }
-        public override byte[] value2list(object v)
+        public override byte[] Value2List(object v)
         {
             return array.ToArray();
         }
         public override bool IsParse(byte[] b, ref int useLen, byte[] vs = null)
         {
-            if (common.byteEquals(b, array.ToArray()))
+            if (common.ByteEquals(b, array.ToArray()))
             {
                 useLen = array.Count;
                 return true;
@@ -207,12 +207,12 @@ namespace FDPort.Class
             UInt64 t = (UInt64)value;
             return ((t >> startIndex) & ((UInt64)(1 << len) - 1)) ;
         }
-        public override object list2value(byte[] t)
+        public override object List2Value(byte[] t)
         {
             UInt64 value = BitConverter.ToUInt64(t, 0);
             return GetBitValue(value);
         }
-        public override byte[] value2list(object v)
+        public override byte[] Value2List(object v)
         {
             return null;
         }
@@ -264,13 +264,13 @@ namespace FDPort.Class
                 //}
                 temp.Add(calc(t).ToString());
             }
-            return Project.python("function\\" + funcName + ".py", b, temp.ToArray());
+            return Project.RunPython("function\\" + funcName + ".py", b, temp.ToArray());
         }
-        public override object list2value(byte[] t)
+        public override object List2Value(byte[] t)
         {
             throw new NotImplementedException();
         }
-        public override byte[] value2list(object v)
+        public override byte[] Value2List(object v)
         {
             byte[] b = (byte[])v;
             returnValue = run(b);
@@ -279,7 +279,7 @@ namespace FDPort.Class
                 return null;
             }
             int t = (int)returnValue;
-            return copyto(BitConverter.GetBytes(t));
+            return CopyTo(BitConverter.GetBytes(t));
 
         }
         public override bool IsParse(byte[] b, ref int useLen, byte[] vs = null)
@@ -316,11 +316,11 @@ namespace FDPort.Class
             STRING
         };
         public DataType dataType;
-        public override object list2value(byte[] t)
+        public override object List2Value(byte[] t)
         {
             throw new NotImplementedException();
         }
-        public override byte[] value2list(object v)
+        public override byte[] Value2List(object v)
         {
             byte[] vs = null;
             if (dataType == DataType.NUM)
@@ -330,11 +330,11 @@ namespace FDPort.Class
                 {
                     if (t == (int)t)//整数
                     {
-                        vs = copyto(BitConverter.GetBytes(Decimal.ToInt64((int)t)));
+                        vs = CopyTo(BitConverter.GetBytes(Decimal.ToInt64((int)t)));
                     }
                     else
                     {
-                        vs = copyto(BitConverter.GetBytes(Decimal.ToDouble((decimal)t)));
+                        vs = CopyTo(BitConverter.GetBytes(Decimal.ToDouble((decimal)t)));
                     }
                 }
             }
@@ -369,10 +369,10 @@ namespace FDPort.Class
             useLen = len;
             object res = calc(link);
 
-            byte[] s = value2list(res.ToString());
+            byte[] s = Value2List(res.ToString());
             if (s != null)
             {
-                return common.byteEquals(b, s);
+                return common.ByteEquals(b, s);
             }
             return false;
 
@@ -437,29 +437,29 @@ namespace FDPort.Class
         };
         public CM_BYTE_TYPE byteType { get; set; }
 
-        public override byte[] value2list(object v)
+        public override byte[] Value2List(object v)
         {
             switch (byteType)
             {
                 case CM_BYTE_TYPE.CM_BYTE_UINT:
-                    return copyto(BitConverter.GetBytes((UInt64)v));
+                    return CopyTo(BitConverter.GetBytes((UInt64)v));
                 case CM_BYTE_TYPE.CM_BYTE_INT8:
-                    return copyto(BitConverter.GetBytes((byte)v));
+                    return CopyTo(BitConverter.GetBytes((byte)v));
                 case CM_BYTE_TYPE.CM_BYTE_INT16:
-                    return copyto(BitConverter.GetBytes((Int16)v));
+                    return CopyTo(BitConverter.GetBytes((Int16)v));
                 case CM_BYTE_TYPE.CM_BYTE_INT32:
-                    return copyto(BitConverter.GetBytes((Int32)v));
+                    return CopyTo(BitConverter.GetBytes((Int32)v));
                 case CM_BYTE_TYPE.CM_BYTE_INT64:
-                    return copyto(BitConverter.GetBytes((Int64)v));
+                    return CopyTo(BitConverter.GetBytes((Int64)v));
                 case CM_BYTE_TYPE.CM_BYTE_DOUBLE:
-                    return copyto(BitConverter.GetBytes((double)v));
+                    return CopyTo(BitConverter.GetBytes((double)v));
                 case CM_BYTE_TYPE.CM_BYTE_STRING:
                     return common.String2Byte((string)v, len);
             }
             return null;
         }
 
-        // 补齐数组以保证conver可以正常进行
+        // 补齐数组以保证convert可以正常进行
         private byte[] byteArr2byteArr(byte[] m)
         {
             int len = 0;
@@ -488,7 +488,7 @@ namespace FDPort.Class
             }
             return ByteArrChangeLen(m, len, true);
         }
-        public override object list2value(byte[] m)
+        public override object List2Value(byte[] m)
         {
             byte[] t = byteArr2byteArr(m);
             switch (byteType)
@@ -533,22 +533,22 @@ namespace FDPort.Class
                     switch (byteType)
                     {
                         case CM_BYTE_TYPE.CM_BYTE_UINT:
-                            Project.param.recvMap[this.name].tempValue = (UInt64)list2value(b.Take(len).ToArray());
+                            Project.param.recvMap[this.name].tempValue = (UInt64)List2Value(b.Take(len).ToArray());
                             break;
                         case CM_BYTE_TYPE.CM_BYTE_INT8:
-                            Project.param.recvMap[this.name].tempValue = (byte)list2value(b.Take(len).ToArray());
+                            Project.param.recvMap[this.name].tempValue = (byte)List2Value(b.Take(len).ToArray());
                             break;
                         case CM_BYTE_TYPE.CM_BYTE_INT16:
-                            Project.param.recvMap[this.name].tempValue = (Int16)list2value(b.Take(len).ToArray());
+                            Project.param.recvMap[this.name].tempValue = (Int16)List2Value(b.Take(len).ToArray());
                             break;
                         case CM_BYTE_TYPE.CM_BYTE_INT32:
-                            Project.param.recvMap[this.name].tempValue = (Int32)list2value(b.Take(len).ToArray());
+                            Project.param.recvMap[this.name].tempValue = (Int32)List2Value(b.Take(len).ToArray());
                             break;
                         case CM_BYTE_TYPE.CM_BYTE_INT64:
-                            Project.param.recvMap[this.name].tempValue = (Int64)list2value(b.Take(len).ToArray());
+                            Project.param.recvMap[this.name].tempValue = (Int64)List2Value(b.Take(len).ToArray());
                             break;
                         case CM_BYTE_TYPE.CM_BYTE_DOUBLE:
-                            Project.param.recvMap[this.name].tempValue = Convert.ToDecimal((double)list2value(b.Take(len).ToArray()));
+                            Project.param.recvMap[this.name].tempValue = Convert.ToDecimal((double)List2Value(b.Take(len).ToArray()));
                             break;
                     }
                 }

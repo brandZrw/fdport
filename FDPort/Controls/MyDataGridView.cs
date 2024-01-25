@@ -37,16 +37,7 @@ namespace FDPort.Controls
             }
         }
 
-        protected override void OnCellContentDoubleClick(DataGridViewCellEventArgs e)
-        {
-            base.OnCellContentDoubleClick(e);
-            if (e.RowIndex != -1 && e.ColumnIndex != -1)
-            {
-                CmdNew cmd = CmdNew.GetInstance(items.ElementAt(e.RowIndex), e.RowIndex);
-                cmd.pageConfirm += pageConfirm;
-                cmd.Show();
-            }
-        }
+        
 
         int selectionIdx = 0;
         protected override void OnDragDrop(DragEventArgs drgevent)
@@ -88,12 +79,6 @@ namespace FDPort.Controls
             }
 
             return -1;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            Rows.Clear();
-            base.Dispose(disposing);
         }
         
         /// <summary>
@@ -191,6 +176,22 @@ namespace FDPort.Controls
             {
                 items.Add(cmd);
             }
+        }
+
+        protected override void OnCellMouseDoubleClick(DataGridViewCellMouseEventArgs e)
+        {
+            base.OnCellMouseDoubleClick(e);
+            if (e.RowIndex != -1 && e.ColumnIndex != -1)
+            {
+                CmdNew cmd = CmdNew.GetInstance(items.ElementAt(e.RowIndex), e.RowIndex);
+                cmd.pageConfirm += pageConfirm;
+                cmd.Show();
+            }
+        }
+        protected override void Dispose(bool disposing)
+        {
+            Rows.Clear();
+            base.Dispose(disposing);
         }
 
         /// <summary>

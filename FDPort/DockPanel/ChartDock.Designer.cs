@@ -30,104 +30,147 @@ namespace FDPort.DockPanel
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            this.LineChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.移至开始ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.移至最新ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.缩小ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.正常大小ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lineChart = new ScottPlot.FormsPlot();
+            this.DefaultRightClickMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.copyMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveImageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.autoAxisMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.openInNewWindowMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.detachLegendMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.plotObjectEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.清空图像ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            ((System.ComponentModel.ISupportInitialize)(this.LineChart)).BeginInit();
-            this.contextMenuStrip1.SuspendLayout();
+            this.label1 = new System.Windows.Forms.Label();
+            this.DefaultRightClickMenu.SuspendLayout();
             this.SuspendLayout();
             // 
-            // LineChart
+            // lineChart
             // 
-            chartArea1.Name = "ChartArea1";
-            this.LineChart.ChartAreas.Add(chartArea1);
-            this.LineChart.ContextMenuStrip = this.contextMenuStrip1;
-            this.LineChart.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LineChart.Location = new System.Drawing.Point(0, 0);
-            this.LineChart.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.LineChart.MinimumSize = new System.Drawing.Size(1, 1);
-            this.LineChart.Name = "LineChart";
-            this.LineChart.Size = new System.Drawing.Size(1067, 562);
-            this.LineChart.TabIndex = 8;
-            this.LineChart.MouseEnter += new System.EventHandler(this.LineChart_MouseEnter);
+            this.lineChart.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lineChart.Location = new System.Drawing.Point(0, 0);
+            this.lineChart.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.lineChart.Name = "lineChart";
+            this.lineChart.Size = new System.Drawing.Size(1067, 562);
+            this.lineChart.TabIndex = 1;
+            this.lineChart.MouseMove += new System.Windows.Forms.MouseEventHandler(this.lineChart_MouseMove);
             // 
-            // contextMenuStrip1
+            // DefaultRightClickMenu
             // 
-            this.contextMenuStrip1.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.移至开始ToolStripMenuItem,
-            this.移至最新ToolStripMenuItem,
-            this.缩小ToolStripMenuItem,
-            this.正常大小ToolStripMenuItem,
-            this.清空图像ToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(165, 164);
+            this.DefaultRightClickMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.DefaultRightClickMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyMenuItem,
+            this.saveImageMenuItem,
+            this.toolStripSeparator1,
+            this.autoAxisMenuItem,
+            this.清空图像ToolStripMenuItem,
+            this.toolStripSeparator3,
+            this.openInNewWindowMenuItem,
+            this.detachLegendMenuItem,
+            this.plotObjectEditorToolStripMenuItem});
+            this.DefaultRightClickMenu.Name = "contextMenuStrip1";
+            this.DefaultRightClickMenu.Size = new System.Drawing.Size(209, 184);
             // 
-            // 移至开始ToolStripMenuItem
+            // copyMenuItem
             // 
-            this.移至开始ToolStripMenuItem.Name = "移至开始ToolStripMenuItem";
-            this.移至开始ToolStripMenuItem.Size = new System.Drawing.Size(164, 32);
-            this.移至开始ToolStripMenuItem.Text = "移至开始";
-            this.移至开始ToolStripMenuItem.Click += new System.EventHandler(this.移至开始ToolStripMenuItem_Click);
+            this.copyMenuItem.Name = "copyMenuItem";
+            this.copyMenuItem.Size = new System.Drawing.Size(236, 24);
+            this.copyMenuItem.Text = "复制图像";
+            this.copyMenuItem.Click += new System.EventHandler(this.copyMenuItem_Click);
             // 
-            // 移至最新ToolStripMenuItem
+            // saveImageMenuItem
             // 
-            this.移至最新ToolStripMenuItem.Name = "移至最新ToolStripMenuItem";
-            this.移至最新ToolStripMenuItem.Size = new System.Drawing.Size(164, 32);
-            this.移至最新ToolStripMenuItem.Text = "移至最新";
-            this.移至最新ToolStripMenuItem.Click += new System.EventHandler(this.移至最新ToolStripMenuItem_Click);
+            this.saveImageMenuItem.Name = "saveImageMenuItem";
+            this.saveImageMenuItem.Size = new System.Drawing.Size(236, 24);
+            this.saveImageMenuItem.Text = "图像另存为";
+            this.saveImageMenuItem.Click += new System.EventHandler(this.RightClickMenu_SaveImage_Click);
             // 
-            // 缩小ToolStripMenuItem
+            // toolStripSeparator1
             // 
-            this.缩小ToolStripMenuItem.Name = "缩小ToolStripMenuItem";
-            this.缩小ToolStripMenuItem.Size = new System.Drawing.Size(164, 32);
-            this.缩小ToolStripMenuItem.Text = "缩小";
-            this.缩小ToolStripMenuItem.Click += new System.EventHandler(this.缩小ToolStripMenuItem_Click);
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(233, 6);
             // 
-            // 正常大小ToolStripMenuItem
+            // autoAxisMenuItem
             // 
-            this.正常大小ToolStripMenuItem.Name = "正常大小ToolStripMenuItem";
-            this.正常大小ToolStripMenuItem.Size = new System.Drawing.Size(164, 32);
-            this.正常大小ToolStripMenuItem.Text = "正常大小";
-            this.正常大小ToolStripMenuItem.Click += new System.EventHandler(this.正常大小ToolStripMenuItem_Click);
+            this.autoAxisMenuItem.Name = "autoAxisMenuItem";
+            this.autoAxisMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.autoAxisMenuItem.Text = "缩放至合适大小";
+            this.autoAxisMenuItem.Click += new System.EventHandler(this.RightClickMenu_AutoAxis_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(233, 6);
+            // 
+            // openInNewWindowMenuItem
+            // 
+            this.openInNewWindowMenuItem.Name = "openInNewWindowMenuItem";
+            this.openInNewWindowMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.openInNewWindowMenuItem.Text = "新页面显示";
+            this.openInNewWindowMenuItem.Click += new System.EventHandler(this.RightClickMenu_OpenInNewWindow_Click);
+            // 
+            // detachLegendMenuItem
+            // 
+            this.detachLegendMenuItem.Name = "detachLegendMenuItem";
+            this.detachLegendMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.detachLegendMenuItem.Text = "图例设置";
+            this.detachLegendMenuItem.Click += new System.EventHandler(this.RightClickMenu_DetachLegend_Click);
+            // 
+            // plotObjectEditorToolStripMenuItem
+            // 
+            this.plotObjectEditorToolStripMenuItem.Name = "plotObjectEditorToolStripMenuItem";
+            this.plotObjectEditorToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.plotObjectEditorToolStripMenuItem.Text = "Plot Object Editor";
+            this.plotObjectEditorToolStripMenuItem.Click += new System.EventHandler(this.RightClickMenu_PlotObjectEditor_Click);
             // 
             // 清空图像ToolStripMenuItem
             // 
             this.清空图像ToolStripMenuItem.Name = "清空图像ToolStripMenuItem";
-            this.清空图像ToolStripMenuItem.Size = new System.Drawing.Size(164, 32);
+            this.清空图像ToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
             this.清空图像ToolStripMenuItem.Text = "清空图像";
             this.清空图像ToolStripMenuItem.Click += new System.EventHandler(this.清空图像ToolStripMenuItem_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.SystemColors.Window;
+            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label1.Location = new System.Drawing.Point(66, 45);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(57, 17);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "label1";
+            this.label1.Visible = false;
             // 
             // ChartDock
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1067, 562);
-            this.Controls.Add(this.LineChart);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lineChart);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ChartDock";
             this.TabText = "ChartDock";
             this.Text = "ChartDock";
-            ((System.ComponentModel.ISupportInitialize)(this.LineChart)).EndInit();
-            this.contextMenuStrip1.ResumeLayout(false);
+            this.DefaultRightClickMenu.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-
-        public System.Windows.Forms.DataVisualization.Charting.Chart LineChart;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem 移至开始ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 移至最新ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 缩小ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 正常大小ToolStripMenuItem;
+        public ScottPlot.FormsPlot lineChart;
+        private System.Windows.Forms.ContextMenuStrip DefaultRightClickMenu;
+        private System.Windows.Forms.ToolStripMenuItem copyMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveImageMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem autoAxisMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem openInNewWindowMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem detachLegendMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem plotObjectEditorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 清空图像ToolStripMenuItem;
+        private System.Windows.Forms.Label label1;
     }
 }

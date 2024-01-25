@@ -42,19 +42,19 @@ namespace FDPort.Class
         /// <summary>
         /// 服务器是否正在运行
         /// </summary>
-        public bool IsRunning { get; private set; }
+        public bool isRunning { get; private set; }
         /// <summary>
         /// 监听的IP地址
         /// </summary>
-        public IPAddress Address { get; private set; }
+        public IPAddress address { get; private set; }
         /// <summary>
         /// 监听的端口
         /// </summary>
-        public int Port { get; private set; }
+        public int port { get; private set; }
         /// <summary>
         /// 通信使用的编码
         /// </summary>
-        public Encoding Encoding { get; set; }
+        public Encoding encoding { get; set; }
 
         public bool CanSend { get; set; }
 
@@ -88,9 +88,9 @@ namespace FDPort.Class
         /// <param name="maxClient">最大客户端数量</param>
         public AsyncSocketTCPServer(IPAddress localIPAddress, int listenPort, int maxClient)
         {
-            this.Address = localIPAddress;
-            this.Port = listenPort;
-            this.Encoding = Encoding.Default;
+            this.address = localIPAddress;
+            this.port = listenPort;
+            this.encoding = Encoding.Default;
 
             _maxClient = maxClient;
             _clients = new Dictionary<EndPoint, AsyncSocketState>();
@@ -107,10 +107,10 @@ namespace FDPort.Class
         /// </summary>
         public void Start()
         {
-            if (!IsRunning)
+            if (!isRunning)
             {
-                IsRunning = true;
-                _serverSock.Bind(new IPEndPoint(this.Address, this.Port));
+                isRunning = true;
+                _serverSock.Bind(new IPEndPoint(this.address, this.port));
                 _serverSock.Listen(1024);
                 _serverSock.BeginAccept(new AsyncCallback(HandleAcceptConnected), _serverSock);
             }
@@ -124,10 +124,10 @@ namespace FDPort.Class
         /// </param>
         public void Start(int backlog)
         {
-            if (!IsRunning)
+            if (!isRunning)
             {
-                IsRunning = true;
-                _serverSock.Bind(new IPEndPoint(this.Address, this.Port));
+                isRunning = true;
+                _serverSock.Bind(new IPEndPoint(this.address, this.port));
                 _serverSock.Listen(backlog);
                 _serverSock.BeginAccept(new AsyncCallback(HandleAcceptConnected), _serverSock);
             }
@@ -138,9 +138,9 @@ namespace FDPort.Class
         /// </summary>        
         public void Stop()
         {
-            if (IsRunning)
+            if (isRunning)
             {
-                IsRunning = false;
+                isRunning = false;
                 _serverSock.Close();
                 //TODO 关闭对所有客户端的连接
 
@@ -153,7 +153,7 @@ namespace FDPort.Class
         /// <param name="ar"></param>
         private void HandleAcceptConnected(IAsyncResult ar)
         {
-            if (IsRunning)
+            if (isRunning)
             {
                 Socket server = (Socket)ar.AsyncState;
                 Socket client = server.EndAccept(ar);
@@ -173,9 +173,9 @@ namespace FDPort.Class
                         _clientCount++;
                         RaiseClientConnected(state); //触发客户端连接事件
                     }
-                    state.RecvDataBuffer = new byte[client.ReceiveBufferSize];
+                    state.recvDataBuffer = new byte[client.ReceiveBufferSize];
                     //开始接受来自该客户端的数据
-                    client.BeginReceive(state.RecvDataBuffer, 0, state.RecvDataBuffer.Length, SocketFlags.None,
+                    client.BeginReceive(state.recvDataBuffer, 0, state.recvDataBuffer.Length, SocketFlags.None,
                                         new AsyncCallback(HandleDataReceived), state);
                 }
                 //接受下一个请求
@@ -188,10 +188,10 @@ namespace FDPort.Class
         /// <param name="ar"></param>
         private void HandleDataReceived(IAsyncResult ar)
         {
-            if (IsRunning)
+            if (isRunning)
             {
                 AsyncSocketState state = (AsyncSocketState)ar.AsyncState;
-                Socket client = state.ClientSocket;
+                Socket client = state.clientSocket;
                 try
                 {
                     //如果两次开始了异步的接收,所以当客户端退出的时候
@@ -210,7 +210,7 @@ namespace FDPort.Class
                     state.recvLen = recv;
                     RaiseDataReceived(state);
                     //继续接收来自来客户端的数据
-                    client.BeginReceive(state.RecvDataBuffer, 0, state.RecvDataBuffer.Length, SocketFlags.None,
+                    client.BeginReceive(state.recvDataBuffer, 0, state.recvDataBuffer.Length, SocketFlags.None,
                                         new AsyncCallback(HandleDataReceived), state);
                 }
                 catch (SocketException)
@@ -234,7 +234,7 @@ namespace FDPort.Class
         {
 
             RaisePrepareSend(state);
-            Send(state.ClientSocket, data);
+            Send(state.clientSocket, data);
         }
 
         public void SendAll(byte[] data)
@@ -252,7 +252,7 @@ namespace FDPort.Class
         /// <param name="data">报文</param>
         public void Send(Socket client, byte[] data)
         {
-            if (!IsRunning)
+            if (!isRunning)
             {
                 throw new InvalidProgramException("This TCP Scoket server has not been started.");
             }
@@ -412,10 +412,10 @@ namespace FDPort.Class
         {
             if (state != null)
             {
-                state.Datagram = null;
-                state.RecvDataBuffer = null;
+                state.datagram = null;
+                state.recvDataBuffer = null;
 
-                _clients.Remove(state.ClientSocket.RemoteEndPoint);
+                _clients.Remove(state.clientSocket.RemoteEndPoint);
                 _clientCount--;
                 //TODO 触发关闭事件
                 state.Close();
@@ -495,23 +495,23 @@ namespace FDPort.Class
         /// <summary>
         /// 是否已经处理过了
         /// </summary>
-        public bool IsHandled { get; set; }
+        public bool isHandled { get; set; }
 
         public AsyncSocketEventArgs(string msg)
         {
             this._msg = msg;
-            IsHandled = false;
+            isHandled = false;
         }
         public AsyncSocketEventArgs(AsyncSocketState state)
         {
             this._state = state;
-            IsHandled = false;
+            isHandled = false;
         }
         public AsyncSocketEventArgs(string msg, AsyncSocketState state)
         {
             this._msg = msg;
             this._state = state;
-            IsHandled = false;
+            isHandled = false;
         }
     }
     /// <summary>
@@ -544,7 +544,7 @@ namespace FDPort.Class
         /// <summary>
         /// 接收数据缓冲区 
         /// </summary>
-        public byte[] RecvDataBuffer
+        public byte[] recvDataBuffer
         {
             get
             {
@@ -561,7 +561,7 @@ namespace FDPort.Class
         /// <summary>
         /// 存取会话的报文
         /// </summary>
-        public string Datagram
+        public string datagram
         {
             get
             {
@@ -576,7 +576,7 @@ namespace FDPort.Class
         /// <summary>
         /// 获得与客户端会话关联的Socket对象
         /// </summary>
-        public Socket ClientSocket
+        public Socket clientSocket
         {
             get
             {

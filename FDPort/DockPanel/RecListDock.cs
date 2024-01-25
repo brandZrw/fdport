@@ -50,7 +50,7 @@ namespace FDPort.DockPanel
             if (recList.SelectedRows[0].Index > -1)
             {
                 十六进制ToolStripMenuItem.Checked = !十六进制ToolStripMenuItem.Checked;
-                recList.Rows[recList.SelectedRows[0].Index].Cells[1].Value = Project.param.recvMap[(string)recList.Rows[recList.SelectedRows[0].Index].Cells[0].Value].toHex(十六进制ToolStripMenuItem.Checked);
+                recList.Rows[recList.SelectedRows[0].Index].Cells[1].Value = Project.param.recvMap[(string)recList.Rows[recList.SelectedRows[0].Index].Cells[0].Value].ToHex(十六进制ToolStripMenuItem.Checked);
             }
         }
 
@@ -90,16 +90,18 @@ namespace FDPort.DockPanel
                         FieldRecvParam m = Project.param.recvMap[Project.param.showRecMap.ElementAt(e.RowIndex)];
                         m.isShow = false;
                         // 删除曲线
-                        Project.mainForm.chartDock.chart_del_series(Project.param.showRecMap.ElementAt(e.RowIndex));
+                        Project.mainForm.chartDock.ChartDelSeries(Project.param.showRecMap.ElementAt(e.RowIndex));
+                        Project.mainForm.chartDock.lineChart.Refresh();
                     }
                 }
                 else
                 {
                     // 添加曲线
-                    Project.mainForm.chartDock.chart_add_series(Project.param.showRecMap.ElementAt(e.RowIndex));
+                    Project.mainForm.chartDock.ChartAddSeries(Project.param.showRecMap.ElementAt(e.RowIndex));
                     //不选中改为选中
                     FieldRecvParam m = Project.param.recvMap[Project.param.showRecMap.ElementAt(e.RowIndex)];
                     m.isShow = true;
+                    SelectionChanged();
                 }
             }
         }
@@ -132,6 +134,26 @@ namespace FDPort.DockPanel
                 }
             }
         }
+
+        private string lastSelectName="";
+        public void SelectionChanged()
+        {
+            if (Project.mainForm.chartDock.plotData.ContainsKey(lastSelectName))
+            {
+                Project.mainForm.chartDock.plotData[lastSelectName].signalPlot.IsHighlighted = false;
+            }
+            string name = recList.SelectedRows[0].Cells[0].Value.ToString();
+            if (Project.mainForm.chartDock.plotData.ContainsKey(name))
+            {
+                Project.mainForm.chartDock.plotData[name].signalPlot.IsHighlighted = true;
+            }
+            lastSelectName = name;
+        }
+        private void recList_SelectionChanged(object sender, EventArgs e)
+        {
+            SelectionChanged();
+        }
+
         #endregion
     }
 }

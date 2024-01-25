@@ -67,7 +67,7 @@ namespace FDPort.Class
         public List<string> showRecMap = new List<string>();
         public ObservableCollection<UnitTestObject> unitTests { get => _unitTests; set => _unitTests = value; }
         public string layout { get; set; }
-        public bool needForwrding { get; set; }
+        public bool needForwarding { get; set; }
         public PortBase portForwarding { get; set; }
         public PortBase portNow { get; set; }
         #endregion
@@ -133,7 +133,7 @@ namespace FDPort.Class
         public ObservableCollection<UnitTestObject> unitTests { get => _unitTests; set => _unitTests = value; }
         #endregion
 
-        public ProjectParam toParam()
+        public ProjectParam ToParam()
         {
             ProjectParam temp = new ProjectParam();
             temp.isLittleEndian = isLittleEndian;
@@ -191,7 +191,7 @@ next:
         public static ProjectParam param { get => _param; set { _param = value; } }
         public static ScriptEngine pyEngine;
         public static ScriptScope scope;
-        public static string Version = "V1.0.1";
+        public static string Version = "V1.0.2";
         public static void init()
         {
             pyEngine = Python.CreateEngine();//创建Python解释器对象
@@ -205,7 +205,7 @@ next:
         /// <param name="vs">接收或发送的数组</param>
         /// <param name="Param">参数</param>
         /// <returns></returns>
-        public static object python(string scriptPath, byte[] vs, object Param)
+        public static object RunPython(string scriptPath, byte[] vs, object Param)
         {
             try
             {
@@ -238,7 +238,7 @@ next:
             }
             return null;
         }
-        public static void load(string t)
+        public static void Load(string t)
         {
             var setting = new JsonSerializerSettings
             {
@@ -255,12 +255,12 @@ next:
             catch (Exception e)
             {
                 ProjectParamOldVersion type = (ProjectParamOldVersion)JsonConvert.DeserializeObject(File.ReadAllText(t), typeof(ProjectParamOldVersion), setting);
-                param = type.toParam();
+                param = type.ToParam();
             }
             
         }
 
-        public static void save(string t)
+        public static void Save(string t)
         {
             string info = JsonConvert.SerializeObject(param);
             File.WriteAllText(t, info);

@@ -49,6 +49,7 @@ namespace FDPort.Forms
             this.低位在前ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.图像配置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.添加时间戳ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.还原界面ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.数据保存ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.开始保存ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.保存图像数据ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,7 +72,7 @@ namespace FDPort.Forms
             this.dockPanel1.Name = "dockPanel1";
             this.dockPanel1.Padding = new System.Windows.Forms.Padding(6);
             this.dockPanel1.ShowAutoHideContentOnHover = false;
-            this.dockPanel1.Size = new System.Drawing.Size(1249, 600);
+            this.dockPanel1.Size = new System.Drawing.Size(1249, 606);
             this.dockPanel1.TabIndex = 0;
             this.dockPanel1.Theme = this.vS2015LightTheme1;
             // 
@@ -89,7 +90,7 @@ namespace FDPort.Forms
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(0);
-            this.menuStrip1.Size = new System.Drawing.Size(1249, 30);
+            this.menuStrip1.Size = new System.Drawing.Size(1249, 24);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -101,7 +102,7 @@ namespace FDPort.Forms
             this.tCP服务端ToolStripMenuItem,
             this.tCP客户端ToolStripMenuItem});
             this.串口配置ToolStripMenuItem.Name = "串口配置ToolStripMenuItem";
-            this.串口配置ToolStripMenuItem.Size = new System.Drawing.Size(83, 30);
+            this.串口配置ToolStripMenuItem.Size = new System.Drawing.Size(83, 24);
             this.串口配置ToolStripMenuItem.Text = "端口配置";
             // 
             // 刷新端口ToolStripMenuItem
@@ -141,7 +142,7 @@ namespace FDPort.Forms
             this.导出ToolStripMenuItem,
             this.清空配置ToolStripMenuItem});
             this.配置ToolStripMenuItem.Name = "配置ToolStripMenuItem";
-            this.配置ToolStripMenuItem.Size = new System.Drawing.Size(83, 30);
+            this.配置ToolStripMenuItem.Size = new System.Drawing.Size(83, 24);
             this.配置ToolStripMenuItem.Text = "导入导出";
             // 
             // 导入ToolStripMenuItem
@@ -171,7 +172,7 @@ namespace FDPort.Forms
             this.接收协议ToolStripMenuItem,
             this.大小端ToolStripMenuItem});
             this.协议配置ToolStripMenuItem.Name = "协议配置ToolStripMenuItem";
-            this.协议配置ToolStripMenuItem.Size = new System.Drawing.Size(83, 30);
+            this.协议配置ToolStripMenuItem.Size = new System.Drawing.Size(83, 24);
             this.协议配置ToolStripMenuItem.Text = "协议配置";
             // 
             // 接收协议ToolStripMenuItem
@@ -207,9 +208,10 @@ namespace FDPort.Forms
             // 图像配置ToolStripMenuItem
             // 
             this.图像配置ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.添加时间戳ToolStripMenuItem});
+            this.添加时间戳ToolStripMenuItem,
+            this.还原界面ToolStripMenuItem});
             this.图像配置ToolStripMenuItem.Name = "图像配置ToolStripMenuItem";
-            this.图像配置ToolStripMenuItem.Size = new System.Drawing.Size(83, 30);
+            this.图像配置ToolStripMenuItem.Size = new System.Drawing.Size(83, 24);
             this.图像配置ToolStripMenuItem.Text = "界面配置";
             // 
             // 添加时间戳ToolStripMenuItem
@@ -221,33 +223,40 @@ namespace FDPort.Forms
             this.添加时间戳ToolStripMenuItem.Text = "添加时间戳";
             this.添加时间戳ToolStripMenuItem.Click += new System.EventHandler(this.添加时间戳ToolStripMenuItem_Click);
             // 
+            // 还原界面ToolStripMenuItem
+            // 
+            this.还原界面ToolStripMenuItem.Name = "还原界面ToolStripMenuItem";
+            this.还原界面ToolStripMenuItem.Size = new System.Drawing.Size(167, 26);
+            this.还原界面ToolStripMenuItem.Text = "还原界面";
+            this.还原界面ToolStripMenuItem.Click += new System.EventHandler(this.还原界面ToolStripMenuItem_Click);
+            // 
             // 数据保存ToolStripMenuItem
             // 
             this.数据保存ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.开始保存ToolStripMenuItem,
             this.保存图像数据ToolStripMenuItem});
             this.数据保存ToolStripMenuItem.Name = "数据保存ToolStripMenuItem";
-            this.数据保存ToolStripMenuItem.Size = new System.Drawing.Size(83, 30);
+            this.数据保存ToolStripMenuItem.Size = new System.Drawing.Size(83, 24);
             this.数据保存ToolStripMenuItem.Text = "数据保存";
             // 
             // 开始保存ToolStripMenuItem
             // 
             this.开始保存ToolStripMenuItem.Name = "开始保存ToolStripMenuItem";
-            this.开始保存ToolStripMenuItem.Size = new System.Drawing.Size(182, 26);
+            this.开始保存ToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.开始保存ToolStripMenuItem.Text = "开始保存日志";
             this.开始保存ToolStripMenuItem.Click += new System.EventHandler(this.开始保存ToolStripMenuItem_Click);
             // 
             // 保存图像数据ToolStripMenuItem
             // 
             this.保存图像数据ToolStripMenuItem.Name = "保存图像数据ToolStripMenuItem";
-            this.保存图像数据ToolStripMenuItem.Size = new System.Drawing.Size(182, 26);
+            this.保存图像数据ToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.保存图像数据ToolStripMenuItem.Text = "保存图像数据";
             this.保存图像数据ToolStripMenuItem.Click += new System.EventHandler(this.保存图像数据ToolStripMenuItem_Click);
             // 
             // 单元测试ToolStripMenuItem
             // 
             this.单元测试ToolStripMenuItem.Name = "单元测试ToolStripMenuItem";
-            this.单元测试ToolStripMenuItem.Size = new System.Drawing.Size(83, 30);
+            this.单元测试ToolStripMenuItem.Size = new System.Drawing.Size(83, 24);
             this.单元测试ToolStripMenuItem.Text = "单元测试";
             this.单元测试ToolStripMenuItem.Click += new System.EventHandler(this.单元测试ToolStripMenuItem_Click);
             // 
@@ -257,7 +266,7 @@ namespace FDPort.Forms
             this.端口选择ToolStripMenuItem,
             this.是否转发ToolStripMenuItem});
             this.端口转发ToolStripMenuItem.Name = "端口转发ToolStripMenuItem";
-            this.端口转发ToolStripMenuItem.Size = new System.Drawing.Size(83, 30);
+            this.端口转发ToolStripMenuItem.Size = new System.Drawing.Size(83, 24);
             this.端口转发ToolStripMenuItem.Text = "端口转发";
             // 
             // 端口选择ToolStripMenuItem
@@ -278,10 +287,10 @@ namespace FDPort.Forms
             // 
             this.panel1.Controls.Add(this.dockPanel1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 30);
+            this.panel1.Location = new System.Drawing.Point(0, 24);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1249, 600);
+            this.panel1.Size = new System.Drawing.Size(1249, 606);
             this.panel1.TabIndex = 5;
             // 
             // MainForm
@@ -334,5 +343,6 @@ namespace FDPort.Forms
         private System.Windows.Forms.ToolStripMenuItem 端口转发ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 端口选择ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 是否转发ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 还原界面ToolStripMenuItem;
     }
 }

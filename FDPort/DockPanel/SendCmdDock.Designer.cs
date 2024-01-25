@@ -90,7 +90,7 @@ namespace FDPort.DockPanel
             this.cmdList.Size = new System.Drawing.Size(435, 562);
             this.cmdList.TabIndex = 5;
             this.cmdList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.cmdList_CellContentClick);
-            this.cmdList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.cmdList_CellContentDoubleClick);
+            this.cmdList.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.cmdList_CellMouseDoubleClick);
             this.cmdList.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.cmdList_RowsRemoved);
             this.cmdList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnKeyDown);
             // 

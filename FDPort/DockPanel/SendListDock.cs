@@ -93,7 +93,7 @@ namespace FDPort.DockPanel
                     else // 更改
                     {
                         string key = Project.param.sendMap.ElementAt(e.RowIndex).Key;
-                        Project.param.sendMap[key].setStrValue((string)sendList.Rows[e.RowIndex].Cells[e.ColumnIndex].EditedFormattedValue);
+                        Project.param.sendMap[key].SetStrValue((string)sendList.Rows[e.RowIndex].Cells[e.ColumnIndex].EditedFormattedValue);
                     }
                 }
             }
@@ -153,7 +153,7 @@ namespace FDPort.DockPanel
             if (sendList.SelectedRows[0].Index > -1)
             {
                 十六进制ToolStripMenuItem1.Checked = !十六进制ToolStripMenuItem1.Checked;
-                sendList.Rows[sendList.SelectedRows[0].Index].Cells[1].Value = Project.param.sendMap[(string)sendList.Rows[sendList.SelectedRows[0].Index].Cells[0].Value].toHex(十六进制ToolStripMenuItem1.Checked);
+                sendList.Rows[sendList.SelectedRows[0].Index].Cells[1].Value = Project.param.sendMap[(string)sendList.Rows[sendList.SelectedRows[0].Index].Cells[0].Value].ToHex(十六进制ToolStripMenuItem1.Checked);
             }
         }
         #endregion

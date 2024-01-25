@@ -23,7 +23,7 @@ namespace FDPort.Class
     }
     class common
     {
-        public static string byteArrayToString(byte[] vs, int len)
+        public static string ByteArrayToString(byte[] vs, int len)
         {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < len; i++)
@@ -143,7 +143,7 @@ namespace FDPort.Class
             decimal t = 0;
             return decimal.TryParse(text, out t);
         }
-        public static bool byteEquals(byte[] src, byte[] dsr)
+        public static bool ByteEquals(byte[] src, byte[] dsr)
         {
             if (src.Length < dsr.Length)
             {
@@ -238,7 +238,7 @@ namespace FDPort.Class
         }
         public static PortBase GetPort(PortBase from)
         {
-            if (Project.param.needForwrding)
+            if (Project.param.needForwarding)
             {
                 return from == Project.param.portNow ? Project.param.portForwarding : Project.param.portNow;
             }

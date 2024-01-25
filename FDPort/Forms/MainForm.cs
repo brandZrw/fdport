@@ -44,23 +44,29 @@ namespace FDPort.Forms
             sendCmdDock = new SendCmdDock();
             sendListDock = new SendListDock();
             chartDock = new ChartDock();
+            DockInit();
+
+
+            Project.init();
+            parse.DataParsed += DataParseOk;
+           
+            ParamInit();
+            chartDock.ChartInit();
+            Project.param.sendMap.CollectionChanged += sendListDock.SendMap_CollectionChanged;
             
-            commonArea.Show(dockPanel1,DockState.DockBottom);
+        }
+
+        private void DockInit()
+        {
+            commonArea.Show(dockPanel1, DockState.DockBottom);
             chartDock.Show(dockPanel1, DockState.Document);
-            
+
             recListDock.Show(dockPanel1, DockState.DockRight);
-            
-            sendListDock.Show(recListDock.Pane,DockAlignment.Left,0.7);
+
+            sendListDock.Show(recListDock.Pane, DockAlignment.Left, 0.7);
             sendCmdDock.Show(sendListDock.Pane, DockAlignment.Left, 0.6);
             dockPanel1.DockBottomPortion = 0.45;
             dockPanel1.DockRightPortion = 0.5;
-            Project.init();
-            parse.dataIsParse += DataParseOk;
-           
-            ParamInit();
-            chartDock.chart_init();
-            Project.param.sendMap.CollectionChanged += sendListDock.SendMap_CollectionChanged;
-            
         }
         private void ParamInit()
         {
@@ -89,10 +95,15 @@ namespace FDPort.Forms
                 if (row.Cells[0].Value != null && row.Cells[0].Value.ToString() == name)
                 {
                     row.Cells[1].Value = rec.ShowValue();
-                    if (rec.isShow)
+                    if(rec.isShow)
                     {
-                        chartDock.chart_add_point(name, Convert.ToDecimal(rec.GetValue()));
+                          chartDock.ChartAddSeries(name);
                     }
+                    if(chartDock.plotData.ContainsKey(name))
+                    {
+                        UIControl.AddSeriesPoint(chartDock.lineChart, chartDock.plotData, name, Convert.ToDecimal(rec.GetValue()));
+                    }
+
                 }
             }
         }
@@ -144,15 +155,15 @@ namespace FDPort.Forms
             recListDock.recList.Rows.Clear();
             sendListDock.sendList.Rows.Clear();
             sendCmdDock.cmdList.Rows.Clear();
-            chartDock.chart_clear();
-            if(Project.param.needForwrding)
+            chartDock.ChartClear();
+            if(Project.param.needForwarding)
             {
-                Project.param.portForwarding?.close();
+                Project.param.portForwarding?.Close();
             }
             Project.param.portForwarding = null;
-            Project.param.needForwrding = false;
+            Project.param.needForwarding = false;
 
-            Project.load(path);
+            Project.Load(path);
 
             
 
@@ -171,21 +182,21 @@ namespace FDPort.Forms
 
             }
 
-            Project.param.portForwarding?.setParam(Project.param.portForwarding.param1, Project.param.portForwarding.param2);
+            Project.param.portForwarding?.SetParam(Project.param.portForwarding.param1, Project.param.portForwarding.param2);
             if (Project.param.portForwarding != null)
             {
                 端口选择ToolStripMenuItem.Text = "端口选择:" + Project.param.portForwarding.name;
             }
             是否转发ToolStripMenuItem.Checked = false;
-            if (Project.param.needForwrding)// 端口转发开启就使用端口转发
+            if (Project.param.needForwarding)// 端口转发开启就使用端口转发
             {
-                Project.param.portForwarding.open();
+                Project.param.portForwarding.Open();
                 if(Project.param.portForwarding.Connected())
                 {
                     是否转发ToolStripMenuItem.Checked = true;
                 }
             }
-            Project.param.needForwrding = 是否转发ToolStripMenuItem.Checked;
+            Project.param.needForwarding = 是否转发ToolStripMenuItem.Checked;
             高位在前ToolStripMenuItem.Checked = !Project.param.isLittleEndian;
             低位在前ToolStripMenuItem.Checked = Project.param.isLittleEndian;
             添加时间戳ToolStripMenuItem.Checked = Project.param.addTimestamp;
@@ -208,11 +219,11 @@ namespace FDPort.Forms
                     recListDock.recList.Rows.Add(d, param.ShowValue(), param.isShow);
                     if (param.isShow)
                     {
-                        chartDock.chart_add_series(d);
+                        chartDock.ChartAddSeries(d);
                     }
                     else
                     {
-                        chartDock.chart_del_series(d);
+                        chartDock.ChartDelSeries(d);
                     }
                 }
             }
@@ -253,7 +264,7 @@ namespace FDPort.Forms
                 dockPanel1.SaveAsXml("temp.xml", Encoding.Unicode);
                 Project.param.layout = File.ReadAllText("temp.xml", Encoding.Unicode);
                 File.Delete("temp.xml");
-                Project.save(path);
+                Project.Save(path);
             }
         }
 
@@ -344,7 +355,7 @@ namespace FDPort.Forms
             recListDock.recList.Rows.Clear();
             sendListDock.sendList.Rows.Clear();
             sendCmdDock.cmdList.Rows.Clear();
-            chartDock.chart_clear();
+            chartDock.ChartClear();
             Project.param = new ProjectParam();
             ParamInit();   
         }
@@ -409,28 +420,30 @@ namespace FDPort.Forms
 
             if (sfd.ShowDialog() == DialogResult.OK)
             {
-                int maxlen = 0;
+                int maxLen = 0;
                 DataTable dt = new DataTable();
-                foreach (Series key in chartDock.LineChart.Series)
+                for(int i =0; i < chartDock.plotData.Count;i++)
                 {
-                    dt.Columns.Add(key.Name, typeof(int));
-                    if (maxlen < key.Points.Count)
+                    dt.Columns.Add(chartDock.plotData.ElementAt(i).Key, typeof(double));
+                    if (maxLen < chartDock.plotData.ElementAt(i).Value.Count)
                     {
-                        maxlen = (int)key.Points.Count;
+                        maxLen = (int)chartDock.plotData.ElementAt(i).Value.Count;
                     }
                 }
-                for (int i = 0; i < maxlen; i++)
+                for (int i = 0; i < maxLen; i++)
                 {
                     DataRow dr = dt.NewRow();
                     dt.Rows.Add(dr);
                 }
 
-                foreach (Series key in chartDock.LineChart.Series)
+                for (int i = 0; i < chartDock.plotData.Count; i++)
                 {
-                    for (int i = 0; i < key.Points.Count; i++)
+                    KeyValuePair<string, PlotPoints> pairs = chartDock.plotData.ElementAt(i);
+                    for (int j = 0 ; j < pairs.Value.points.Count; j++)
                     {
-                        int x = (int)key.Points[i].YValues[0];
-                        dt.Rows[(int)key.Points[i].XValue - 1][key.Name] = x;
+                        //int x = (int)key.Points[i].YValues[0];
+                        //dt.Rows[(int)key.Points[i].XValue - 1][key.Name] = x;
+                        dt.Rows[j + (maxLen - pairs.Value.points.Count)][pairs.Key] = pairs.Value[j];
                     }
                 }
 
@@ -480,9 +493,9 @@ namespace FDPort.Forms
         {
             if(是否转发ToolStripMenuItem.Checked)
             {
-                Project.param.portForwarding.close();
+                Project.param.portForwarding.Close();
                 是否转发ToolStripMenuItem.Checked = false;
-                Project.param.needForwrding = false;
+                Project.param.needForwarding = false;
             }
             else
             {
@@ -493,12 +506,18 @@ namespace FDPort.Forms
                 }
                 else
                 {
-                    Project.param.portForwarding.open();
+                    Project.param.portForwarding.Open();
                     是否转发ToolStripMenuItem.Checked = true;
-                    Project.param.needForwrding = true;
+                    Project.param.needForwarding = true;
                 }
             }
         }
+        private void 还原界面ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DockInit();
+        }
         #endregion
+
+
     }
 }

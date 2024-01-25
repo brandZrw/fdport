@@ -1,4 +1,7 @@
 ﻿
+
+using FDPort.Class;
+using ScottPlot;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -128,14 +131,8 @@ namespace FDPort.Logic
             index = 0;
             show = 0;
         }
-
-        static void SetXAxisShowLen(Chart txtInfo, int show)
-        {
-            txtInfo.ChartAreas[0].AxisX.Maximum = show + 20;
-            txtInfo.ChartAreas[0].AxisX.Minimum = show - 200;
-        }
-        public delegate void SeriesAddPointDelegate(Chart txtInfo, string x, decimal value);
-        static public void AddSeriesPoint(Chart a, string b, decimal c)
+        public delegate void SeriesAddPointDelegate(FormsPlot a, Dictionary<string, PlotPoints>plot, string x, decimal value);
+        static public void AddSeriesPoint(FormsPlot a, Dictionary<string, PlotPoints>plot, string x, decimal value)
         {
             if (a == null)
             {
@@ -144,33 +141,40 @@ namespace FDPort.Logic
             if (a.InvokeRequired)//判断是否跨线程请求
             {
                 SeriesAddPointDelegate myDelegate = new SeriesAddPointDelegate(AddSeriesPoint);
-                a.Invoke(myDelegate, a, b, c);
+                a.Invoke(myDelegate, a,plot, x, value);
             }
             else
             {
-                if (index < a.Series[b].Points.Count + 1)
+                plot[x].AddPoint(plot[x].Count, Decimal.ToDouble(value));
+                double max = int.MinValue;
+                double min = int.MaxValue;
+                
+                foreach(PlotPoints p in plot.Values)
                 {
-                    a.Series[b].Points.AddXY(index + 1, Decimal.ToDouble(c));
-                    index = a.Series[b].Points.Count;
-                    if (index > 200)
+                    if(max < p.max)
                     {
-                        if (index <= show + 20)
-                        {
-                            SetXAxisShowLen(a, show);
-                            show++;
-                        }
+                        max = p.max;
                     }
-                    else if (index == 200)
+                    if(min > p.min)
                     {
-                        show = 200;
-                        SetXAxisShowLen(a, show);
+                        min = p.min;
+                    }
+                }
+                if (min >= max)
+                {
+                    min = max - 1;
+                }
+                a.Plot.YAxis.SetBoundary(min: min, max: max);
 
-                    }
+                if (plot[x].Count < PlotPoints.maxPointShow)
+                {
+                    a.Plot.XAxis.SetBoundary(min: PlotPoints.maxPointShow - plot[x].Count-1, max: PlotPoints.maxPointShow);
                 }
                 else
                 {
-                    a.Series[b].Points.AddXY(index, Decimal.ToDouble(c));
+                    a.Plot.XAxis.SetBoundary(min: 0, max: PlotPoints.maxPointShow);
                 }
+
                 a.Refresh();
             }
         }

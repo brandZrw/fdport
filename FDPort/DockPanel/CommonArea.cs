@@ -103,9 +103,9 @@ namespace FDPort.DockPanel
 
         public void close()
         {
-            service.close();
-            client.close();
-            serial.close();
+            service.Close();
+            client.Close();
+            serial.Close();
             button1.Text = "打开串口";
             uiButton3.Text = "侦听";
             uiButton5.Text = "连接";
@@ -126,10 +126,10 @@ namespace FDPort.DockPanel
         public void sendData(byte[] vs,PortBase port,IPEndPoint point = null)
         {
 
-            port?.write(vs, point);
+            port?.Write(vs, point);
             
 
-            string bs = common.byteArrayToString(vs, vs.Length);
+            string bs = common.ByteArrayToString(vs, vs.Length);
             StringBuilder sb = new StringBuilder();
             if (!string.IsNullOrEmpty(UIControl.GetText(recBox.textBox)))
             {
@@ -151,7 +151,7 @@ namespace FDPort.DockPanel
         }
         private int recData(PortBase from,byte[] vs, int len,IPEndPoint point)
         {
-            string bs = common.byteArrayToString(vs, len);
+            string bs = common.ByteArrayToString(vs, len);
             StringBuilder sb = new StringBuilder();
             if (!string.IsNullOrEmpty(UIControl.GetText(recBox.textBox)))
             {
@@ -183,11 +183,11 @@ namespace FDPort.DockPanel
             {
                 return;
             }
-            string[] hexarray = hex.Split(' ');
+            string[] hexArray = hex.Split(' ');
             List<byte> bs = new List<byte>();
             try
             {
-                foreach (string a in hexarray)
+                foreach (string a in hexArray)
                 {
                     char[] ch = a.ToCharArray();
                     StringBuilder sb = new StringBuilder();
@@ -206,7 +206,7 @@ namespace FDPort.DockPanel
                     }
                     
                 }
-                sendData(bs.ToArray(),Project.param.needForwrding?Project.param.portForwarding:Project.param.portNow);
+                sendData(bs.ToArray(),Project.param.needForwarding?Project.param.portForwarding:Project.param.portNow);
             }
             catch (Exception exp)
             {
@@ -293,14 +293,14 @@ namespace FDPort.DockPanel
                 baudCombo.Enabled = true;
                 button1.Text = "打开串口";
 
-                serial.close();
+                serial.Close();
             }
             else
             {
                 try
                 {
-                    serial.setParam(cmbPort.Text, baudCombo.Text);
-                    serial.open();
+                    serial.SetParam(cmbPort.Text, baudCombo.Text);
+                    serial.Open();
                     cmbPort.Enabled = false;
                     baudCombo.Enabled = false;
                     button1.Text = "关闭串口";
@@ -322,8 +322,8 @@ namespace FDPort.DockPanel
             {
                 try
                 {
-                    client.setParam(tcpCliIP.Text, tcpCliPort.Text);
-                    client.open();  
+                    client.SetParam(tcpCliIP.Text, tcpCliPort.Text);
+                    client.Open();  
                 }
                 catch (Exception exp)
                 {
@@ -334,15 +334,15 @@ namespace FDPort.DockPanel
             {
                 if (client != null)
                 {
-                    client.close();
+                    client.Close();
                 }
             }
         }
 
 
-        private void TcpClient_ConnectedChanged(object sender, ConnctedChangedArg e)
+        private void TcpClient_ConnectedChanged(object sender, ConnectedChangedArg e)
         {
-            if (e.Connected)
+            if (e.connected)
             {
                 UIControl.SetText(uiButton5, "断开");
             }
@@ -360,9 +360,9 @@ namespace FDPort.DockPanel
             {
                 if (uiButton3.Text.Equals("侦听"))
                 {
-                    service.setParam(serIP.Text, serPort.Text);
+                    service.SetParam(serIP.Text, serPort.Text);
 
-                    service.open();
+                    service.Open();
                     uiButton3.Text = "断开";
                 }
                 else if (uiButton3.Text.Equals("断开"))
@@ -370,7 +370,7 @@ namespace FDPort.DockPanel
                     //
                     if (service != null)
                     {
-                        service.close();
+                        service.Close();
                     }
                     uiButton3.Text = "侦听";
                 }

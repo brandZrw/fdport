@@ -117,13 +117,13 @@ namespace FDPort.Class
         }
         #endregion
 
-        public string toHex(bool hex)
+        public string ToHex(bool hex)
         {
             isHex = hex;
 
             return ShowValue();
         }
-        public void apply()
+        public void Apply()
         {
             objValue = tempValue;
         }
@@ -199,7 +199,7 @@ namespace FDPort.Class
             value = x;
             isHex = false;
         }
-        public string toHex(bool hex)
+        public string ToHex(bool hex)
         {
             isHex = hex;
             if (hex)
@@ -217,11 +217,11 @@ namespace FDPort.Class
             }
             return value;
         }
-        public void setStrValue(string s)
+        public void SetStrValue(string s)
         {
             value = s;
         }
-        public void setValue(decimal t)
+        public void SetValue(decimal t)
         {
             if (isHex)
             {
@@ -232,7 +232,7 @@ namespace FDPort.Class
                 value = ((Int64)t).ToString();
             }
         }
-        public decimal getNumc()
+        public decimal GetNumValue()
         {
             if (isHex)
             {
@@ -319,7 +319,7 @@ namespace FDPort.Class
                     case FieldModule.CM_Type.CM_BIT:
                         break;
                     case FieldModule.CM_Type.CM_BYTE:
-                        b = field.value2list(field.value2list(Project.param.sendMap.ContainsKey(field.name) ? Project.param.sendMap[field.name] : (object)((UInt64)0)));
+                        b = field.Value2List(field.Value2List(Project.param.sendMap.ContainsKey(field.name) ? Project.param.sendMap[field.name] : (object)((UInt64)0)));
                         if (b != null)
                         {
                             vs.AddRange(b);
@@ -337,7 +337,7 @@ namespace FDPort.Class
                             {
                                 if (Project.param.sendMap.ContainsKey(varStr))
                                 {
-                                    decimal t = Project.param.sendMap[varStr].getNumc();
+                                    decimal t = Project.param.sendMap[varStr].GetNumValue();
                                     UnitTestObject temp = Project.param.unitTests.FirstOrDefault(v => v.cmdName.Equals(varStr));
 
                                     if (temp != null)//存在单元测试
@@ -360,7 +360,7 @@ namespace FDPort.Class
                                             {
                                                 t = temp.end;
                                             }
-                                            Project.param.sendMap[varStr].setValue(t);
+                                            Project.param.sendMap[varStr].SetValue(t);
                                             for (int i = 0; i < Project.param.sendMap.Keys.Count; i++)
                                             {
                                                 if (Project.param.sendMap.Keys.ElementAt(i).Equals(varStr))
@@ -381,17 +381,17 @@ namespace FDPort.Class
                             }
 
                             object res = interpreter.Eval(((FieldData)field).link, param.ToArray());
-                            b = field.value2list(res.ToString());
+                            b = field.Value2List(res.ToString());
                         }
                         else
                         {
                             if (Project.param.sendMap.ContainsKey(((FieldData)field).link))
                             {
-                                b = field.value2list(Project.param.sendMap[((FieldData)field).link]);
+                                b = field.Value2List(Project.param.sendMap[((FieldData)field).link]);
                             }
                             else if (Project.param.recvMap.ContainsKey(((FieldData)field).link))
                             {
-                                b = field.value2list(Project.param.recvMap[((FieldData)field).link].GetValue());
+                                b = field.Value2List(Project.param.recvMap[((FieldData)field).link].GetValue());
                             }
 
                         }
@@ -401,14 +401,14 @@ namespace FDPort.Class
                         }
                         break;
                     case FieldModule.CM_Type.CM_FUNC:
-                        b = ((FieldFunc)field).value2list(vs.ToArray());
+                        b = ((FieldFunc)field).Value2List(vs.ToArray());
                         if (b != null)
                         {
                             vs.AddRange(b);
                         }
                         break;
                     case FieldModule.CM_Type.CM_STATIC:
-                        b = field.value2list(null);
+                        b = field.Value2List(null);
                         if (b != null)
                         {
                             vs.AddRange(b);

@@ -17,12 +17,12 @@ namespace FDPort.Communication
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
-        abstract public void setParam(string a, string b);
+        abstract public void SetParam(string a, string b);
         /// <summary>
         /// 发送函数
         /// </summary>
         /// <param name="b"></param>
-        abstract public void write(byte[] b, IPEndPoint iP = null);
+        abstract public void Write(byte[] b, IPEndPoint iP = null);
 
 
         /// <summary>
@@ -34,12 +34,12 @@ namespace FDPort.Communication
         /// <summary>
         /// 关闭端口
         /// </summary>
-        abstract public void close();
+        abstract public void Close();
 
         /// <summary>
         /// 打开端口
         /// </summary>
-        abstract public void open();
+        abstract public void Open();
 
 
         public delegate void DataRecHandler(object sender, PortBase from,byte[] b);
@@ -64,12 +64,12 @@ namespace FDPort.Communication
     {
         [JsonIgnore]
         public SerialPort port;
-        public override void setParam(string com, string baud)
+        public override void SetParam(string com, string baud)
         {
             param1 = com;
             param2 = baud;
             port.PortName = com;
-            port.BaudRate = Convert.ToInt32( baud);
+            port.BaudRate = Convert.ToInt32(baud);
             name = "serial-" + com + ":" + param2;
         }
         public PortSerial()
@@ -101,22 +101,22 @@ namespace FDPort.Communication
             }
         }
 
-        public override void write(byte[] b,IPEndPoint point = null)
+        public override void Write(byte[] b,IPEndPoint point = null)
         {
             port.Write(b,0,b.Length);
         }
 
         public override bool Connected()
         {
-            return port.IsOpen;
+            return port==null?false:port.IsOpen;
         }
 
-        public override void close()
+        public override void Close()
         {
             port?.Close();
         }
 
-        public override void open()
+        public override void Open()
         {
             port?.Open();
         }
@@ -126,10 +126,10 @@ namespace FDPort.Communication
         [JsonIgnore]
         AsyncTCPClient tcpClient;
 
-        public delegate void ConnectedChangedHandler(object sender, AsyncTCPClient.ConnctedChangedArg e);
+        public delegate void ConnectedChangedHandler(object sender, AsyncTCPClient.ConnectedChangedArg e);
         public event ConnectedChangedHandler ConnectedChangedEvent;
 
-        public override void setParam(string iP, string port)
+        public override void SetParam(string iP, string port)
         {
             IPAddress address;
             param1 = iP;
@@ -146,7 +146,7 @@ namespace FDPort.Communication
         {
             type = 2;
         }
-        private void TcpClient_ConnectedChanged(object sender, AsyncTCPClient.ConnctedChangedArg e)
+        private void TcpClient_ConnectedChanged(object sender, AsyncTCPClient.ConnectedChangedArg e)
         {
             ConnectedChangedEvent?.Invoke(sender, e);
         }
@@ -158,22 +158,22 @@ namespace FDPort.Communication
 
         public override bool Connected()
         {
-            return tcpClient.IsConnected;
+            return tcpClient==null?false:tcpClient.isConnected;
         }
 
-        public override void write(byte[] b, IPEndPoint iP = null)
+        public override void Write(byte[] b, IPEndPoint iP = null)
         {
             tcpClient?.Send(b);
         }
 
-        public override void close()
+        public override void Close()
         {
             tcpClient?.Stop();
         }
 
-        public override void open()
+        public override void Open()
         {
-            tcpClient.Start();
+            tcpClient?.Start();
         }
     }
     public class PortTCPService:PortBase
@@ -181,7 +181,7 @@ namespace FDPort.Communication
         [JsonIgnore]
         AsyncSocketTCPServer tcpServer;
 
-        public override void setParam(string ip,string port)
+        public override void SetParam(string ip,string port)
         {
             param1 = ip;
             param2 = port;
@@ -197,8 +197,8 @@ namespace FDPort.Communication
 
         private void TcpServer_DataReceived(object sender, AsyncSocketEventArgs e)
         {
-            byte[] b = e._state.RecvDataBuffer.Take(e._state.recvLen).ToArray();
-            OnDataRec(e._state.ClientSocket.RemoteEndPoint, this,b);
+            byte[] b = e._state.recvDataBuffer.Take(e._state.recvLen).ToArray();
+            OnDataRec(e._state.clientSocket.RemoteEndPoint, this,b);
         }
         public PortTCPService()
         {
@@ -206,27 +206,27 @@ namespace FDPort.Communication
         }
         public override bool Connected()
         {
-            return tcpServer.IsRunning;
+            return tcpServer==null?false:tcpServer.isRunning;
         }
 
-        public override void write(byte[] b,IPEndPoint point = null)
+        public override void Write(byte[] b,IPEndPoint point = null)
         {
             if(point == null)
             {
-                tcpServer.SendAll(b);
+                tcpServer?.SendAll(b);
             }
             else
             {
-                tcpServer.Send(tcpServer.clients[point], b);
+                tcpServer?.Send(tcpServer.clients[point], b);
             }
         }
 
-        public override void close()
+        public override void Close()
         {
             tcpServer?.Stop();
         }
 
-        public override void open()
+        public override void Open()
         {
             tcpServer?.Start();
         }

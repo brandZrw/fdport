@@ -16,9 +16,8 @@ namespace FDPort.Logic
 {
     public class Parse
     {
-        public Dictionary<string, object> Param = new Dictionary<string, object>();
         public delegate void DataIsParse(string name);
-        public DataIsParse dataIsParse;
+        public DataIsParse DataParsed;
 
         /// <summary>
         /// 接收匹配数据
@@ -62,10 +61,10 @@ namespace FDPort.Logic
                     {
                         if (Project.param.recvMap.ContainsKey(m.name))
                         {
-                            Project.param.recvMap[m.name].apply();
+                            Project.param.recvMap[m.name].Apply();
                             if (m.type != FieldModule.CM_Type.CM_BIT)
                             {
-                                dataIsParse?.Invoke(m.name);
+                                DataParsed?.Invoke(m.name);
                             }
                         }
                     }
@@ -81,8 +80,8 @@ namespace FDPort.Logic
                                 object tempValue = temp.Value.GetValue();
                                 UInt64 res = bit.GetBitValue(Convert.ToDecimal(tempValue));
                                 Project.param.recvMap[m.name].tempValue = (decimal)res;
-                                Project.param.recvMap[m.name].apply();//数据更新
-                                dataIsParse?.Invoke(m.name);
+                                Project.param.recvMap[m.name].Apply();//数据更新
+                                DataParsed?.Invoke(m.name);
                             }
                         }
                     }
