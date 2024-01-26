@@ -252,7 +252,6 @@ namespace FDPort.Forms
             this.cmdDataGridList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.cmdDataGridList.Size = new System.Drawing.Size(933, 354);
             this.cmdDataGridList.TabIndex = 2;
-            this.cmdDataGridList.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.cmdDataGridList_RowsRemoved);
             // 
             // name
             // 

@@ -3,20 +3,11 @@ using Microsoft.Scripting.Hosting;
 using FDPort.Forms;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Data;
 using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using FDPort.Communication;
+using FDPort.FieldModuleClass;
 
 namespace FDPort.Class
 {

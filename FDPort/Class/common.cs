@@ -9,7 +9,6 @@ using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace FDPort.Class
 {
@@ -167,7 +166,7 @@ namespace FDPort.Class
         public static byte[] Object2Bytes(object obj)
         {
             byte[] buff;
-            using(MemoryStream ms = new MemoryStream())
+            using (MemoryStream ms = new MemoryStream())
             {
                 IFormatter iFormatter = new BinaryFormatter();
                 iFormatter.Serialize(ms, obj);
@@ -184,7 +183,7 @@ namespace FDPort.Class
         public static object Bytes2Object(byte[] buff)
         {
             object obj;
-            using(MemoryStream ms = new MemoryStream(buff))
+            using (MemoryStream ms = new MemoryStream(buff))
             {
                 IFormatter iFormatter = new BinaryFormatter();
                 obj = iFormatter.Deserialize(ms);
@@ -224,7 +223,7 @@ namespace FDPort.Class
         /// <typeparam name="TOut"></typeparam>
         /// <param name="tIn"></param>
         /// <returns></returns>
-        public static void Copyto<T>(T tIn, T tOut)
+        public static void CopyTo<T>(T tIn, T tOut)
         {
             var tInType = tIn.GetType();
             foreach (var itemOut in tOut.GetType().GetProperties())
@@ -236,17 +235,8 @@ namespace FDPort.Class
                 }
             }
         }
-        public static PortBase GetPort(PortBase from)
-        {
-            if (Project.param.needForwarding)
-            {
-                return from == Project.param.portNow ? Project.param.portForwarding : Project.param.portNow;
-            }
-            else
-            {
-                return from;
-            }
-        }
+        public static PortBase GetPort(PortBase from) => Project.param.needForwarding? (from == Project.param.portNow? Project.param.portForwarding : Project.param.portNow) : from ;
+
         public static string[] GetComList()
         {
             Microsoft.Win32.RegistryKey keyCom = Microsoft.Win32.Registry.LocalMachine.OpenSubKey("Hardware\\DeviceMap\\SerialComm");

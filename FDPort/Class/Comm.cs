@@ -1,13 +1,12 @@
 ﻿using DynamicExpresso;
 using FDPort.Communication;
+using FDPort.FieldModuleClass;
 using FDPort.Forms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using static FDPort.Class.FieldByte;
+using static FDPort.FieldModuleClass.FieldByte;
 
 namespace FDPort.Class
 {
@@ -63,7 +62,7 @@ namespace FDPort.Class
             }
         }
         #region 操作符
-        public static FieldRecvParam operator+(FieldRecvParam t, decimal num)
+        public static FieldRecvParam operator +(FieldRecvParam t, decimal num)
         {
             switch (t.valueType)
             {
@@ -120,13 +119,9 @@ namespace FDPort.Class
         public string ToHex(bool hex)
         {
             isHex = hex;
-
             return ShowValue();
         }
-        public void Apply()
-        {
-            objValue = tempValue;
-        }
+        public void Apply() => objValue = tempValue;
         public string ShowValue()
         {
             switch (valueType)
@@ -142,10 +137,10 @@ namespace FDPort.Class
                     }
                     else
                     {
-                        return objValue.ToString();
+                        return objValue?.ToString();
                     }
                 default:
-                    return objValue.ToString();
+                    return objValue?.ToString();
             }
         }
     }
@@ -217,21 +212,9 @@ namespace FDPort.Class
             }
             return value;
         }
-        public void SetStrValue(string s)
-        {
-            value = s;
-        }
-        public void SetValue(decimal t)
-        {
-            if (isHex)
-            {
-                value = String.Format("0x{0:X}", (UInt64)t);
-            }
-            else
-            {
-                value = ((Int64)t).ToString();
-            }
-        }
+        public void SetStrValue(string s)=>value = s;
+        public void SetValue(decimal t)=>value =isHex? String.Format("0x{0:X}", (UInt64)t):((Int64)t).ToString();
+        public override string ToString()=>value;
         public decimal GetNumValue()
         {
             if (isHex)
@@ -245,10 +228,7 @@ namespace FDPort.Class
                 return t;
             }
         }
-        public override string ToString()
-        {
-            return value;
-        }
+        
     }
     public class CmdRecv : CmdItem
     {
@@ -261,41 +241,46 @@ namespace FDPort.Class
     {
         private bool _autoSend;
         private int _sendTime;
-
-
-        public bool autoSend { get => _autoSend;
-                               set{
-            _autoSend = value;
-            if (_autoSend)
+        public bool autoSend
+        {
+            get => _autoSend;
+            set
             {
-                cmdTimer.Enabled = true;
-                cmdTimer.Start();
-            }
-            else
-            {
-                cmdTimer.Enabled = false;
-                cmdTimer.Stop();
+                _autoSend = value;
+                if (_autoSend)
+                {
+                    cmdTimer.Enabled = true;
+                    cmdTimer.Start();
+                }
+                else
+                {
+                    cmdTimer.Enabled = false;
+                    cmdTimer.Stop();
+                }
             }
         }
+
+        public int sendTime
+        {
+            get { return _sendTime; }
+            set
+            {
+                _sendTime = value;
+                if (value == 0)
+                {
+                    cmdTimer.Interval = 1000;
+                    _autoSend = false;
+                }
+                else
+                {
+                    cmdTimer.Interval = value;
+                }
+
+            }
         }
 
-        public int sendTime { get {return _sendTime; }
-                              set { _sendTime = value;
-                                    if (value == 0)
-                                    {
-                                        cmdTimer.Interval = 1000;
-                                        _autoSend = false;
-                                    }
-                                    else
-                                    {
-                                        cmdTimer.Interval = value;
-                                    }
-
-                              }
-                        }
-
-    public System.Windows.Forms.Timer cmdTimer { get; set; }
-    public CmdSend()
+        public System.Windows.Forms.Timer cmdTimer { get; set; }
+        public CmdSend()
         {
             cmdTimer = new System.Windows.Forms.Timer();
             cmdTimer.Enabled = false;
@@ -304,7 +289,10 @@ namespace FDPort.Class
         private void TimerUp(object sender, EventArgs e)
         {
             cmdTimer.Stop();
-            Send(common.GetPort(Project.param.portNow));
+            if(Project.param.portNow.Connected())
+            {
+                Send(common.GetPort(Project.param.portNow));
+            }
             cmdTimer.Start();
         }
 
@@ -339,35 +327,16 @@ namespace FDPort.Class
                                 {
                                     decimal t = Project.param.sendMap[varStr].GetNumValue();
                                     UnitTestObject temp = Project.param.unitTests.FirstOrDefault(v => v.cmdName.Equals(varStr));
-
                                     if (temp != null)//存在单元测试
                                     {
-                                        if (temp.enable) // 单元测试使能
+                                        temp.cal(ref t);
+                                        Project.param.sendMap[varStr].SetValue(t);
+                                        for (int i = 0; i < Project.param.sendMap.Keys.Count; i++)
                                         {
-                                            if (temp.dec)
+                                            if (Project.param.sendMap.Keys.ElementAt(i).Equals(varStr))
                                             {
-                                                t = t - temp.step;
-                                            }
-                                            else
-                                            {
-                                                t = t + temp.step;
-                                            }
-                                            if (t > temp.end)
-                                            {
-                                                t = temp.start;
-                                            }
-                                            else if (t < temp.start)
-                                            {
-                                                t = temp.end;
-                                            }
-                                            Project.param.sendMap[varStr].SetValue(t);
-                                            for (int i = 0; i < Project.param.sendMap.Keys.Count; i++)
-                                            {
-                                                if (Project.param.sendMap.Keys.ElementAt(i).Equals(varStr))
-                                                {
-                                                    Project.mainForm.sendListDock.SendList_Change(i, Project.param.sendMap[varStr].ToString());
-                                                    break;
-                                                }
+                                                Project.mainForm.sendListDock.SendList_Change(i, Project.param.sendMap[varStr].ToString());
+                                                break;
                                             }
                                         }
                                     }
@@ -416,7 +385,7 @@ namespace FDPort.Class
                         break;
                 }
             }
-            Project.mainForm.commonArea.sendData(vs.ToArray(),port, point);
+            Project.mainForm.commonArea.sendData(vs.ToArray(), port, point);
         }
     }
 }

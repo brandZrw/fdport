@@ -1,4 +1,5 @@
 ﻿using FDPort.Class;
+using FDPort.FieldModuleClass;
 using FDPort.Forms;
 using Newtonsoft.Json;
 using System;
@@ -7,8 +8,6 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FDPort.Controls
@@ -184,7 +183,7 @@ namespace FDPort.Controls
             if (e.RowIndex != -1 && e.ColumnIndex != -1)
             {
                 CmdNew cmd = CmdNew.GetInstance(items.ElementAt(e.RowIndex), e.RowIndex);
-                cmd.pageConfirm += pageConfirm;
+                cmd.pageConfirm = new CmdNew.PageConfirm( pageConfirm);
                 cmd.Show();
             }
         }
@@ -221,17 +220,10 @@ namespace FDPort.Controls
             }
         }
 
-        public void CmdNewPage()
-        {
-            CmdNew cmd = CmdNew.GetInstance();
-            cmd.pageConfirm += pageConfirm;
-            cmd.Show();
-        }
-
-        public void CmdNewPage(int i)
+        public void CmdNewPage(params object[] i)
         {
             CmdNew cmd = CmdNew.GetInstance(i);
-            cmd.pageConfirm += pageConfirm;
+            cmd.pageConfirm = new CmdNew.PageConfirm( pageConfirm);
             cmd.Show();
         }
 

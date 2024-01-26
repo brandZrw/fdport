@@ -1,23 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using FDPort.Class;
-using FDPort.Forms;
 using Newtonsoft.Json;
 
 namespace FDPort.Forms
 {
-    public partial class Protocols : System.Windows.Forms.Form
+    public partial class Protocols : MyForm<Protocols>
     {
-
-
 
         public Protocols()
         {
@@ -37,24 +28,7 @@ namespace FDPort.Forms
             return parsingList;
         }
 
-        #region 一次窗口
-        private static Protocols instance;
-        private static object _lock = new object();
-        public static Protocols GetInstance()
-        {
-            if (instance == null || instance.IsDisposed)
-            {
-                lock (_lock)
-                {
-                    if (instance == null || instance.IsDisposed)
-                    {
-                        instance = new Protocols();
-                    }
-                }
-            }
-            return instance;
-        }
-        #endregion
+        
 
         #region event
         private void parsingList_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
@@ -87,13 +61,13 @@ namespace FDPort.Forms
                 if (e.RowIndex >= Project.param.cmdRecv.Count) // 新增
                 {
                     CmdRecvStruct cmdStruct = CmdRecvStruct.GetInstance();
-                    cmdStruct.itemChanged += ItemChanged;
+                    cmdStruct.itemChanged = new CmdRecvStruct.ItemChanged( ItemChanged);
                     cmdStruct.Show();
                 }
                 else
                 {
                     CmdRecvStruct cmdStruct = CmdRecvStruct.GetInstance(e.RowIndex);
-                    cmdStruct.itemChanged += ItemChanged;
+                    cmdStruct.itemChanged = new CmdRecvStruct.ItemChanged(ItemChanged);
                     cmdStruct.Show();
                 }
             }

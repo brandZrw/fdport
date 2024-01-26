@@ -1,17 +1,12 @@
 ﻿using FDPort.Class;
 using FDPort.Logic;
 using ScottPlot;
-using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace FDPort.DockPanel
@@ -121,8 +116,6 @@ namespace FDPort.DockPanel
             ChartClear();
         }
 
-        
-
         private void copyMenuItem_Click(object sender, EventArgs e) => Clipboard.SetImage(lineChart.Plot.Render());
         private void RightClickMenu_Copy_Click(object sender, EventArgs e) => Clipboard.SetImage(lineChart.Plot.Render());
         private void RightClickMenu_Help_Click(object sender, EventArgs e) => new FormHelp().Show();
@@ -162,14 +155,18 @@ namespace FDPort.DockPanel
             string name="";
             foreach (KeyValuePair<string, PlotPoints> points in plotData)
             {
-                (double X, double Y, int Index) = points.Value.signalPlot.GetPointNearestX(mouseCoordX);
-                double di = Euclidean(X,Y,mouseCoordX,mouseCoordY);
-                if(di < distence)
+                if(points.Value.signalPlot !=null)
                 {
-                    distence = di;
-                    pointY = Y;
-                    name = points.Key;
+                    (double X, double Y, int Index) = points.Value.signalPlot.GetPointNearestX(mouseCoordX);
+                    double di = Euclidean(X, Y, mouseCoordX, mouseCoordY);
+                    if (di < distence)
+                    {
+                        distence = di;
+                        pointY = Y;
+                        name = points.Key;
+                    }
                 }
+                
             }
             if(distence < 9)
             {

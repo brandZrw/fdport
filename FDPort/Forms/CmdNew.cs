@@ -1,24 +1,17 @@
-﻿using FDPort.Class;
-using FDPort.Controls;
+﻿using FDPort.Controls;
+using FDPort.FieldModuleClass;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace FDPort.Forms
 {
-    public partial class CmdNew : DockContent
+    public partial class CmdNew : MyForm<CmdNew>
     {
         List<FieldBaseControl> Cmds = new List<FieldBaseControl>();
         int index = -1;
-        private static CmdNew instance;
-        private static object _lock = new object();
+
         private FieldModule temp = null;
         public delegate void PageConfirm(FieldModule m, int index, FieldModule.CM_Type t);
         public PageConfirm pageConfirm;
@@ -54,52 +47,6 @@ namespace FDPort.Forms
             index = i;
 
         }
-
-        #region 一次窗口
-        public static CmdNew GetInstance()
-        {
-            if (instance == null || instance.IsDisposed)
-            {
-                lock (_lock)
-                {
-                    if (instance == null || instance.IsDisposed)
-                    {
-                        instance = new CmdNew();
-                    }
-                }
-            }
-            return instance;
-        }
-        public static CmdNew GetInstance(int i)
-        {
-            if (instance == null || instance.IsDisposed)
-            {
-                lock (_lock)
-                {
-                    if (instance == null || instance.IsDisposed)
-                    {
-                        instance = new CmdNew(i);
-                    }
-                }
-            }
-            return instance;
-        }
-
-        public static CmdNew GetInstance(FieldModule field, int i)
-        {
-            if (instance == null || instance.IsDisposed)
-            {
-                lock (_lock)
-                {
-                    if (instance == null || instance.IsDisposed)
-                    {
-                        instance = new CmdNew(field,i);
-                    }
-                }
-            }
-            return instance;
-        }
-        #endregion
 
         #region event
         private void cmdTypeChoose_SelectedIndexChanged(object sender, EventArgs e)

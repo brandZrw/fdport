@@ -1,26 +1,16 @@
 ﻿using DynamicExpresso;
 using FDPort.Class;
-using FDPort.Controls;
-using FDPort.Forms;
+using FDPort.FieldModuleClass;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FDPort.Forms
 {
-    public partial class CmdSendStruct : System.Windows.Forms.Form
+    public partial class CmdSendStruct : MyForm<CmdSendStruct>
     {
         public CmdSend item = new CmdSend();
         private int index = -1;
-        private static CmdSendStruct instance;
-        private static object _lock = new object();
-
 
         public CmdSendStruct()
         {
@@ -40,37 +30,6 @@ namespace FDPort.Forms
             autoSend.Checked = item.autoSend;
             autoSendTime.Text = item.sendTime.ToString();
         }
-
-        #region 一次窗口
-        public static CmdSendStruct GetInstance()
-        {
-            if (instance == null || instance.IsDisposed)
-            {
-                lock (_lock)
-                {
-                    if (instance == null || instance.IsDisposed)
-                    {
-                        instance = new CmdSendStruct();
-                    }
-                }
-            }
-            return instance;
-        }
-        public static CmdSendStruct GetInstance(int index)
-        {
-            if (instance == null || instance.IsDisposed)
-            {
-                lock (_lock)
-                {
-                    if (instance == null || instance.IsDisposed)
-                    {
-                        instance = new CmdSendStruct(index);
-                    }
-                }
-            }
-            return instance;
-        }
-        #endregion
 
         #region event
         private void uiButton1_Click(object sender, EventArgs e)
@@ -109,9 +68,8 @@ namespace FDPort.Forms
                 {
                     CmdSend cmd = Project.param.cmdSend.ElementAt(index);
                     bool autoSend = item.autoSend;//记录定时器状态
-                    common.Copyto(item, cmd);
+                    common.CopyTo(item, cmd);
                     cmd.autoSend = autoSend;//防止原来开启定时器的，因为复制之后会关闭定时器，此时开启
-
                     cmdList.Rows[index].Cells[0].Value = cmd.name;
                     cmdList.Rows[index].Cells[2].Value = cmd.autoSend;
                     cmdList.Rows[index].Cells[3].Value = cmd.sendTime;
@@ -169,10 +127,6 @@ namespace FDPort.Forms
             }
         }
 
-        private void cmdDataGridList_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
-        {
-
-        }
         #endregion
     }
 }

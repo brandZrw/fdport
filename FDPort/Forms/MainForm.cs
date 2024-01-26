@@ -1,19 +1,16 @@
 ﻿using FDPort.Class;
 using FDPort.Communication;
 using FDPort.DockPanel;
+using FDPort.FieldModuleClass;
 using FDPort.Logic;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting;
-using System.Xml;
 using WeifenLuo.WinFormsUI.Docking;
 
 
@@ -48,11 +45,13 @@ namespace FDPort.Forms
 
 
             Project.init();
-            parse.DataParsed += DataParseOk;
-           
+            parse.DataBitParsed = new Parse.DataBitParse( DataBitParseOk);
+            parse.DataNotBitParsed = new Parse.DataNotBitParse (DataNotBitParseOk);
             ParamInit();
             chartDock.ChartInit();
             Project.param.sendMap.CollectionChanged += sendListDock.SendMap_CollectionChanged;
+            
+           
             
         }
 
@@ -60,14 +59,13 @@ namespace FDPort.Forms
         {
             commonArea.Show(dockPanel1, DockState.DockBottom);
             chartDock.Show(dockPanel1, DockState.Document);
-
             recListDock.Show(dockPanel1, DockState.DockRight);
-
             sendListDock.Show(recListDock.Pane, DockAlignment.Left, 0.7);
             sendCmdDock.Show(sendListDock.Pane, DockAlignment.Left, 0.6);
             dockPanel1.DockBottomPortion = 0.45;
             dockPanel1.DockRightPortion = 0.5;
         }
+
         private void ParamInit()
         {
             // 参数初始化
@@ -82,6 +80,36 @@ namespace FDPort.Forms
             Project.param.isLittleEndian = false;
             Project.param.portChoose = 0;
             Project.param.addTimestamp = true;
+        }
+
+        /// <summary>
+        /// 非比段类型接收匹配成功
+        /// </summary>
+        /// <param name="name">匹配的字段名</param>
+        void DataNotBitParseOk(FieldModule m)
+        {
+            if (Project.param.recvMap.ContainsKey(m.name))
+            {
+                Project.param.recvMap[m.name].Apply();
+                DataParseOk(m.name);
+            }
+        }
+        /// <summary>
+        /// 比段类型接收匹配成功
+        /// </summary>
+        /// <param name="name">匹配的字段名</param>
+        void DataBitParseOk(FieldModule m)
+        {
+            if (Project.param.recvMap.ContainsKey(m.name))
+            {
+                FieldBit bit = (FieldBit)m;
+                KeyValuePair<string, FieldRecvParam> temp = Project.param.recvMap.FirstOrDefault(t => t.Key.Equals(bit.parent));
+                object tempValue = temp.Value.GetValue();
+                UInt64 res = bit.GetBitValue(Convert.ToDecimal(tempValue));
+                Project.param.recvMap[m.name].tempValue = (decimal)res;
+                Project.param.recvMap[m.name].Apply();//数据更新
+                DataParseOk(m.name);
+            }
         }
         /// <summary>
         /// 接收匹配成功
@@ -478,8 +506,8 @@ namespace FDPort.Forms
 
         private void 端口选择ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewPort newPort = new NewPort();
-            newPort.OnPortOpenOk += NewPort_OnPortOpenOk;
+            NewPort newPort = NewPort.GetInstance();
+            newPort.OnPortOpenOk = new NewPort.PortOpenOkCb( NewPort_OnPortOpenOk);
             newPort.Show();
         }
 

@@ -2,11 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -142,12 +138,16 @@ namespace FDPort.DockPanel
             {
                 Project.mainForm.chartDock.plotData[lastSelectName].signalPlot.IsHighlighted = false;
             }
-            string name = recList.SelectedRows[0].Cells[0].Value.ToString();
-            if (Project.mainForm.chartDock.plotData.ContainsKey(name))
+            if(recList.SelectedRows.Count>0)
             {
-                Project.mainForm.chartDock.plotData[name].signalPlot.IsHighlighted = true;
+                string name = recList.SelectedRows[0].Cells[0].Value.ToString();
+                if (Project.mainForm.chartDock.plotData.ContainsKey(name))
+                {
+                    Project.mainForm.chartDock.plotData[name].signalPlot.IsHighlighted = true;
+                }
+                lastSelectName = name;
             }
-            lastSelectName = name;
+            
         }
         private void recList_SelectionChanged(object sender, EventArgs e)
         {

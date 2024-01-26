@@ -1,26 +1,19 @@
 ﻿using FDPort.Class;
-using FDPort.Controls;
+using FDPort.FieldModuleClass;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FDPort.Forms
 {
-    public partial class CmdRecvStruct : Form
+    public partial class CmdRecvStruct : MyForm<CmdRecvStruct>
     {
         public CmdRecv item = new CmdRecv();
         private int index = -1;
 
         public delegate void ItemChanged(int index, CmdRecv item);
         public ItemChanged itemChanged;
-        private static CmdRecvStruct instance;
-        private static object _lock = new object();
 
         
         public CmdRecvStruct()
@@ -47,37 +40,7 @@ namespace FDPort.Forms
             CmdSendName.Text = item.name;
         }
 
-        #region 一次窗口
-        public static CmdRecvStruct GetInstance()
-        {
-            if (instance == null || instance.IsDisposed)
-            {
-                lock (_lock)
-                {
-                    if (instance == null || instance.IsDisposed)
-                    {
-                        instance = new CmdRecvStruct();
-                    }
-                }
-            }
-            return instance;
-        }
-        public static CmdRecvStruct GetInstance(int index)
-        {
-            if (instance == null || instance.IsDisposed)
-            {
-                lock (_lock)
-                {
-                    if (instance == null || instance.IsDisposed)
-                    {
-                        instance = new CmdRecvStruct(index);
-                    }
-                }
-            }
-            return instance;
-        }
-        #endregion
-
+       
         #region event
         private void AddReply()
         {

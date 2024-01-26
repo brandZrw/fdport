@@ -1,18 +1,12 @@
 ﻿using FDPort.Class;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FDPort.Forms
 {
-    public partial class UnitTest : System.Windows.Forms.Form
+    public partial class UnitTest : MyForm<UartMore>
     {
         
         private ObservableCollection<UnitTestObject> unitTests;
@@ -27,25 +21,6 @@ namespace FDPort.Forms
             }
             fieldTest.DataSource = Project.param.sendMap.Keys.ToArray();
         }
-
-        #region 一次窗口
-        private static UnitTest instance;
-        private static object _lock = new object();
-        public static UnitTest GetInstance(ObservableCollection<UnitTestObject> lists)
-        {
-            if (instance == null || instance.IsDisposed)
-            {
-                lock (_lock)
-                {
-                    if (instance == null || instance.IsDisposed)
-                    {
-                        instance = new UnitTest(lists);
-                    }
-                }
-            }
-            return instance;
-        }
-        #endregion
 
         #region event
         /// <summary>
@@ -165,5 +140,22 @@ namespace FDPort.Forms
         public string cmdName { get; set; }
         public bool enable { get; set; }
         public bool dec { get; set; }
+
+        public decimal cal(ref decimal t)
+        {
+            if (enable) // 单元测试使能
+            {
+                t = dec ? t - step : t + step;
+                if (t > end)
+                {
+                    t = start;
+                }
+                else if (t < start)
+                {
+                    t = end;
+                }
+            }
+            return t;
+        }
     }
 }

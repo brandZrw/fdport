@@ -158,7 +158,10 @@
     <Compile Include="Class\PlotPoints.cs" />
     <Compile Include="Communication\AsyncSocketTCPServer.cs" />
     <Compile Include="Class\common.cs" />
-    <Compile Include="Class\FieldModule.cs" />
+    <Compile Include="FieldModuleClass\FieldBit.cs" />
+    <Compile Include="FieldModuleClass\FieldByte.cs" />
+    <Compile Include="FieldModuleClass\FieldData.cs" />
+    <Compile Include="FieldModuleClass\FieldModule.cs" />
     <Compile Include="Class\Comm.cs" />
     <Compile Include="Class\JsonHelper.cs" />
     <Compile Include="Class\ObservableDictionary.cs" />
@@ -243,6 +246,7 @@
     <Compile Include="DockPanel\SendListDock.Designer.cs">
       <DependentUpon>SendListDock.cs</DependentUpon>
     </Compile>
+    <Compile Include="FieldModuleClass\FieldStatic.cs" />
     <Compile Include="Forms\CmdNew.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -266,6 +270,9 @@
     </Compile>
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MyForm.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\NewPort.cs">
       <SubType>Form</SubType>

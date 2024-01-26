@@ -52,10 +52,8 @@ namespace FDPort.Logic
         /// 设置超时时间，超过这些时间算一帧
         /// </summary>
         /// <param name="t"></param>
-        public void set_timeout(UInt32 t)
-        {
-            timeout = t;
-        }
+        public void set_timeout(UInt32 t)=> timeout = t;
+        
 
         /// <summary>
         /// 接收到数据进行处理

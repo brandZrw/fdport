@@ -4,15 +4,10 @@ using FDPort.Forms;
 using FDPort.Logic;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using static FDPort.Class.AsyncTCPClient;
 
@@ -48,7 +43,7 @@ namespace FDPort.DockPanel
             }
             baudCombo.SelectedIndex = 3;
 
-            Project.mainForm.dataRec.dataDealFunc += recData;
+            Project.mainForm.dataRec.dataDealFunc = new DataRec.DataDealCb(recData);
 
             client.ConnectedChangedEvent += TcpClient_ConnectedChanged;
 

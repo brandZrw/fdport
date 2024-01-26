@@ -1,7 +1,6 @@
 ﻿using FDPort.Class;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
 using System.Net;
@@ -41,14 +40,8 @@ namespace FDPort.Communication
         /// </summary>
         abstract public void Open();
 
-
-        public delegate void DataRecHandler(object sender, PortBase from,byte[] b);
-        public event DataRecHandler DataRecEvent;
-        protected virtual void OnDataRec(object sender, PortBase from,byte[] b)
-        {
-            DataRecEvent?.Invoke(sender,from,b);
-            Project.mainForm.dataRec.Rec(sender,from, b, b.Length);
-        }
+        protected virtual void OnDataRec(object sender, PortBase from, byte[] b) => Project.mainForm.dataRec.Rec(sender, from, b, b.Length);
+        
 
         public string name { get; set; }
         public string param1 { get; set; }
@@ -75,7 +68,6 @@ namespace FDPort.Communication
         public PortSerial()
         {
             port = new SerialPort();
-            
             type = 1;
             port.DataReceived += SerialPort_DataReceived;
         }
@@ -92,7 +84,7 @@ namespace FDPort.Communication
                 }
                 byte[] vs = new byte[len];
                 port.Read(vs, 0, len);
-                OnDataRec(null,this,vs);
+                OnDataRec(null, this, vs);
                 //Project.mainForm.dataRec.Rec(vs, len);
             }
             catch (Exception exp)
@@ -101,25 +93,15 @@ namespace FDPort.Communication
             }
         }
 
-        public override void Write(byte[] b,IPEndPoint point = null)
-        {
-            port.Write(b,0,b.Length);
-        }
+        public override void Write(byte[] b, IPEndPoint point = null) => port.Write(b, 0, b.Length);
 
-        public override bool Connected()
-        {
-            return port==null?false:port.IsOpen;
-        }
+        public override bool Connected() => port == null ? false : port.IsOpen;
 
-        public override void Close()
-        {
-            port?.Close();
-        }
+        public override void Close() => port?.Close();
 
-        public override void Open()
-        {
-            port?.Open();
-        }
+
+        public override void Open() => port?.Open();
+
     }
     public class PortTCPClient : PortBase
     {
@@ -134,102 +116,59 @@ namespace FDPort.Communication
             IPAddress address;
             param1 = iP;
             param2 = port;
-            if( IPAddress.TryParse(iP,out address))
+            if (IPAddress.TryParse(iP, out address))
             {
-                tcpClient = new AsyncTCPClient(address,Convert.ToInt32(port));
+                tcpClient = new AsyncTCPClient(address, Convert.ToInt32(port));
                 name = "client-" + iP.ToString() + ":" + port.ToString();
-                tcpClient.dataReceived += TCP_DataRecv;
+                tcpClient.dataReceived = new AsyncTCPClient.DataReceived(TCP_DataRecv);
                 tcpClient.ConnectedChanged += TcpClient_ConnectedChanged;
             }
         }
-        public PortTCPClient()
-        {
-            type = 2;
-        }
-        private void TcpClient_ConnectedChanged(object sender, AsyncTCPClient.ConnectedChangedArg e)
-        {
-            ConnectedChangedEvent?.Invoke(sender, e);
-        }
+        public PortTCPClient() => type = 2;
+        private void TcpClient_ConnectedChanged(object sender, AsyncTCPClient.ConnectedChangedArg e) => ConnectedChangedEvent?.Invoke(sender, e);
 
-        private void TCP_DataRecv(byte[] vs, int len)
-        {
-            OnDataRec(null, this, vs);
-        }
 
-        public override bool Connected()
-        {
-            return tcpClient==null?false:tcpClient.isConnected;
-        }
+        private void TCP_DataRecv(byte[] vs, int len) => OnDataRec(null, this, vs);
 
-        public override void Write(byte[] b, IPEndPoint iP = null)
-        {
-            tcpClient?.Send(b);
-        }
+        public override bool Connected() => tcpClient == null ? false : tcpClient.isConnected;
 
-        public override void Close()
-        {
-            tcpClient?.Stop();
-        }
+        public override void Write(byte[] b, IPEndPoint iP = null) => tcpClient?.Send(b);
 
-        public override void Open()
-        {
-            tcpClient?.Start();
-        }
+        public override void Close() => tcpClient?.Stop();
+        public override void Open() => tcpClient?.Start();
     }
-    public class PortTCPService:PortBase
+    public class PortTCPService: PortBase
     {
         [JsonIgnore]
         AsyncSocketTCPServer tcpServer;
 
-        public override void SetParam(string ip,string port)
+        public override void SetParam(string ip, string port)
         {
             param1 = ip;
             param2 = port;
             IPAddress address;
-            if(IPAddress.TryParse(ip,out address))
+            if (IPAddress.TryParse(ip, out address))
             {
-                IPEndPoint localEP = new IPEndPoint(address,Convert.ToInt32(port));
+                IPEndPoint localEP = new IPEndPoint(address, Convert.ToInt32(port));
                 tcpServer = new AsyncSocketTCPServer(localEP);
                 name = "service-" + localEP.ToString();
                 tcpServer.DataReceived += TcpServer_DataReceived;
             }
         }
 
-        private void TcpServer_DataReceived(object sender, AsyncSocketEventArgs e)
-        {
-            byte[] b = e._state.recvDataBuffer.Take(e._state.recvLen).ToArray();
-            OnDataRec(e._state.clientSocket.RemoteEndPoint, this,b);
-        }
-        public PortTCPService()
-        {
-            type = 3;
-        }
-        public override bool Connected()
-        {
-            return tcpServer==null?false:tcpServer.isRunning;
-        }
+        private void TcpServer_DataReceived(object sender, AsyncSocketEventArgs e) => OnDataRec(e._state.clientSocket.RemoteEndPoint, this, e._state.recvDataBuffer.Take(e._state.recvLen).ToArray());
 
-        public override void Write(byte[] b,IPEndPoint point = null)
+        public PortTCPService() => type = 3;
+        public override bool Connected() => tcpServer == null ? false : tcpServer.isRunning;
+        public override void Write(byte[] b, IPEndPoint point = null)
         {
-            if(point == null)
-            {
+            if (point == null)
                 tcpServer?.SendAll(b);
-            }
             else
-            {
                 tcpServer?.Send(tcpServer.clients[point], b);
-            }
         }
-
-        public override void Close()
-        {
-            tcpServer?.Stop();
-        }
-
-        public override void Open()
-        {
-            tcpServer?.Start();
-        }
+        public override void Close() => tcpServer?.Stop();
+        public override void Open() => tcpServer?.Start();
     }
-    
+
 }

@@ -1,21 +1,12 @@
 ﻿using FDPort.Class;
 using FDPort.Communication;
-using FDPort.Logic;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static FDPort.Class.AsyncTCPClient;
+
 
 namespace FDPort.Forms
 {
-    public partial class NewPort : Form
+    public partial class NewPort : MyForm<NewPort>
     {
         UartMore um;
         PortSerial serial = new PortSerial();
@@ -23,7 +14,7 @@ namespace FDPort.Forms
         PortTCPService service = new PortTCPService();
 
         public delegate void PortOpenOkCb(PortBase port);
-        public event PortOpenOkCb OnPortOpenOk;
+        public PortOpenOkCb OnPortOpenOk;
 
         public NewPort()
         {

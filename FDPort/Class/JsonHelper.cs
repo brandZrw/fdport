@@ -1,11 +1,8 @@
 ﻿using FDPort.Communication;
+using FDPort.FieldModuleClass;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FDPort.Class
 {
@@ -54,6 +51,10 @@ namespace FDPort.Class
             else if(objectType == typeof(PortBase))
             {
                 var jobj = serializer.Deserialize<JObject>(reader);
+                if(jobj == null)
+                {
+                    return null;
+                }
                 var type = jobj.Value<int>("type");
                 switch (type)
                 {
