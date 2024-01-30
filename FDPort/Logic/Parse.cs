@@ -22,58 +22,64 @@ namespace FDPort.Logic
         /// <param name="data"></param>
         /// <param name="len"></param>
         /// <returns></returns>
-        public int dataParsing(PortBase from,byte[] data, int len, IPEndPoint point)
+        public int dataParsing(PortBase from,byte[] indata, int len, IPEndPoint point)
         {
-
-            foreach (CmdRecv obj in Project.param.cmdRecv)
+            for(int i = 0; i < indata.Length;i++)
             {
-                int index = 0;
-                bool parsed = true;
-
-                // 轮询匹配
-                foreach (FieldModule m in obj.list)
+                byte[] data = indata.Skip(i).ToArray();
+                foreach (CmdRecv obj in Project.param.cmdRecv)
                 {
-                    int useLen = 0;
-                    // 函数的话需要传入整段数据
-                    parsed = m.type == FieldModule.CM_Type.CM_FUNC?m.IsParse(data, ref useLen):m.IsParse(data.Skip(index).ToArray(), ref useLen);
+                    int index = 0;
+                    bool parsed = true;
 
-                    if (parsed == true)//匹配成功
-                    {
-                        index += useLen;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-
-                if (parsed == true && index == len)// 匹配成功且没有多余数组空余
-                {
-                    foreach (FieldModule m in obj.list)// 先更新所有数据
-                    {
-                        if (m.type != FieldModule.CM_Type.CM_BIT)
-                        {
-                            DataNotBitParsed?.Invoke(m);
-                        }
-                    }
-
+                    // 轮询匹配
                     foreach (FieldModule m in obj.list)
                     {
-                        if (m.type == FieldModule.CM_Type.CM_BIT)//更新位域数据
+                        int useLen = 0;
+                        // 函数的话需要传入整段数据
+                        parsed = m.type == FieldModule.CM_Type.CM_FUNC ? m.IsParse(data, ref useLen) : m.IsParse(data.Skip(index).ToArray(), ref useLen);
+
+                        if (parsed == true)//匹配成功
                         {
-                            DataBitParsed?.Invoke(m);
+                            index += useLen;
+                        }
+                        else
+                        {
+                            break;
                         }
                     }
 
-                    // 需要回复
-                    if (obj.needReply)
+                    //if (parsed == true && index + i == len)// 匹配成功且没有多余数组空余
+                    if (parsed == true)
                     {
-                        CmdSend cmd = Project.param.cmdSend.FirstOrDefault(t => t.name.Equals(obj.replyName));
-                        cmd?.Send(common.GetPort(from), point);
-                        
+                        foreach (FieldModule m in obj.list)// 先更新所有数据
+                        {
+                            if (m.type != FieldModule.CM_Type.CM_BIT)
+                            {
+                                DataNotBitParsed?.Invoke(m);
+                            }
+                        }
+
+                        foreach (FieldModule m in obj.list)
+                        {
+                            if (m.type == FieldModule.CM_Type.CM_BIT)//更新位域数据
+                            {
+                                DataBitParsed?.Invoke(m);
+                            }
+                        }
+
+                        // 需要回复
+                        if (obj.needReply)
+                        {
+                            CmdSend cmd = Project.param.cmdSend.FirstOrDefault(t => t.name.Equals(obj.replyName));
+                            cmd?.Send(common.GetPort(from), point);
+
+                        }
+                        return index + i;
                     }
                 }
             }
+            
             return 0;
         }
     }

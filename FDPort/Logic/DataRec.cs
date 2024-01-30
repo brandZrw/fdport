@@ -10,7 +10,7 @@ namespace FDPort.Logic
         System.Threading.Timer timer;
         public DateTime dtLast;
         public bool needDeal;
-        public byte[] dataCache;
+        public List<byte> dataCache = new List<byte>();
         public PortBase from;
         public IPEndPoint point;
         private DataRec parent;
@@ -25,11 +25,18 @@ namespace FDPort.Logic
                     if (ts.TotalMilliseconds >= parent.timeout)
                     {
                         needDeal = false;
+                        int? len;
                         if (dataCache != null)
                         {
-                            parent.dataDealFunc?.Invoke(from, dataCache, dataCache.Length, point);
-                            dataCache = null;
-
+                            do
+                            {
+                                len = parent.dataDealFunc?.Invoke(from, dataCache.ToArray(), dataCache.Count, point);
+                                if (len != null && len > 0)
+                                {
+                                    dataCache = dataCache.GetRange((int)len, dataCache.Count - (int)len);
+                                }
+                            } while (len != null && len > 0);
+                            
                         }
                     }
                 }
@@ -74,17 +81,18 @@ namespace FDPort.Logic
             map[from].from = from;
             map[from].needDeal = true;
             map[from].dtLast = DateTime.Now;
-            if (map[from].dataCache == null)
-            {
-                map[from].dataCache = data;
-            }
-            else
-            {
-                byte[] temp = new byte[map[from].dataCache.Length + len];
-                map[from].dataCache.CopyTo(temp, 0);
-                data.CopyTo(temp, map[from].dataCache.Length);
-                map[from].dataCache = temp;//包拼接
-            }
+            map[from].dataCache.AddRange(data);
+            //if (map[from].dataCache == null)
+            //{
+            //    map[from].dataCache = data;
+            //}
+            //else
+            //{
+            //    byte[] temp = new byte[map[from].dataCache.Length + len];
+            //    map[from].dataCache.CopyTo(temp, 0);
+            //    data.CopyTo(temp, map[from].dataCache.Length);
+            //    map[from].dataCache = temp;//包拼接
+            //}
         }
     }
 }

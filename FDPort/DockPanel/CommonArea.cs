@@ -6,8 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Management;
 using System.Net;
 using System.Text;
+using System.Threading;
+using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using static FDPort.Class.AsyncTCPClient;
 
@@ -19,6 +22,7 @@ namespace FDPort.DockPanel
         public StreamWriter sw;
         UartMore um;
         public bool needSave = false; // 是否需要保存数据
+        static USB USBWatcher = new USB();
 
         PortSerial serial = new PortSerial();
         PortTCPClient client = new PortTCPClient();
@@ -58,6 +62,8 @@ namespace FDPort.DockPanel
             serPort.DataBindings.Add("Text", Project.param, "sPort");
             recBox.textBox.ReadOnly = true;
             Project.param.portNow = serial;
+
+            USBWatcher.AddUSBEventWatcher(USBEventHandler, USBEventHandler, new TimeSpan(0, 0, 1));
         }
 
         public void ShowCommType(int type)
@@ -234,30 +240,47 @@ namespace FDPort.DockPanel
         #endregion
 
         #region 串口相关
+
+        private void USBEventHandler(Object sender, EventArrivedEventArgs e)
+        {
+            //暂未实现
+            var watcher = sender as ManagementEventWatcher;
+            watcher.Stop();
+            //刷新设备信息
+            //RefreshDevice();
+            if (e.NewEvent.ClassPath.ClassName == "__InstanceCreationEvent")
+            {
+
+                FreshComList();
+
+                //  m_notificationWindowApp.AddNotification((string)this.TryFindResource("USBDeviceTips"), (string)this.TryFindResource("NewUSBDevice"));
+            }
+            else if (e.NewEvent.ClassPath.ClassName == "__InstanceDeletionEvent")
+            {
+
+                FreshComList();
+                Console.WriteLine("USB 设备拔出 \n");
+                Console.WriteLine("关闭串口  +++++ \n");
+                //_serialPort.Close();
+
+                // _serialPort.Open()
+
+                // _serialPort.Close();
+
+
+                //m_notificationWindowApp.AddNotification((string)this.TryFindResource("USBDeviceTips"), (string)this.TryFindResource("USBDeviceDisconnected"));
+            }
+            //Default_USBConnctionObj();
+            /// Toolbar_AvailableCheck();
+            // 业务代码，逻辑耗时尽量不要太长，以免影响事件的监听
+            watcher.Start();
+        }
+
         public void FreshComList()
         {
-            string selectStr = cmbPort.Text;
+
             string[] str = common.GetComList();
-            cmbPort.Items.Clear();
-            for (int i = 0; i < str.Length; i++)
-            {
-                cmbPort.Items.Add(str[i]);
-            }
-            if (cmbPort.Items.Contains(selectStr) == false)
-            {
-                if (cmbPort.Items.Count > 0)
-                {
-                    cmbPort.SelectedIndex = 0;
-                }
-                else
-                {
-                    cmbPort.SelectedIndex = -1;
-                }
-            }
-            else
-            {
-                cmbPort.Text = selectStr;
-            }
+            UIControl.FreshCom(cmbPort,str);
         }
         private void cmbPort_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -346,6 +369,8 @@ namespace FDPort.DockPanel
                 UIControl.SetText(uiButton5, "连接");
             }
         }
+
+       
         #endregion
 
         #region TCP服务端

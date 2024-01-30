@@ -116,6 +116,7 @@
     <Reference Include="System.Drawing.Common, Version=4.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Drawing.Common.4.7.2\lib\net461\System.Drawing.Common.dll</HintPath>
     </Reference>
+    <Reference Include="System.Management" />
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -158,6 +159,7 @@
     <Compile Include="Class\PlotPoints.cs" />
     <Compile Include="Communication\AsyncSocketTCPServer.cs" />
     <Compile Include="Class\common.cs" />
+    <Compile Include="Communication\USBControllerDevice.cs" />
     <Compile Include="FieldModuleClass\FieldBit.cs" />
     <Compile Include="FieldModuleClass\FieldByte.cs" />
     <Compile Include="FieldModuleClass\FieldData.cs" />

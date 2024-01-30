@@ -136,7 +136,13 @@ namespace FDPort.FieldModuleClass
             }
             if (byteType == CM_BYTE_TYPE.CM_BYTE_STRING)
             {
-                string str = common.Byte2String(b, len, out useLen);
+                string str;
+                bool parse = false;
+                (str,parse) = common.Byte2String(b, len, out useLen);
+                if(parse == false)
+                {
+                    return false;
+                }
                 if (Project.param.recvMap.ContainsKey(this.name))
                 {
                     Project.param.recvMap[this.name].tempValue = str;

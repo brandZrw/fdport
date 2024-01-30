@@ -97,8 +97,9 @@ namespace FDPort.Class
             }
         }
 
-        public static string Byte2String(byte[] bytes, int len, out int useLen)
+        public static (string,bool) Byte2String(byte[] bytes, int len, out int useLen)
         {
+            bool parse = false;
             if (len == 0)
             {
                 int index = 0;
@@ -106,17 +107,18 @@ namespace FDPort.Class
                 for (int i = 0; i < bytes.Length; i++)
                 {
                     index++;
-                    if (bytes[i] != 0)
+                    if (bytes[i] != 0 && bytes[i] != '\r' && bytes[i] != '\n')
                     {
                         ls.Add(bytes[i]);
                     }
                     else
                     {
+                        parse = true;
                         break;
                     }
                 }
                 useLen = index;
-                return System.Text.Encoding.UTF8.GetString(ls.ToArray());
+                return (System.Text.Encoding.UTF8.GetString(ls.ToArray()),parse);
             }
             else
             {
@@ -129,11 +131,12 @@ namespace FDPort.Class
                     }
                     else
                     {
+                        parse = true;
                         break;
                     }
                 }
                 useLen = len;
-                return System.Text.Encoding.UTF8.GetString(ls.ToArray());
+                return (System.Text.Encoding.UTF8.GetString(ls.ToArray()), parse);
             }
 
         }

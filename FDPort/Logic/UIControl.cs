@@ -12,6 +12,46 @@ namespace FDPort.Logic
 {
     class UIControl
     {
+
+        private delegate void FreshComDelegate(ComboBox cmbPort, string[] value);
+        static public void FreshCom(ComboBox cmbPort, string[] value)
+        {
+            if (cmbPort == null)
+            {
+                return;
+            }
+            if (cmbPort.InvokeRequired)//判断是否跨线程请求
+            {
+                FreshComDelegate myDelegate = new FreshComDelegate(FreshCom);
+                cmbPort.Invoke(myDelegate, cmbPort, value);
+            }
+            else
+            {
+                string selectStr = cmbPort.Text;
+                string[] str = value;
+                cmbPort.Items.Clear();
+                for (int i = 0; i < str.Length; i++)
+                {
+                    cmbPort.Items.Add(str[i]);
+                }
+                if (cmbPort.Items.Contains(selectStr) == false)
+                {
+                    if (cmbPort.Items.Count > 0)
+                    {
+                        cmbPort.SelectedIndex = 0;
+                    }
+                    else
+                    {
+                        cmbPort.SelectedIndex = -1;
+                    }
+                }
+                else
+                {
+                    cmbPort.Text = selectStr;
+                }
+            }
+        }
+
         private delegate void SetTextDelegate(Control txtInfo, string value);
         static public void SetText(Control txtInfo, string value)
         {
