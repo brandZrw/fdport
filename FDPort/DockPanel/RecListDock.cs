@@ -78,6 +78,14 @@ namespace FDPort.DockPanel
         {
             if (e.ColumnIndex == 2)// 改数值
             {
+                if(Project.param.recvMap.ContainsKey(Project.param.showRecMap.ElementAt(e.RowIndex)))
+                {
+                   if( Project.param.recvMap[Project.param.showRecMap.ElementAt(e.RowIndex)].objValue.GetType().Equals(typeof( string)))
+                   {
+                        MessageBox.Show("字符串类型无法设置曲线");
+                        return;
+                   }
+                }
                 if ((bool)recList.Rows[e.RowIndex].Cells[2].EditedFormattedValue == false)
                 {
                     //选中改为不选中

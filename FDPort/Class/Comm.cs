@@ -16,7 +16,7 @@ namespace FDPort.Class
     /// </summary>
     public class FieldRecvParam
     {
-        private CM_BYTE_TYPE valueType { get; set; }
+        public CM_BYTE_TYPE valueType { get; set; }
         public bool isShow { get; set; }
         public object objValue { get; set; }
         public object tempValue { get; set; }

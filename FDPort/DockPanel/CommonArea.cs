@@ -53,13 +53,13 @@ namespace FDPort.DockPanel
 
             // 数据绑定
 
-            cmbPort.DataBindings.Add("Text", Project.param, "com");
-            baudCombo.DataBindings.Add("Text", Project.param, "baud");
-            tcpTimeout.DataBindings.Add("Text", Project.param, "timeout");
-            tcpCliIP.DataBindings.Add("Text", Project.param, "cIP");
-            tcpCliPort.DataBindings.Add("Text", Project.param, "cPort");
-            serIP.DataBindings.Add("Text", Project.param, "sIP");
-            serPort.DataBindings.Add("Text", Project.param, "sPort");
+            //cmbPort.DataBindings.Add("Text", Project.param, "com");
+            //baudCombo.DataBindings.Add("Text", Project.param, "baud");
+            //tcpTimeout.DataBindings.Add("Text", Project.param, "timeout");
+            //tcpCliIP.DataBindings.Add("Text", Project.param, "cIP");
+            //tcpCliPort.DataBindings.Add("Text", Project.param, "cPort");
+            //serIP.DataBindings.Add("Text", Project.param, "sIP");
+            //serPort.DataBindings.Add("Text", Project.param, "sPort");
             recBox.textBox.ReadOnly = true;
             Project.param.portNow = serial;
 
@@ -402,6 +402,5 @@ namespace FDPort.DockPanel
         }
 
         #endregion
-
     }
 }
