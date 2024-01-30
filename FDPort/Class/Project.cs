@@ -182,7 +182,7 @@ next:
         public static ProjectParam param { get => _param; set { _param = value; } }
         public static ScriptEngine pyEngine;
         public static ScriptScope scope;
-        public static string Version = "V1.0.2";
+        public static string Version = "V1.0.3";
         public static void init()
         {
             pyEngine = Python.CreateEngine();//创建Python解释器对象
