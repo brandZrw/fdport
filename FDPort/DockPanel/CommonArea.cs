@@ -152,6 +152,10 @@ namespace FDPort.DockPanel
         }
         private int recData(PortBase from,byte[] vs, int len,IPEndPoint point)
         {
+            if(len == 0)
+            {
+                return 0;
+            }
             string bs = common.ByteArrayToString(vs, len);
             StringBuilder sb = new StringBuilder();
             if (!string.IsNullOrEmpty(UIControl.GetText(recBox.textBox)))
@@ -278,7 +282,6 @@ namespace FDPort.DockPanel
 
         public void FreshComList()
         {
-
             string[] str = common.GetComList();
             UIControl.FreshCom(cmbPort,str);
         }

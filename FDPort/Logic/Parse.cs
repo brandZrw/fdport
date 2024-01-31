@@ -24,6 +24,10 @@ namespace FDPort.Logic
         /// <returns></returns>
         public int dataParsing(PortBase from,byte[] indata, int len, IPEndPoint point)
         {
+            if(Project.param.cmdRecv.Count == 0)//没有接收协议就全部抛弃
+            {
+                return len;
+            }
             for(int i = 0; i < indata.Length;i++)
             {
                 byte[] data = indata.Skip(i).ToArray();

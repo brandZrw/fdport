@@ -238,7 +238,6 @@ next:
                     new JsonFieldModule()
                 }
             };
-
             try
             {
                 param = (ProjectParam)JsonConvert.DeserializeObject(File.ReadAllText(t), typeof(ProjectParam), setting);
@@ -248,7 +247,6 @@ next:
                 ProjectParamOldVersion type = (ProjectParamOldVersion)JsonConvert.DeserializeObject(File.ReadAllText(t), typeof(ProjectParamOldVersion), setting);
                 param = type.ToParam();
             }
-            
         }
 
         public static void Save(string t)

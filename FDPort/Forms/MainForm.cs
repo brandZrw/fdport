@@ -50,9 +50,6 @@ namespace FDPort.Forms
             ParamInit();
             chartDock.ChartInit();
             Project.param.sendMap.CollectionChanged += sendListDock.SendMap_CollectionChanged;
-            
-           
-            
         }
 
         private void DockInit()

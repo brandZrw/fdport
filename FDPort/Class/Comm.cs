@@ -278,7 +278,6 @@ namespace FDPort.Class
 
             }
         }
-
         public System.Windows.Forms.Timer cmdTimer { get; set; }
         public CmdSend()
         {
@@ -295,7 +294,13 @@ namespace FDPort.Class
             }
             cmdTimer.Start();
         }
-
+        private void RangeAdd(List<byte> vs,byte[] b)
+        {
+            if (b != null)
+            {
+                vs.AddRange(b);
+            }
+        }
         public void Send(PortBase port, IPEndPoint point = null)//发送该条命令
         {
             List<byte> vs = new List<byte>();
@@ -308,10 +313,7 @@ namespace FDPort.Class
                         break;
                     case FieldModule.CM_Type.CM_BYTE:
                         b = field.Value2List(field.Value2List(Project.param.sendMap.ContainsKey(field.name) ? Project.param.sendMap[field.name] : (object)((UInt64)0)));
-                        if (b != null)
-                        {
-                            vs.AddRange(b);
-                        }
+                        RangeAdd(vs,b);
                         break;
                     case FieldModule.CM_Type.CM_DATA:
                         FieldData data = (FieldData)field;
@@ -321,7 +323,7 @@ namespace FDPort.Class
                             var interpreter = new Interpreter();
                             var variable = interpreter.DetectIdentifiers(((FieldData)field).link);
                             List<Parameter> param = new List<Parameter>();
-                            foreach (string varStr in variable.UnknownIdentifiers)
+                            foreach (string varStr in variable.UnknownIdentifiers)// 存在变量
                             {
                                 if (Project.param.sendMap.ContainsKey(varStr))
                                 {
@@ -331,6 +333,7 @@ namespace FDPort.Class
                                     {
                                         temp.cal(ref t);
                                         Project.param.sendMap[varStr].SetValue(t);
+
                                         for (int i = 0; i < Project.param.sendMap.Keys.Count; i++)
                                         {
                                             if (Project.param.sendMap.Keys.ElementAt(i).Equals(varStr))
@@ -362,26 +365,16 @@ namespace FDPort.Class
                             {
                                 b = field.Value2List(Project.param.recvMap[((FieldData)field).link].GetValue());
                             }
-
                         }
-                        if (b != null)
-                        {
-                            vs.AddRange(b);
-                        }
+                        RangeAdd(vs, b);
                         break;
                     case FieldModule.CM_Type.CM_FUNC:
                         b = ((FieldFunc)field).Value2List(vs.ToArray());
-                        if (b != null)
-                        {
-                            vs.AddRange(b);
-                        }
+                        RangeAdd(vs, b);
                         break;
                     case FieldModule.CM_Type.CM_STATIC:
                         b = field.Value2List(null);
-                        if (b != null)
-                        {
-                            vs.AddRange(b);
-                        }
+                        RangeAdd(vs, b);
                         break;
                 }
             }

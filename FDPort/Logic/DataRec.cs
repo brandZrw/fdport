@@ -35,7 +35,7 @@ namespace FDPort.Logic
                                 {
                                     dataCache = dataCache.GetRange((int)len, dataCache.Count - (int)len);
                                 }
-                            } while (len != null && len > 0);
+                            } while (len != null && len > 0 && dataCache.Count > 0);
                             
                         }
                     }
