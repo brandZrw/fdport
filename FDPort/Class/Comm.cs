@@ -4,8 +4,10 @@ using FDPort.FieldModuleClass;
 using FDPort.Forms;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using static FDPort.FieldModuleClass.FieldByte;
 
 namespace FDPort.Class
@@ -237,6 +239,18 @@ namespace FDPort.Class
         public string replyName { get; set; }
     }
 
+    public class CmdSendQueueObj
+    {
+        public CmdSend cmd;
+        public PortBase port;
+        public IPEndPoint point = null;
+        public CmdSendQueueObj(CmdSend a,PortBase b,IPEndPoint c)
+        {
+            cmd = a;
+            port = b;
+            point = c;
+        }
+    }
     public class CmdSend : CmdItem
     {
         private bool _autoSend;
@@ -247,16 +261,21 @@ namespace FDPort.Class
             set
             {
                 _autoSend = value;
-                if (_autoSend)
-                {
-                    cmdTimer.Enabled = true;
-                    cmdTimer.Start();
-                }
-                else
-                {
-                    cmdTimer.Enabled = false;
-                    cmdTimer.Stop();
-                }
+            }
+        }
+
+        public void SetAutoSend(bool enable)
+        {
+            _autoSend = enable;
+            if (_autoSend)
+            {
+                cmdTimer.Enabled = true;
+                cmdTimer.Start();
+            }
+            else
+            {
+                cmdTimer.Enabled = false;
+                cmdTimer.Stop();
             }
         }
 
@@ -275,9 +294,9 @@ namespace FDPort.Class
                 {
                     cmdTimer.Interval = value;
                 }
-
             }
         }
+
         public System.Windows.Forms.Timer cmdTimer { get; set; }
         public CmdSend()
         {
@@ -303,6 +322,32 @@ namespace FDPort.Class
         }
         public void Send(PortBase port, IPEndPoint point = null)//发送该条命令
         {
+           Project.mainForm.commonArea.AddSendCmd(new CmdSendQueueObj(this, port, point));
+        }
+
+
+        private decimal UnitTestDo(string varStr)
+        {
+            decimal t = Project.param.sendMap[varStr].GetNumValue();
+            UnitTestObject temp = Project.param.unitTests.FirstOrDefault(v => v.cmdName.Equals(varStr));
+            if (temp != null)//存在单元测试
+            {
+                temp.cal(ref t);
+                Project.param.sendMap[varStr].SetValue(t);
+
+                for (int i = 0; i < Project.param.sendMap.Keys.Count; i++)
+                {
+                    if (Project.param.sendMap.Keys.ElementAt(i).Equals(varStr))
+                    {
+                        Project.mainForm.sendListDock.SendList_Change(i, Project.param.sendMap[varStr].ToString());
+                        break;
+                    }
+                }
+            }
+            return t;
+        }
+        public void SendDo(PortBase port, IPEndPoint point = null)//发送该条命令
+        {
             List<byte> vs = new List<byte>();
             foreach (FieldModule field in list)
             {
@@ -313,7 +358,7 @@ namespace FDPort.Class
                         break;
                     case FieldModule.CM_Type.CM_BYTE:
                         b = field.Value2List(field.Value2List(Project.param.sendMap.ContainsKey(field.name) ? Project.param.sendMap[field.name] : (object)((UInt64)0)));
-                        RangeAdd(vs,b);
+                        RangeAdd(vs, b);
                         break;
                     case FieldModule.CM_Type.CM_DATA:
                         FieldData data = (FieldData)field;
@@ -327,23 +372,7 @@ namespace FDPort.Class
                             {
                                 if (Project.param.sendMap.ContainsKey(varStr))
                                 {
-                                    decimal t = Project.param.sendMap[varStr].GetNumValue();
-                                    UnitTestObject temp = Project.param.unitTests.FirstOrDefault(v => v.cmdName.Equals(varStr));
-                                    if (temp != null)//存在单元测试
-                                    {
-                                        temp.cal(ref t);
-                                        Project.param.sendMap[varStr].SetValue(t);
-
-                                        for (int i = 0; i < Project.param.sendMap.Keys.Count; i++)
-                                        {
-                                            if (Project.param.sendMap.Keys.ElementAt(i).Equals(varStr))
-                                            {
-                                                Project.mainForm.sendListDock.SendList_Change(i, Project.param.sendMap[varStr].ToString());
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    param.Add(new Parameter(varStr, t));
+                                    param.Add(new Parameter(varStr, UnitTestDo(varStr)));
                                 }
                                 else if (Project.param.recvMap.ContainsKey(varStr))
                                 {
@@ -378,7 +407,8 @@ namespace FDPort.Class
                         break;
                 }
             }
-            Project.mainForm.commonArea.sendData(vs.ToArray(), port, point);
+            Project.mainForm.commonArea.SendData(vs.ToArray(), port, point);
+
         }
     }
 }

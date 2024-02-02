@@ -149,6 +149,7 @@ namespace FDPort.DockPanel
         {
             // determine point nearest the cursor
             (double mouseCoordX, double mouseCoordY) = lineChart.GetMouseCoordinates();
+            
             double pointY = 0;
             double distence = double.MaxValue;
             Point mouseLocation = e.Location;
@@ -158,7 +159,9 @@ namespace FDPort.DockPanel
                 if(points.Value.signalPlot !=null)
                 {
                     (double X, double Y, int Index) = points.Value.signalPlot.GetPointNearestX(mouseCoordX);
-                    double di = Euclidean(X, Y, mouseCoordX, mouseCoordY);
+                    (float xPixel, float yPiexel) = lineChart.Plot.GetPixel(X, Y);
+                    double di = Euclidean(xPixel, yPiexel, e.X, e.Y);
+                    
                     if (di < distence)
                     {
                         distence = di;
@@ -168,7 +171,7 @@ namespace FDPort.DockPanel
                 }
                 
             }
-            if(distence < 9)
+            if(distence < 160)
             {
                 mouseLocation.Y += label1.Height;
                 mouseLocation.X += 16;

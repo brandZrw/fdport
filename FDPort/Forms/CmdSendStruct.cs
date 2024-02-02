@@ -62,6 +62,7 @@ namespace FDPort.Forms
                 if (index == -1)
                 {
                     Project.param.cmdSend.Add(item);
+                    item.SetAutoSend(item.autoSend);
                     cmdList.Rows.Add(item.name, null, item.autoSend, item.sendTime);
                 }
                 else
@@ -69,7 +70,7 @@ namespace FDPort.Forms
                     CmdSend cmd = Project.param.cmdSend.ElementAt(index);
                     bool autoSend = item.autoSend;//记录定时器状态
                     common.CopyTo(item, cmd);
-                    cmd.autoSend = autoSend;//防止原来开启定时器的，因为复制之后会关闭定时器，此时开启
+                    cmd.SetAutoSend(autoSend);
                     cmdList.Rows[index].Cells[0].Value = cmd.name;
                     cmdList.Rows[index].Cells[2].Value = cmd.autoSend;
                     cmdList.Rows[index].Cells[3].Value = cmd.sendTime;
@@ -90,7 +91,6 @@ namespace FDPort.Forms
                                 Project.param.sendMap.Add(varStr, temp);
                             }
                         }
-
                     }
                 }
             }

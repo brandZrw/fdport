@@ -100,7 +100,10 @@ namespace FDPort.DockPanel
             {
                 //说明点击的列是DataGridViewButtonColumn列
                 cmdList.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = !(bool)cmdList.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
-                Project.param.cmdSend[e.RowIndex].autoSend = (bool)cmdList.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+                Project.param.cmdSend[e.RowIndex].SetAutoSend( (bool)cmdList.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+                
+
+
             }
         }
         private void cmdList_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)

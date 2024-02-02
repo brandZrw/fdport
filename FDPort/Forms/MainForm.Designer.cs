@@ -47,6 +47,8 @@ namespace FDPort.Forms
             this.大小端ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.高位在前ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.低位在前ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripTextBox2 = new System.Windows.Forms.ToolStripTextBox();
             this.图像配置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.添加时间戳ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.还原界面ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -170,7 +172,8 @@ namespace FDPort.Forms
             // 
             this.协议配置ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.接收协议ToolStripMenuItem,
-            this.大小端ToolStripMenuItem});
+            this.大小端ToolStripMenuItem,
+            this.toolStripMenuItem1});
             this.协议配置ToolStripMenuItem.Name = "协议配置ToolStripMenuItem";
             this.协议配置ToolStripMenuItem.Size = new System.Drawing.Size(83, 30);
             this.协议配置ToolStripMenuItem.Text = "协议配置";
@@ -178,7 +181,7 @@ namespace FDPort.Forms
             // 接收协议ToolStripMenuItem
             // 
             this.接收协议ToolStripMenuItem.Name = "接收协议ToolStripMenuItem";
-            this.接收协议ToolStripMenuItem.Size = new System.Drawing.Size(152, 26);
+            this.接收协议ToolStripMenuItem.Size = new System.Drawing.Size(197, 26);
             this.接收协议ToolStripMenuItem.Text = "接收协议";
             this.接收协议ToolStripMenuItem.Click += new System.EventHandler(this.接收协议ToolStripMenuItem_Click);
             // 
@@ -188,7 +191,7 @@ namespace FDPort.Forms
             this.高位在前ToolStripMenuItem,
             this.低位在前ToolStripMenuItem});
             this.大小端ToolStripMenuItem.Name = "大小端ToolStripMenuItem";
-            this.大小端ToolStripMenuItem.Size = new System.Drawing.Size(152, 26);
+            this.大小端ToolStripMenuItem.Size = new System.Drawing.Size(197, 26);
             this.大小端ToolStripMenuItem.Text = "大小端";
             // 
             // 高位在前ToolStripMenuItem
@@ -204,6 +207,22 @@ namespace FDPort.Forms
             this.低位在前ToolStripMenuItem.Name = "低位在前ToolStripMenuItem";
             this.低位在前ToolStripMenuItem.Size = new System.Drawing.Size(152, 26);
             this.低位在前ToolStripMenuItem.Text = "低位在前";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripTextBox2});
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(197, 26);
+            this.toolStripMenuItem1.Text = "接收缓存最大值";
+            // 
+            // toolStripTextBox2
+            // 
+            this.toolStripTextBox2.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F);
+            this.toolStripTextBox2.Name = "toolStripTextBox2";
+            this.toolStripTextBox2.Size = new System.Drawing.Size(100, 27);
+            this.toolStripTextBox2.Text = "1024";
+            this.toolStripTextBox2.TextChanged += new System.EventHandler(this.toolStripTextBox2_TextChanged);
             // 
             // 图像配置ToolStripMenuItem
             // 
@@ -344,5 +363,7 @@ namespace FDPort.Forms
         private System.Windows.Forms.ToolStripMenuItem 端口选择ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 是否转发ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 还原界面ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripTextBox toolStripTextBox2;
     }
 }

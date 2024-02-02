@@ -27,9 +27,23 @@ namespace FDPort.Forms
         public SendCmdDock sendCmdDock;
         public SendListDock sendListDock;
         public ChartDock chartDock;
+        ThreadQueue<DataRecOkQueueObj> dataRecOKThread;
 
+        public class DataRecOkQueueObj
+        {
+            public string name;
+            public string showValue;
+            public bool isShow;
+            public decimal? point;
+            public DataRecOkQueueObj(string a,string v,bool b,decimal? c)
+            {
+                name = a;
+                showValue = v;
+                isShow = b;
+                point = c;
+            }
+        }
         private DeserializeDockContent deserializeDockContent;
-
         public MainForm()
         {
             InitializeComponent();
@@ -50,6 +64,7 @@ namespace FDPort.Forms
             ParamInit();
             chartDock.ChartInit();
             Project.param.sendMap.CollectionChanged += sendListDock.SendMap_CollectionChanged;
+            dataRecOKThread = new ThreadQueue<DataRecOkQueueObj>(DataParseOKDeal);
         }
 
         private void DockInit()
@@ -74,6 +89,7 @@ namespace FDPort.Forms
             Project.param.cPort = "9000";
             Project.param.sIP = "127.0.0.1";
             Project.param.sPort = "9000";
+            Project.param.DataCacheLen = 1024;
             Project.param.isLittleEndian = false;
             Project.param.portChoose = 0;
             Project.param.addTimestamp = true;
@@ -88,7 +104,14 @@ namespace FDPort.Forms
             if (Project.param.recvMap.ContainsKey(m.name))
             {
                 Project.param.recvMap[m.name].Apply();
-                DataParseOk(m.name);
+                if (Project.param.recvMap[m.name].isShow)
+                {
+                    DataParseOk(m.name, Project.param.recvMap[m.name].ShowValue(), Project.param.recvMap[m.name].isShow, Convert.ToDecimal(Project.param.recvMap[m.name].GetValue()));
+                }
+                else
+                {
+                    DataParseOk(m.name, Project.param.recvMap[m.name].ShowValue(), Project.param.recvMap[m.name].isShow);
+                }
             }
         }
         /// <summary>
@@ -105,32 +128,54 @@ namespace FDPort.Forms
                 UInt64 res = bit.GetBitValue(Convert.ToDecimal(tempValue));
                 Project.param.recvMap[m.name].tempValue = (decimal)res;
                 Project.param.recvMap[m.name].Apply();//数据更新
-                DataParseOk(m.name);
+                if(Project.param.recvMap[m.name].isShow)
+                {
+                    DataParseOk(m.name, Project.param.recvMap[m.name].ShowValue(), Project.param.recvMap[m.name].isShow, Convert.ToDecimal(Project.param.recvMap[m.name].GetValue()));
+                }
+                else
+                {
+                    DataParseOk(m.name, Project.param.recvMap[m.name].ShowValue(), Project.param.recvMap[m.name].isShow);
+                }
+            }
+        }
+
+        delegate void DataParseOKDelegate(string s, string showValue, bool isShow, decimal? point);
+        
+        void DataParseOKDeal(DataRecOkQueueObj t)
+        {
+            //if (InvokeRequired)
+            //{
+            //    DataParseOKDelegate myDelegate = new DataParseOKDelegate(DataParseOk);
+            //    this.Invoke(myDelegate, t.name, t.showValue, t.isShow, t.point);
+            //}
+            //else
+            {
+                foreach (DataGridViewRow row in recListDock.recList.Rows)
+                {
+                    if (row.Cells[0].Value != null && row.Cells[0].Value.ToString() == t.name)
+                    {
+                        //row.Cells[1].Value = rec.ShowValue();
+                        row.Cells[1].Value = t.showValue;
+                        if (t.isShow)
+                        {
+                            chartDock.ChartAddSeries(t.name);
+                        }
+                        if (chartDock.plotData.ContainsKey(t.name))
+                        {
+                            UIControl.AddSeriesPoint(chartDock.lineChart, chartDock.plotData, t.name, (decimal)t.point);
+                        }
+
+                    }
+                }
             }
         }
         /// <summary>
         /// 接收匹配成功
         /// </summary>
         /// <param name="name">匹配的字段名</param>
-        void DataParseOk(string name)
+        void DataParseOk(string name,string showValue,bool isShow,decimal? point =null)
         {
-            FieldRecvParam rec = Project.param.recvMap[name];
-            foreach (DataGridViewRow row in recListDock.recList.Rows)
-            {
-                if (row.Cells[0].Value != null && row.Cells[0].Value.ToString() == name)
-                {
-                    row.Cells[1].Value = rec.ShowValue();
-                    if(rec.isShow)
-                    {
-                          chartDock.ChartAddSeries(name);
-                    }
-                    if(chartDock.plotData.ContainsKey(name))
-                    {
-                        UIControl.AddSeriesPoint(chartDock.lineChart, chartDock.plotData, name, Convert.ToDecimal(rec.GetValue()));
-                    }
-
-                }
-            }
+            dataRecOKThread.Add(new DataRecOkQueueObj(name,showValue,isShow,point));
         }
 
         #region 参数操作
@@ -162,7 +207,7 @@ namespace FDPort.Forms
             dialog.Filter = "FDPort(*.FDPort)|*.FDPort";
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                commonArea.close();
+                commonArea.ClosePort();
                 loadParam(dialog.FileName);
                 
                 Project.param.sendMap.CollectionChanged -= sendListDock.SendMap_CollectionChanged;
@@ -225,6 +270,7 @@ namespace FDPort.Forms
             高位在前ToolStripMenuItem.Checked = !Project.param.isLittleEndian;
             低位在前ToolStripMenuItem.Checked = Project.param.isLittleEndian;
             添加时间戳ToolStripMenuItem.Checked = Project.param.addTimestamp;
+            toolStripTextBox2.Text = Project.param.DataCacheLen.ToString();
 
             commonArea.AreaTextFresh();// 更新各个端口的文字
 
@@ -396,7 +442,10 @@ namespace FDPort.Forms
         {
             try
             {
-                commonArea.close();
+                dataRec.Close();
+                dataRecOKThread.Close();
+                commonArea.CloseSend();
+                commonArea.ClosePort();
             }
             catch (Exception exp)
             {
@@ -541,8 +590,20 @@ namespace FDPort.Forms
         {
             DockInit();
         }
+
         #endregion
 
-
+        private void toolStripTextBox2_TextChanged(object sender, EventArgs e)
+        {
+            int len = 0;
+            if(int.TryParse( toolStripTextBox2.Text,out len))
+            {
+                Project.param.DataCacheLen = len;
+            }
+            else
+            {
+                MessageBox.Show("请输入整数");
+            }
+        }
     }
 }

@@ -97,7 +97,14 @@ namespace FDPort.Communication
 
         public override bool Connected() => port == null ? false : port.IsOpen;
 
-        public override void Close() => port?.Close();
+        public override void Close()
+        {
+            new Task(() =>
+            {
+                port?.Close();
+            }).Start();
+           
+        }
 
 
         public override void Open() => port?.Open();
@@ -156,16 +163,25 @@ namespace FDPort.Communication
             }
         }
 
-        private void TcpServer_DataReceived(object sender, AsyncSocketEventArgs e) => OnDataRec(e._state.clientSocket.RemoteEndPoint, this, e._state.recvDataBuffer.Take(e._state.recvLen).ToArray());
+        private void TcpServer_DataReceived(object sender, AsyncSocketEventArgs e)=>OnDataRec(e._state.clientSocket.RemoteEndPoint, this, common.SubBuffer(e._state.recvDataBuffer, e._state.recvLen));
+        
 
         public PortTCPService() => type = 3;
         public override bool Connected() => tcpServer == null ? false : tcpServer.isRunning;
         public override void Write(byte[] b, IPEndPoint point = null)
         {
             if (point == null)
+            {
                 tcpServer?.SendAll(b);
+            }
             else
-                tcpServer?.Send(tcpServer.clients[point], b);
+            {
+                if(tcpServer.clients.ContainsKey(point))
+                {
+                    tcpServer?.Send(tcpServer.clients[point], b);
+                }
+            }
+                
         }
         public override void Close() => tcpServer?.Stop();
         public override void Open() => tcpServer?.Start();

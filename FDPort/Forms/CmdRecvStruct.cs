@@ -40,7 +40,6 @@ namespace FDPort.Forms
             CmdSendName.Text = item.name;
         }
 
-       
         #region event
         private void AddReply()
         {

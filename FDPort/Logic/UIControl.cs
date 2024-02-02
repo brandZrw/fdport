@@ -200,15 +200,15 @@ namespace FDPort.Logic
                 {
                     min = max - 1;
                 }
-                a.Plot.YAxis.SetBoundary(min: min, max: max);
+                a.Plot.YAxis.SetBoundary(min: min-10, max: max+10);
 
                 if (plot[x].Count < PlotPoints.maxPointShow)
                 {
-                    a.Plot.XAxis.SetBoundary(min: PlotPoints.maxPointShow - plot[x].Count-1, max: PlotPoints.maxPointShow);
+                    a.Plot.XAxis.SetBoundary(min: PlotPoints.maxPointShow - plot[x].Count-1-1, max: PlotPoints.maxPointShow+1);
                 }
                 else
                 {
-                    a.Plot.XAxis.SetBoundary(min: 0, max: PlotPoints.maxPointShow);
+                    a.Plot.XAxis.SetBoundary(min: -1, max: PlotPoints.maxPointShow+1);
                 }
 
                 a.Refresh();

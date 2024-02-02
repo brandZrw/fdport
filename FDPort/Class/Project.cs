@@ -61,6 +61,7 @@ namespace FDPort.Class
         public bool needForwarding { get; set; }
         public PortBase portForwarding { get; set; }
         public PortBase portNow { get; set; }
+        public int DataCacheLen { get; set; }
         #endregion
     }
 
@@ -140,6 +141,7 @@ namespace FDPort.Class
             temp.sIP = sIP;
             temp.sPort = sPort;
             temp.timeout = timeout;
+            temp.DataCacheLen = 1024;
             foreach (KeyValuePair<string, FieldRecvParam> t in recvMap)
             {
                 foreach (CmdRecv cmd in temp.cmdRecv)
@@ -182,7 +184,7 @@ next:
         public static ProjectParam param { get => _param; set { _param = value; } }
         public static ScriptEngine pyEngine;
         public static ScriptScope scope;
-        public static string Version = "V1.0.3";
+        public static string Version = "V1.0.4";
         public static void init()
         {
             pyEngine = Python.CreateEngine();//创建Python解释器对象
@@ -246,6 +248,10 @@ next:
             {
                 ProjectParamOldVersion type = (ProjectParamOldVersion)JsonConvert.DeserializeObject(File.ReadAllText(t), typeof(ProjectParamOldVersion), setting);
                 param = type.ToParam();
+            }
+            if(param.DataCacheLen == 0)
+            {
+                param.DataCacheLen = 1024;
             }
         }
 

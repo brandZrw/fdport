@@ -156,22 +156,22 @@ namespace FDPort.FieldModuleClass
                     switch (byteType)
                     {
                         case CM_BYTE_TYPE.CM_BYTE_UINT:
-                            Project.param.recvMap[this.name].tempValue = (UInt64)List2Value(b.Take(len).ToArray());
+                            Project.param.recvMap[this.name].tempValue = BitConverter.ToUInt64(ByteArrChangeLen(common.SubBuffer(b, len), sizeof(UInt64),true), 0);
                             break;
                         case CM_BYTE_TYPE.CM_BYTE_INT8:
-                            Project.param.recvMap[this.name].tempValue = (byte)List2Value(b.Take(len).ToArray());
+                            Project.param.recvMap[this.name].tempValue = b[0];
                             break;
                         case CM_BYTE_TYPE.CM_BYTE_INT16:
-                            Project.param.recvMap[this.name].tempValue = (Int16)List2Value(b.Take(len).ToArray());
+                            Project.param.recvMap[this.name].tempValue = BitConverter.ToInt16(ByteArrChangeLen(common.SubBuffer(b, len), sizeof(Int16), true), 0);
                             break;
                         case CM_BYTE_TYPE.CM_BYTE_INT32:
-                            Project.param.recvMap[this.name].tempValue = (Int32)List2Value(b.Take(len).ToArray());
+                            Project.param.recvMap[this.name].tempValue = BitConverter.ToInt32(ByteArrChangeLen(common.SubBuffer(b, len), sizeof(Int32), true), 0);
                             break;
                         case CM_BYTE_TYPE.CM_BYTE_INT64:
-                            Project.param.recvMap[this.name].tempValue = (Int64)List2Value(b.Take(len).ToArray());
+                            Project.param.recvMap[this.name].tempValue = BitConverter.ToInt64(ByteArrChangeLen(common.SubBuffer(b, len), sizeof(Int64), true), 0);
                             break;
                         case CM_BYTE_TYPE.CM_BYTE_DOUBLE:
-                            Project.param.recvMap[this.name].tempValue = Convert.ToDecimal((double)List2Value(b.Take(len).ToArray()));
+                            Project.param.recvMap[this.name].tempValue = Convert.ToDecimal(BitConverter.ToDouble(ByteArrChangeLen(common.SubBuffer(b, len), sizeof(Double), true), 0));
                             break;
                     }
                 }

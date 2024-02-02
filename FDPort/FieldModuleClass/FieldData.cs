@@ -1,6 +1,7 @@
 ﻿using FDPort.Class;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -42,40 +43,41 @@ namespace FDPort.FieldModuleClass
             }
             else
             {
-                vs = System.Text.Encoding.UTF8.GetBytes((string)v.ToString());
-                List<byte> ls = new List<byte>(vs);
-                ls.Add(0);
-                if (len == 0) // 长度为0时直接返回字符串数组
-                {
-                    return ls.ToArray();
-                }
-                else
-                {
-                    if (ls.Count >= len)
-                    {
-                        return ls.Take(len).ToArray();
-                    }
-                    else
-                    {
-                        byte[] temp = new byte[len];
-                        ls.CopyTo(temp, 0);
-                        return temp;
-                    }
-                }
+                vs = common.String2Byte(v.ToString(),len);
             }
             return vs;
         }
 
         public override bool IsParse(byte[] b, ref int useLen, byte[] vs = null)
         {
+            
             useLen = len;
             object res = calc(link);
+            byte[] s = null;
 
-            byte[] s = Value2List(res.ToString());
+            if (dataType == DataType.NUM)
+            {
+                decimal t = (decimal)res;
+                Int64 temp = decimal.ToInt64(t);
+                if (temp == t)//整数
+                {
+                    s = CopyTo(BitConverter.GetBytes(temp));
+                }
+                else
+                {
+                    s = CopyTo(BitConverter.GetBytes(Decimal.ToDouble(t)));
+                }
+            }
+            else
+            {
+                s = common.String2Byte(res.ToString(),len);
+            }
             if (s != null)
             {
-                return common.ByteEquals(b, s);
+                bool re = common.ByteEquals(b, s);
+                return re;
             }
+            
             return false;
 
         }

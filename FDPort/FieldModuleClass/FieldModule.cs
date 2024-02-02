@@ -3,6 +3,7 @@ using FDPort.Class;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -44,14 +45,24 @@ namespace FDPort.FieldModuleClass
         {
             return false;
         }
-
-        /// <summary>
-        /// 计算表达式
-        /// </summary>
-        /// <param name="link"></param>
-        /// <returns></returns>
-        public object calc(string link)
+        public object GetLink(string link)
         {
+            decimal value = 0;
+            if (decimal.TryParse(link, out value)) // 如果是数字直接返回
+            {
+                return value;
+            }
+            if (Project.param.sendMap.ContainsKey(link)) // 如果不需要计算就直接返回
+            {
+                return Project.param.sendMap[link].GetNumValue();
+            }
+            else
+            {
+                if (Project.param.recvMap.ContainsKey(link))
+                {
+                    return Project.param.recvMap[link].GetValue();
+                }
+            }
             var interpreter = new Interpreter();
             var variable = interpreter.DetectIdentifiers(link);
             List<Parameter> param = new List<Parameter>();
@@ -66,12 +77,21 @@ namespace FDPort.FieldModuleClass
                     if (Project.param.recvMap.ContainsKey(varStr))
                     {
                         FieldRecvParam l = Project.param.recvMap[varStr];
-                        param.Add(new Parameter(varStr, l.GetValue())) ;
+                        param.Add(new Parameter(varStr, l.GetValue()));
                     }
                 }
             }
-
             object res = interpreter.Eval(link, param.ToArray());
+            return res;
+        }
+        /// <summary>
+        /// 计算表达式
+        /// </summary>
+        /// <param name="link"></param>
+        /// <returns></returns>
+        public object calc(string link)
+        {
+            object res = GetLink(link);
             if (res.GetType().Equals(typeof(bool)))
             {
                 res = res.Equals(true) ? 1 : 0;
@@ -110,7 +130,7 @@ namespace FDPort.FieldModuleClass
             }
             else
             {
-                t = m.Take(len).ToArray(); // 截取小数组
+                t = common.SubBuffer(m,len);
             }
 
 
@@ -128,7 +148,6 @@ namespace FDPort.FieldModuleClass
                     Array.Reverse(t);
                 }
             }
-
             return t;
         }
 
@@ -158,27 +177,12 @@ namespace FDPort.FieldModuleClass
         public object returnValue { get; set; }
         public object run(byte[] b)
         {
-            List<string> temp = new List<string>();
-            foreach (string t in funcParam)
+            string[] temp = new string[funcParam.Length];
+            for (int i = 0; i < funcParam.Length; i++)
             {
-                //if(common.IsNumeric(t))
-                //{
-                //    temp.Add(t);
-                //}
-                //else
-                //{
-                //    if( Project.param.sendMap.ContainsKey(t))
-                //    {
-                //        temp.Add(Project.param.sendMap[t].ToString());
-                //    }
-                //    else if(Project.param.recvMap.ContainsKey(t))
-                //    {
-                //        temp.Add(Project.param.recvMap[t].ShowValue());
-                //    }
-                //}
-                temp.Add(calc(t).ToString());
+                temp[i] = calc(funcParam[i]).ToString();
             }
-            return Project.RunPython("function\\" + funcName + ".py", b, temp.ToArray());
+            return Project.RunPython("function\\" + funcName + ".py", b, temp);
         }
         public override object List2Value(byte[] t)
         {
@@ -204,7 +208,9 @@ namespace FDPort.FieldModuleClass
             {
                 return false;
             }
-            return true;
+            byte[] t = common.Object2Bytes(returnValue);
+            return common.ByteEquals(CopyTo(t), vs);
+            //return true;
         }
         public override string ToString()
         {

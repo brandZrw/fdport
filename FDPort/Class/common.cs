@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
@@ -76,25 +78,28 @@ namespace FDPort.Class
         public static byte[] String2Byte(string str, int len)
         {
             byte[] decBytes = System.Text.Encoding.UTF8.GetBytes(str);
-            List<byte> ls = new List<byte>(decBytes);
-            ls.Add(0);//添加尾部的0
-            if (len == 0)
+            
+            if (len == 0 || len == decBytes.Length + 1)
             {
-                return ls.ToArray();
+                byte[] srcBytes = new byte[decBytes.Length + 1];
+                decBytes.CopyTo(srcBytes, 0);
+                srcBytes[decBytes.Length] = 0;
+                return srcBytes;
             }
             else
             {
-                if (len <= ls.Count)
+                if (len < decBytes.Length + 1)
                 {
-                    return ls.Take(len).ToArray();
+                    return common.SubBuffer(decBytes,len);
                 }
                 else
                 {
                     byte[] vs = new byte[len];
-                    ls.CopyTo(vs, 0);
+                    decBytes.CopyTo(vs, 0);
                     return vs;
                 }
             }
+
         }
 
         public static (string,bool) Byte2String(byte[] bytes, int len, out int useLen)
@@ -145,20 +150,20 @@ namespace FDPort.Class
             decimal t = 0;
             return decimal.TryParse(text, out t);
         }
-        public static bool ByteEquals(byte[] src, byte[] dsr)
+        [DllImport("msvcrt.dll",CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]   // 需要使用的dll名称
+        private static extern unsafe int memcmp(byte* b1, byte* b2, int count);
+        public static unsafe bool ByteEquals(byte[] src, byte[] dsr)
         {
             if (src.Length < dsr.Length)
             {
                 return false;
             }
-            for (int i = 0; i < dsr.Length; i++)
+            fixed (byte* x = src, y = dsr)
             {
-                if (dsr[i] != src[i])
-                {
-                    return false;
-                }
+                return memcmp(x, y, dsr.Length) == 0;
             }
-            return true;
+                
+
         }
 
         /// <summary>
@@ -168,14 +173,21 @@ namespace FDPort.Class
         /// <returns>转换后byte数组</returns>
         public static byte[] Object2Bytes(object obj)
         {
-            byte[] buff;
-            using (MemoryStream ms = new MemoryStream())
+            
+            unsafe
             {
-                IFormatter iFormatter = new BinaryFormatter();
-                iFormatter.Serialize(ms, obj);
-                buff = ms.GetBuffer();
+                //Stopwatch watch = new Stopwatch();
+                //watch.Start();
+                int len = Marshal.SizeOf(obj);
+                byte[] buff = new byte[len];
+                fixed (byte* arrPtr = buff)
+                {
+                    Marshal.StructureToPtr(obj, (IntPtr)arrPtr, true);
+                }
+                //watch.Stop();
+                //Console.WriteLine(watch.Elapsed.TotalMilliseconds);
+                return buff;
             }
-            return buff;
         }
 
         /// <summary>
@@ -255,6 +267,32 @@ namespace FDPort.Class
             }
             return null;
 
+        }
+
+        /// <summary>
+        /// 截取byte数组的一段数据
+        /// </summary>
+        /// <param name="vs"></param>
+        /// <param name="len"></param>
+        /// <returns></returns>
+        public static byte[] SubBuffer(byte[] vs,int len)
+        {
+            byte[] outVs = new byte[len];
+            Buffer.BlockCopy(vs,0,outVs,0, vs.Length>len?len:vs.Length);
+            return outVs;
+        }
+
+        public static byte[] SkipBuffer(byte[] vs,int index)
+        {
+            int len = vs.Length - index;
+            byte[] outVs = new byte[len];
+            Buffer.BlockCopy(vs, index, outVs, 0, len);
+            return outVs;
+        }
+
+        public static bool isInteger(decimal bigDecimal)
+        {
+            return bigDecimal == Math.Truncate(bigDecimal);
         }
     }
 }

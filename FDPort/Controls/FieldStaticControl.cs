@@ -18,7 +18,7 @@ namespace FDPort.Controls
             cmdStaticIsString.Checked = cmd.isString;
             if (cmd.isString)
             {
-                cmdStaticValue.Text = System.Text.Encoding.UTF8.GetString(cmd.array.ToArray());
+                cmdStaticValue.Text = System.Text.Encoding.UTF8.GetString(cmd.array);
             }
             else
             {
@@ -44,19 +44,19 @@ namespace FDPort.Controls
                 {
                     string t = cmdStaticValue.Text;
                     cmd.len = t.Length;
-                    cmd.array = new List<byte>(System.Text.Encoding.UTF8.GetBytes(t));
+                    cmd.array = System.Text.Encoding.UTF8.GetBytes(t);
                 }
                 else
                 {
                     Regex r = new Regex(@"\s{1,}", RegexOptions.IgnoreCase);
                     string t = r.Replace(cmdStaticValue.Text.Trim(), " ").Trim();
                     string[] vs = t.Split();
-                    cmd.array = new List<byte>();
-                    foreach (string s in vs)
+                    cmd.array = new byte[vs.Length];
+                    for(int i = 0; i < vs.Length;i++)
                     {
-                        cmd.array.Add(Convert.ToByte(s, 16));
+                        cmd.array[i] = Convert.ToByte(vs[i], 16);
                     }
-                    cmd.len = cmd.array.Count;
+                    cmd.len = cmd.array.Length;
                 }
                 return cmd;
             }

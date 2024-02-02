@@ -39,6 +39,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -48,6 +49,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>430E71EB40C0B7ABAC7805D57753A9229C995C40</ManifestCertificateThumbprint>
@@ -157,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class\PlotPoints.cs" />
+    <Compile Include="Class\ThreadQueue.cs" />
     <Compile Include="Communication\AsyncSocketTCPServer.cs" />
     <Compile Include="Class\common.cs" />
     <Compile Include="Communication\USBControllerDevice.cs" />

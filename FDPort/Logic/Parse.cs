@@ -5,6 +5,8 @@ using FDPort.Class;
 using FDPort.Communication;
 using System.Net;
 using FDPort.FieldModuleClass;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace FDPort.Logic
 {
@@ -28,9 +30,10 @@ namespace FDPort.Logic
             {
                 return len;
             }
+            
             for(int i = 0; i < indata.Length;i++)
             {
-                byte[] data = indata.Skip(i).ToArray();
+                byte[] data = common.SkipBuffer(indata,i);
                 foreach (CmdRecv obj in Project.param.cmdRecv)
                 {
                     int index = 0;
@@ -39,10 +42,12 @@ namespace FDPort.Logic
                     // 轮询匹配
                     foreach (FieldModule m in obj.list)
                     {
-                        int useLen = 0;
-                        // 函数的话需要传入整段数据
-                        parsed = m.type == FieldModule.CM_Type.CM_FUNC ? m.IsParse(data, ref useLen) : m.IsParse(data.Skip(index).ToArray(), ref useLen);
 
+                        int useLen = 0;
+
+                        // 函数的话需要传入整段数据
+                        parsed = m.type == FieldModule.CM_Type.CM_FUNC ? m.IsParse(data, ref useLen, common.SkipBuffer(data, index)) : m.IsParse(common.SkipBuffer(data, index), ref useLen );
+    
                         if (parsed == true)//匹配成功
                         {
                             index += useLen;
@@ -71,13 +76,11 @@ namespace FDPort.Logic
                                 DataBitParsed?.Invoke(m);
                             }
                         }
-
                         // 需要回复
                         if (obj.needReply)
                         {
                             CmdSend cmd = Project.param.cmdSend.FirstOrDefault(t => t.name.Equals(obj.replyName));
                             cmd?.Send(common.GetPort(from), point);
-
                         }
                         return index + i;
                     }

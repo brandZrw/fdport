@@ -1,5 +1,7 @@
 ﻿using FDPort.Class;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace FDPort.FieldModuleClass
@@ -10,21 +12,21 @@ namespace FDPort.FieldModuleClass
     public class FieldStatic : FieldModule
     {
         public bool isString { get; set; }
-        private List<byte> _array = new List<byte>();
-        public List<byte> array { get => _array; set { _array = value; } }
+        private byte[] _array = new byte[0];
+        public byte[] array { get => _array; set { _array = value; } }
         public override object List2Value(byte[] t)
         {
             return array;
         }
         public override byte[] Value2List(object v)
         {
-            return array.ToArray();
+            return array;
         }
         public override bool IsParse(byte[] b, ref int useLen, byte[] vs = null)
         {
-            if (common.ByteEquals(b, array.ToArray()))
+            if (common.ByteEquals(b, array))
             {
-                useLen = array.Count;
+                useLen = array.Length;
                 return true;
             }
             else
@@ -39,7 +41,7 @@ namespace FDPort.FieldModuleClass
             StringBuilder sb = new StringBuilder("固定字符:");
             if (isString)
             {
-                sb.Append(System.Text.Encoding.UTF8.GetString(array.ToArray()));
+                sb.Append(System.Text.Encoding.UTF8.GetString(array));
             }
             else
             {

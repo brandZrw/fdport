@@ -3,7 +3,9 @@ using FDPort.Communication;
 using FDPort.Forms;
 using FDPort.Logic;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Management;
@@ -22,6 +24,8 @@ namespace FDPort.DockPanel
         public StreamWriter sw;
         UartMore um;
         public bool needSave = false; // 是否需要保存数据
+        private ThreadQueue<CmdSendQueueObj> sendThread;
+        private ThreadQueue<RecBoxUpdate> recBoxThread;
         static USB USBWatcher = new USB();
 
         PortSerial serial = new PortSerial();
@@ -47,7 +51,8 @@ namespace FDPort.DockPanel
             }
             baudCombo.SelectedIndex = 3;
 
-            Project.mainForm.dataRec.dataDealFunc = new DataRec.DataDealCb(recData);
+            Project.mainForm.dataRec.dataDealFunc = new DataRec.DataDealCb(RecDataDeal);
+            Project.mainForm.dataRec.dataRecFunc = new DataRec.DataRecCb(RecData);
 
             client.ConnectedChangedEvent += TcpClient_ConnectedChanged;
 
@@ -64,8 +69,19 @@ namespace FDPort.DockPanel
             Project.param.portNow = serial;
 
             USBWatcher.AddUSBEventWatcher(USBEventHandler, USBEventHandler, new TimeSpan(0, 0, 1));
+            sendThread = new ThreadQueue<CmdSendQueueObj>(SendThread);
+            recBoxThread = new ThreadQueue<RecBoxUpdate>(RecBoxUpdateThread);
         }
-
+        public class RecBoxUpdate
+        {
+            public byte[] vs;
+            public bool isRec;
+            public RecBoxUpdate(byte[] a, bool rec)
+            {
+                vs = a;
+                isRec = rec;
+            }
+        }
         public void ShowCommType(int type)
         {
             switch (type)
@@ -95,14 +111,34 @@ namespace FDPort.DockPanel
         {
             cmbPort.Text = Project.param.com;
             baudCombo.Text = Project.param.baud;
-            tcpTimeout.Text = Project.param.timeout;
             tcpCliIP.Text = Project.param.cIP;
             tcpCliPort.Text = Project.param.cPort;
             serIP.Text = Project.param.sIP;
             serPort.Text = Project.param.sPort;
         }
 
-        public void close()
+        public void AddSendCmd(CmdSendQueueObj obj)
+        {
+            sendThread.Add(obj);
+        }
+
+        public void AddRecBoxText(byte[] vs,bool isRec)
+        {
+            recBoxThread.Add(new RecBoxUpdate(vs, isRec));
+        }
+        /// <summary>
+        /// 关闭发送队列
+        /// </summary>
+        public void CloseSend()
+        {
+            recBoxThread.Close();
+            sendThread.Close();
+        }
+
+        /// <summary>
+        /// 关闭端口
+        /// </summary>
+        public void ClosePort()
         {
             service.Close();
             client.Close();
@@ -115,8 +151,11 @@ namespace FDPort.DockPanel
 
         #region 数据交换
 
-
-        void writeFile(string data)
+        void SendThread(CmdSendQueueObj item)
+        {
+            item.cmd.SendDo(item.port, item.point);
+        }
+        void WriteFile(string data)
         {
             sw.Write(data);
         }
@@ -124,54 +163,23 @@ namespace FDPort.DockPanel
         /// 发送数据
         /// </summary>
         /// <param name="vs"></param>
-        public void sendData(byte[] vs,PortBase port,IPEndPoint point = null)
+        public void SendData(byte[] vs,PortBase port,IPEndPoint point = null)
         {
-
             port?.Write(vs, point);
-            
 
-            string bs = common.ByteArrayToString(vs, vs.Length);
-            StringBuilder sb = new StringBuilder();
-            if (!string.IsNullOrEmpty(UIControl.GetText(recBox.textBox)))
-            {
-                sb.AppendLine();
-            }
-            if (Project.param.addTimestamp) // 启用时间戳
-            {
-                sb.Append(DateTime.Now.ToString("HH:mm:ss.fff"));
-            }
-            sb.Append("发:");
-            sb.Append(bs);
-            
-            UIControl.AddRichTextBoxValue(recBox.textBox, sb.ToString(),Color.Black);//发送窗口显示
-            if (needSave)
-            {
-                writeFile(sb.ToString());
-            }
-
+            AddRecBoxText(vs, false);
         }
-        private int recData(PortBase from,byte[] vs, int len,IPEndPoint point)
+
+        private int RecData(PortBase from, byte[] vs, int len, IPEndPoint point)
+        {
+            AddRecBoxText(vs, true);
+            return 0;
+        }
+        private int RecDataDeal(PortBase from,byte[] vs, int len,IPEndPoint point)
         {
             if(len == 0)
             {
                 return 0;
-            }
-            string bs = common.ByteArrayToString(vs, len);
-            StringBuilder sb = new StringBuilder();
-            if (!string.IsNullOrEmpty(UIControl.GetText(recBox.textBox)))
-            {
-                sb.AppendLine();
-            }
-            if (Project.param.addTimestamp)
-            {
-                sb.Append(DateTime.Now.ToString("HH:mm:ss.fff"));
-            }
-            sb.Append("收:");
-            sb.Append(bs);
-            UIControl.AddRichTextBoxValue(recBox.textBox, sb.ToString(),Color.Green);
-            if (needSave)
-            {
-               writeFile(sb.ToString());
             }
 
             return Project.mainForm.parse.dataParsing(from,vs, len, point);
@@ -181,6 +189,43 @@ namespace FDPort.DockPanel
         #endregion
 
         #region event
+
+        void RecBoxUpdateThread(RecBoxUpdate item)
+        {
+            string bs = common.ByteArrayToString(item.vs, item.vs.Length);
+            StringBuilder sb = new StringBuilder();
+            if (!string.IsNullOrEmpty(UIControl.GetText(recBox.textBox)))
+            {
+                sb.AppendLine();
+            }
+            if (Project.param.addTimestamp) // 启用时间戳
+            {
+                sb.Append(DateTime.Now.ToString("HH:mm:ss.fff "));
+            }
+            if (item.isRec)///接收更新
+            {
+                sb.Append("收:");
+                sb.Append(bs);
+                UIControl.AddRichTextBoxValue(recBox.textBox, sb.ToString(), Color.Green);
+                if (needSave)
+                {
+                    WriteFile(sb.ToString());
+                }
+            }
+            else
+            {
+                   
+                sb.Append("发:");
+                sb.Append(bs);
+
+                UIControl.AddRichTextBoxValue(recBox.textBox, sb.ToString(), Color.Black);//发送窗口显示
+                if (needSave)
+                {
+                    WriteFile(sb.ToString());
+                }
+            }
+            
+        }
         private void sendBox_ButtonClick(object sender, EventArgs e)
         {
             string hex = sendBox.textBox.Text.Trim(' ');
@@ -211,7 +256,7 @@ namespace FDPort.DockPanel
                     }
                     
                 }
-                sendData(bs.ToArray(),Project.param.needForwarding?Project.param.portForwarding:Project.param.portNow);
+                SendData(bs.ToArray(),Project.param.needForwarding?Project.param.portForwarding:Project.param.portNow);
             }
             catch (Exception exp)
             {
@@ -222,24 +267,6 @@ namespace FDPort.DockPanel
         private void recBox_ButtonClick(object sender, EventArgs e)
         {
             UIControl.ClearRichTextBoxValue(recBox.textBox);
-        }
-
-        /// <summary>
-        /// 超时时间
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void tcpTimeout_TextChanged(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(tcpTimeout.Text))
-            {
-                return;
-            }
-            uint temp = 20;
-            if(UInt32.TryParse(tcpTimeout.Text,out temp))
-            {
-                Project.mainForm.dataRec.set_timeout(temp);
-            }
         }
         #endregion
 

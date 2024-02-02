@@ -171,7 +171,7 @@ namespace FDPort.Class
         private void ReadData(byte[] bytes, int offset, int length)
         {
             //在此处理接收到的数据
-            dataReceived?.Invoke(bytes.Take(length).ToArray(), length);
+            dataReceived?.Invoke(common.SubBuffer(bytes,length), length);
         }
         public void Stop()
         {

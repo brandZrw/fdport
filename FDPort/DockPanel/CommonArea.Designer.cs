@@ -32,7 +32,7 @@ namespace FDPort.DockPanel
         private void InitializeComponent()
         {
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer4 = new System.Windows.Forms.Panel();
             this.serialPanel = new System.Windows.Forms.Panel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
@@ -55,9 +55,6 @@ namespace FDPort.DockPanel
             this.uiLabel4 = new System.Windows.Forms.Label();
             this.tcpCliPort = new System.Windows.Forms.TextBox();
             this.uiButton5 = new System.Windows.Forms.Button();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tcpTimeout = new System.Windows.Forms.TextBox();
-            this.uiLabel5 = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.sendBox = new FDPort.Controls.TitleTextBox();
             this.recBox = new FDPort.Controls.TitleTextBox();
@@ -65,9 +62,6 @@ namespace FDPort.DockPanel
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
-            this.splitContainer4.Panel1.SuspendLayout();
-            this.splitContainer4.Panel2.SuspendLayout();
             this.splitContainer4.SuspendLayout();
             this.serialPanel.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -75,7 +69,6 @@ namespace FDPort.DockPanel
             this.tableLayoutPanel3.SuspendLayout();
             this.socketCliPanel.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -102,26 +95,14 @@ namespace FDPort.DockPanel
             // 
             // splitContainer4
             // 
+            this.splitContainer4.Controls.Add(this.serialPanel);
+            this.splitContainer4.Controls.Add(this.socketSerPanel);
+            this.splitContainer4.Controls.Add(this.socketCliPanel);
             this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer4.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer4.IsSplitterFixed = true;
             this.splitContainer4.Location = new System.Drawing.Point(0, 0);
             this.splitContainer4.Margin = new System.Windows.Forms.Padding(0);
             this.splitContainer4.Name = "splitContainer4";
-            this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer4.Panel1
-            // 
-            this.splitContainer4.Panel1.Controls.Add(this.serialPanel);
-            this.splitContainer4.Panel1.Controls.Add(this.socketSerPanel);
-            this.splitContainer4.Panel1.Controls.Add(this.socketCliPanel);
-            // 
-            // splitContainer4.Panel2
-            // 
-            this.splitContainer4.Panel2.Controls.Add(this.tableLayoutPanel1);
             this.splitContainer4.Size = new System.Drawing.Size(140, 226);
-            this.splitContainer4.SplitterDistance = 150;
-            this.splitContainer4.SplitterWidth = 1;
             this.splitContainer4.TabIndex = 7;
             // 
             // serialPanel
@@ -131,7 +112,7 @@ namespace FDPort.DockPanel
             this.serialPanel.Location = new System.Drawing.Point(0, 0);
             this.serialPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.serialPanel.Name = "serialPanel";
-            this.serialPanel.Size = new System.Drawing.Size(140, 150);
+            this.serialPanel.Size = new System.Drawing.Size(140, 226);
             this.serialPanel.TabIndex = 12;
             // 
             // tableLayoutPanel4
@@ -159,14 +140,13 @@ namespace FDPort.DockPanel
             this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 5;
+            this.tableLayoutPanel4.RowCount = 4;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(140, 150);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(140, 226);
             this.tableLayoutPanel4.TabIndex = 13;
             // 
             // label1
@@ -177,7 +157,7 @@ namespace FDPort.DockPanel
             this.label1.Location = new System.Drawing.Point(4, 29);
             this.label1.Margin = new System.Windows.Forms.Padding(4);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(47, 22);
+            this.label1.Size = new System.Drawing.Size(47, 52);
             this.label1.TabIndex = 1;
             this.label1.Text = "端口号";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -188,7 +168,7 @@ namespace FDPort.DockPanel
             this.uart_more.Cursor = System.Windows.Forms.Cursors.Hand;
             this.uart_more.Dock = System.Windows.Forms.DockStyle.Top;
             this.uart_more.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.uart_more.Location = new System.Drawing.Point(0, 85);
+            this.uart_more.Location = new System.Drawing.Point(0, 145);
             this.uart_more.Margin = new System.Windows.Forms.Padding(0);
             this.uart_more.MinimumSize = new System.Drawing.Size(1, 1);
             this.uart_more.Name = "uart_more";
@@ -202,10 +182,10 @@ namespace FDPort.DockPanel
             this.label2.AutoSize = true;
             this.tableLayoutPanel4.SetColumnSpan(this.label2, 5);
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label2.Location = new System.Drawing.Point(4, 59);
+            this.label2.Location = new System.Drawing.Point(4, 89);
             this.label2.Margin = new System.Windows.Forms.Padding(4);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(47, 22);
+            this.label2.Size = new System.Drawing.Size(47, 52);
             this.label2.TabIndex = 2;
             this.label2.Text = "波特率";
             this.label2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -243,7 +223,7 @@ namespace FDPort.DockPanel
             "115200",
             "128000",
             "256000"});
-            this.baudCombo.Location = new System.Drawing.Point(59, 59);
+            this.baudCombo.Location = new System.Drawing.Point(59, 89);
             this.baudCombo.Margin = new System.Windows.Forms.Padding(4);
             this.baudCombo.MinimumSize = new System.Drawing.Size(43, 0);
             this.baudCombo.Name = "baudCombo";
@@ -257,11 +237,11 @@ namespace FDPort.DockPanel
             this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.button1.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button1.Location = new System.Drawing.Point(59, 89);
+            this.button1.Location = new System.Drawing.Point(59, 149);
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.MinimumSize = new System.Drawing.Size(1, 1);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(77, 32);
+            this.button1.Size = new System.Drawing.Size(77, 73);
             this.button1.TabIndex = 9;
             this.button1.Text = "打开串口";
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -273,7 +253,7 @@ namespace FDPort.DockPanel
             this.socketSerPanel.Location = new System.Drawing.Point(0, 0);
             this.socketSerPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.socketSerPanel.Name = "socketSerPanel";
-            this.socketSerPanel.Size = new System.Drawing.Size(140, 150);
+            this.socketSerPanel.Size = new System.Drawing.Size(140, 226);
             this.socketSerPanel.TabIndex = 12;
             // 
             // tableLayoutPanel3
@@ -305,7 +285,7 @@ namespace FDPort.DockPanel
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(140, 150);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(140, 226);
             this.tableLayoutPanel3.TabIndex = 5;
             // 
             // uiLabel1
@@ -316,7 +296,7 @@ namespace FDPort.DockPanel
             this.uiLabel1.Location = new System.Drawing.Point(3, 27);
             this.uiLabel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.uiLabel1.Name = "uiLabel1";
-            this.uiLabel1.Size = new System.Drawing.Size(49, 33);
+            this.uiLabel1.Size = new System.Drawing.Size(49, 56);
             this.uiLabel1.TabIndex = 0;
             this.uiLabel1.Text = "IP";
             this.uiLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -327,11 +307,11 @@ namespace FDPort.DockPanel
             this.uiButton3.Cursor = System.Windows.Forms.Cursors.Hand;
             this.uiButton3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.uiButton3.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.uiButton3.Location = new System.Drawing.Point(80, 101);
+            this.uiButton3.Location = new System.Drawing.Point(80, 147);
             this.uiButton3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.uiButton3.MinimumSize = new System.Drawing.Size(1, 1);
             this.uiButton3.Name = "uiButton3";
-            this.uiButton3.Size = new System.Drawing.Size(57, 47);
+            this.uiButton3.Size = new System.Drawing.Size(57, 77);
             this.uiButton3.TabIndex = 4;
             this.uiButton3.Text = "侦听";
             this.uiButton3.Click += new System.EventHandler(this.uiButton3_Click);
@@ -341,10 +321,10 @@ namespace FDPort.DockPanel
             this.tableLayoutPanel3.SetColumnSpan(this.uiLabel2, 5);
             this.uiLabel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.uiLabel2.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.uiLabel2.Location = new System.Drawing.Point(3, 64);
+            this.uiLabel2.Location = new System.Drawing.Point(3, 87);
             this.uiLabel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.uiLabel2.Name = "uiLabel2";
-            this.uiLabel2.Size = new System.Drawing.Size(49, 33);
+            this.uiLabel2.Size = new System.Drawing.Size(49, 56);
             this.uiLabel2.TabIndex = 2;
             this.uiLabel2.Text = "port";
             this.uiLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -369,7 +349,7 @@ namespace FDPort.DockPanel
             this.serPort.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.serPort.Dock = System.Windows.Forms.DockStyle.Fill;
             this.serPort.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.serPort.Location = new System.Drawing.Point(58, 64);
+            this.serPort.Location = new System.Drawing.Point(58, 87);
             this.serPort.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.serPort.MinimumSize = new System.Drawing.Size(4, 4);
             this.serPort.Name = "serPort";
@@ -384,7 +364,7 @@ namespace FDPort.DockPanel
             this.socketCliPanel.Location = new System.Drawing.Point(0, 0);
             this.socketCliPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.socketCliPanel.Name = "socketCliPanel";
-            this.socketCliPanel.Size = new System.Drawing.Size(140, 150);
+            this.socketCliPanel.Size = new System.Drawing.Size(140, 226);
             this.socketCliPanel.TabIndex = 6;
             // 
             // tableLayoutPanel5
@@ -417,7 +397,7 @@ namespace FDPort.DockPanel
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(140, 150);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(140, 226);
             this.tableLayoutPanel5.TabIndex = 5;
             // 
             // uiLabel3
@@ -428,7 +408,7 @@ namespace FDPort.DockPanel
             this.uiLabel3.Location = new System.Drawing.Point(3, 27);
             this.uiLabel3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.uiLabel3.Name = "uiLabel3";
-            this.uiLabel3.Size = new System.Drawing.Size(38, 33);
+            this.uiLabel3.Size = new System.Drawing.Size(38, 56);
             this.uiLabel3.TabIndex = 0;
             this.uiLabel3.Text = "IP";
             this.uiLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -452,10 +432,10 @@ namespace FDPort.DockPanel
             this.tableLayoutPanel5.SetColumnSpan(this.uiLabel4, 5);
             this.uiLabel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.uiLabel4.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel4.Location = new System.Drawing.Point(3, 64);
+            this.uiLabel4.Location = new System.Drawing.Point(3, 87);
             this.uiLabel4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.uiLabel4.Name = "uiLabel4";
-            this.uiLabel4.Size = new System.Drawing.Size(49, 33);
+            this.uiLabel4.Size = new System.Drawing.Size(49, 56);
             this.uiLabel4.TabIndex = 3;
             this.uiLabel4.Text = "port";
             this.uiLabel4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -466,7 +446,7 @@ namespace FDPort.DockPanel
             this.tcpCliPort.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.tcpCliPort.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tcpCliPort.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tcpCliPort.Location = new System.Drawing.Point(58, 64);
+            this.tcpCliPort.Location = new System.Drawing.Point(58, 87);
             this.tcpCliPort.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tcpCliPort.MinimumSize = new System.Drawing.Size(4, 4);
             this.tcpCliPort.Name = "tcpCliPort";
@@ -480,55 +460,14 @@ namespace FDPort.DockPanel
             this.uiButton5.Cursor = System.Windows.Forms.Cursors.Hand;
             this.uiButton5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.uiButton5.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.uiButton5.Location = new System.Drawing.Point(80, 101);
+            this.uiButton5.Location = new System.Drawing.Point(80, 147);
             this.uiButton5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.uiButton5.MinimumSize = new System.Drawing.Size(1, 1);
             this.uiButton5.Name = "uiButton5";
-            this.uiButton5.Size = new System.Drawing.Size(57, 47);
+            this.uiButton5.Size = new System.Drawing.Size(57, 77);
             this.uiButton5.TabIndex = 4;
             this.uiButton5.Text = "连接";
             this.uiButton5.Click += new System.EventHandler(this.uiButton5_Click);
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 57.14286F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 42.85714F));
-            this.tableLayoutPanel1.Controls.Add(this.tcpTimeout, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.uiLabel5, 0, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(140, 75);
-            this.tableLayoutPanel1.TabIndex = 10;
-            // 
-            // tcpTimeout
-            // 
-            this.tcpTimeout.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.tcpTimeout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tcpTimeout.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tcpTimeout.Location = new System.Drawing.Point(80, 0);
-            this.tcpTimeout.Margin = new System.Windows.Forms.Padding(0);
-            this.tcpTimeout.MinimumSize = new System.Drawing.Size(4, 4);
-            this.tcpTimeout.Name = "tcpTimeout";
-            this.tcpTimeout.Size = new System.Drawing.Size(60, 27);
-            this.tcpTimeout.TabIndex = 8;
-            this.tcpTimeout.Text = "20";
-            this.tcpTimeout.TextChanged += new System.EventHandler(this.tcpTimeout_TextChanged);
-            // 
-            // uiLabel5
-            // 
-            this.uiLabel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.uiLabel5.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel5.Location = new System.Drawing.Point(3, 0);
-            this.uiLabel5.Name = "uiLabel5";
-            this.uiLabel5.Size = new System.Drawing.Size(74, 75);
-            this.uiLabel5.TabIndex = 9;
-            this.uiLabel5.Text = "超时时间";
-            this.uiLabel5.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // tableLayoutPanel2
             // 
@@ -584,9 +523,6 @@ namespace FDPort.DockPanel
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
-            this.splitContainer4.Panel1.ResumeLayout(false);
-            this.splitContainer4.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
             this.splitContainer4.ResumeLayout(false);
             this.serialPanel.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
@@ -597,8 +533,6 @@ namespace FDPort.DockPanel
             this.socketCliPanel.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -607,14 +541,7 @@ namespace FDPort.DockPanel
         #endregion
 
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.SplitContainer splitContainer4;
-        private System.Windows.Forms.Panel serialPanel;
-        private System.Windows.Forms.ComboBox cmbPort;
-        private System.Windows.Forms.Button uart_more;
-        private System.Windows.Forms.ComboBox baudCombo;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Panel splitContainer4;
         private System.Windows.Forms.Panel socketCliPanel;
         private System.Windows.Forms.TextBox tcpCliPort;
         private System.Windows.Forms.Button uiButton5;
@@ -627,14 +554,18 @@ namespace FDPort.DockPanel
         private System.Windows.Forms.TextBox serIP;
         private System.Windows.Forms.Label uiLabel1;
         private System.Windows.Forms.Button uiButton3;
-        private System.Windows.Forms.TextBox tcpTimeout;
-        private System.Windows.Forms.Label uiLabel5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private TitleTextBox sendBox;
         private TitleTextBox recBox;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Panel serialPanel;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button uart_more;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox cmbPort;
+        private System.Windows.Forms.ComboBox baudCombo;
+        private System.Windows.Forms.Button button1;
     }
 }
