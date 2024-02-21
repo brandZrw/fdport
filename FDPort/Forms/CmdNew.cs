@@ -28,6 +28,7 @@ namespace FDPort.Forms
             Cmds.Add(cmdBitControl1);
             Cmds.Add(cmdFuncControl1);
             Cmds.Add(cmdDataControl1);
+            Cmds.Add(fieldRegexControl1);
             cmdTypeChoose.SelectedIndex = i;
         }
 
@@ -40,6 +41,7 @@ namespace FDPort.Forms
             Cmds.Add(cmdBitControl1);
             Cmds.Add(cmdFuncControl1);
             Cmds.Add(cmdDataControl1);
+            Cmds.Add(fieldRegexControl1);
             cmdName.Text = field.name;
             cmdTypeChoose.SelectedIndex = (int)field.type;
             Cmds[(int)field.type].SetModule(field);

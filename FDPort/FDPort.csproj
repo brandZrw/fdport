@@ -76,6 +76,18 @@
     <Reference Include="DynamicExpresso.Core, Version=2.16.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DynamicExpresso.Core.2.16.1\lib\netstandard2.0\DynamicExpresso.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Fare, Version=2.2.0.0, Culture=neutral, PublicKeyToken=ea68d375bf33a7c8, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fare.2.2.0\lib\net35\Fare.dll</HintPath>
+    </Reference>
+    <Reference Include="Handlebars.Net.Helpers, Version=2.4.1.4, Culture=neutral, PublicKeyToken=00d131fae0c250bc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Handlebars.Net.Helpers.2.4.1.4\lib\net46\Handlebars.Net.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="HandlebarsDotNet.Helpers.Core, Version=2.4.1.4, Culture=neutral, PublicKeyToken=00d131fae0c250bc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Handlebars.Net.Helpers.Core.2.4.1.4\lib\net46\HandlebarsDotNet.Helpers.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="HandlebarsDotNet.Helpers.Xeger, Version=2.4.1.4, Culture=neutral, PublicKeyToken=00d131fae0c250bc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Handlebars.Net.Helpers.Xeger.2.4.1.4\lib\net46\HandlebarsDotNet.Helpers.Xeger.dll</HintPath>
+    </Reference>
     <Reference Include="IronPython, Version=3.4.1.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
       <HintPath>..\packages\IronPython.3.4.1\lib\net462\IronPython.dll</HintPath>
     </Reference>
@@ -108,6 +120,9 @@
     <Reference Include="ScottPlot.WinForms, Version=4.1.71.0, Culture=neutral, PublicKeyToken=86698dc10387c39e, processorArchitecture=MSIL">
       <HintPath>..\packages\ScottPlot.WinForms.4.1.71\lib\net461\ScottPlot.WinForms.dll</HintPath>
     </Reference>
+    <Reference Include="Stef.Validation, Version=0.1.1.0, Culture=neutral, PublicKeyToken=8f3400880c321038, processorArchitecture=MSIL">
+      <HintPath>..\packages\Stef.Validation.0.1.1\lib\net40\Stef.Validation.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -133,9 +148,6 @@
       <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
       <Private>True</Private>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
@@ -163,9 +175,16 @@
     <Compile Include="Communication\AsyncSocketTCPServer.cs" />
     <Compile Include="Class\common.cs" />
     <Compile Include="Communication\USBControllerDevice.cs" />
+    <Compile Include="Controls\FieldRegexControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\FieldRegexControl.Designer.cs">
+      <DependentUpon>FieldRegexControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="FieldModuleClass\FieldBit.cs" />
     <Compile Include="FieldModuleClass\FieldByte.cs" />
     <Compile Include="FieldModuleClass\FieldData.cs" />
+    <Compile Include="FieldModuleClass\FieldFunc.cs" />
     <Compile Include="FieldModuleClass\FieldModule.cs" />
     <Compile Include="Class\Comm.cs" />
     <Compile Include="Class\JsonHelper.cs" />
@@ -251,6 +270,7 @@
     <Compile Include="DockPanel\SendListDock.Designer.cs">
       <DependentUpon>SendListDock.cs</DependentUpon>
     </Compile>
+    <Compile Include="FieldModuleClass\FieldRegex.cs" />
     <Compile Include="FieldModuleClass\FieldStatic.cs" />
     <Compile Include="Forms\CmdNew.cs">
       <SubType>Form</SubType>
@@ -319,6 +339,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\FieldFuncControl.resx">
       <DependentUpon>FieldFuncControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\FieldRegexControl.resx">
+      <DependentUpon>FieldRegexControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\FieldStaticControl.resx">
       <DependentUpon>FieldStaticControl.cs</DependentUpon>

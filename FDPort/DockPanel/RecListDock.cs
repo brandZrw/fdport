@@ -148,12 +148,15 @@ namespace FDPort.DockPanel
             }
             if(recList.SelectedRows.Count>0)
             {
-                string name = recList.SelectedRows[0].Cells[0].Value.ToString();
-                if (Project.mainForm.chartDock.plotData.ContainsKey(name))
+                if(recList.SelectedRows[0].Cells[0].Value != null)
                 {
-                    Project.mainForm.chartDock.plotData[name].signalPlot.IsHighlighted = true;
+                    string name = recList.SelectedRows[0].Cells[0].Value.ToString();
+                    if (Project.mainForm.chartDock.plotData.ContainsKey(name))
+                    {
+                        Project.mainForm.chartDock.plotData[name].signalPlot.IsHighlighted = true;
+                    }
+                    lastSelectName = name;
                 }
-                lastSelectName = name;
             }
             
         }

@@ -3,6 +3,7 @@ using FDPort.FieldModuleClass;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace FDPort.Forms
@@ -70,6 +71,21 @@ namespace FDPort.Forms
                 // 重新加入recvMap
                 foreach (FieldModule t in item.list)
                 {
+                    if(t.type == FieldModule.CM_Type.CM_REGEX)
+                    {
+                        Regex regex = new Regex(((FieldRegex)t).regexStr);
+                        string[] str = regex.GetGroupNames();
+                        for (int i = 1;i < str.Length;i++)
+                        {
+                            if (!Project.param.recvMap.ContainsKey(str[i]))
+                            {
+                                KeyValuePair<string, FieldRecvParam> pair = new KeyValuePair<string, FieldRecvParam>(str[i], new FieldRecvParam());
+                                Project.param.recvMap.Add(pair.Key, pair.Value);
+                                Project.param.recvMap[pair.Key].SetValueType(FieldByte.CM_BYTE_TYPE.CM_BYTE_STRING);
+                                Project.mainForm.recListDock.RecList_AddRow(pair);
+                            }
+                        }
+                    }
                     if (t.type != FieldModule.CM_Type.CM_STATIC && t.type != FieldModule.CM_Type.CM_DATA)
                     {
                         if (!Project.param.recvMap.ContainsKey(t.name))
@@ -114,6 +130,9 @@ namespace FDPort.Forms
                     break;
                 case Keys.F5:
                     cmdDataGridList.CmdNewPage(4);
+                    break;
+                case Keys.F6:
+                    cmdDataGridList.CmdNewPage(5);
                     break;
 
             }

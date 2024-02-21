@@ -405,6 +405,10 @@ namespace FDPort.Class
                         b = field.Value2List(null);
                         RangeAdd(vs, b);
                         break;
+                    case FieldModule.CM_Type.CM_REGEX:
+                        b = field.Value2List(null);
+                        RangeAdd(vs, b);
+                        break;
                 }
             }
             Project.mainForm.commonArea.SendData(vs.ToArray(), port, point);

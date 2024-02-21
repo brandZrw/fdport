@@ -43,6 +43,7 @@ namespace FDPort.Forms
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.cmdName = new FDPort.Controls.WaterTextBox();
             this.uiButton1 = new System.Windows.Forms.Button();
+            this.fieldRegexControl1 = new FDPort.Controls.FieldRegexControl();
             this.panel.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -70,7 +71,8 @@ namespace FDPort.Forms
             "byte数组",
             "位域（必须先定义一个整型）",
             "函数",
-            "设置的参数"});
+            "设置的参数",
+            "正则表达式"});
             this.cmdTypeChoose.Location = new System.Drawing.Point(247, 5);
             this.cmdTypeChoose.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmdTypeChoose.MinimumSize = new System.Drawing.Size(63, 0);
@@ -81,6 +83,7 @@ namespace FDPort.Forms
             // 
             // panel
             // 
+            this.panel.Controls.Add(this.fieldRegexControl1);
             this.panel.Controls.Add(this.cmdByte1);
             this.panel.Controls.Add(this.cmdStatic1);
             this.panel.Controls.Add(this.cmdDataControl1);
@@ -201,6 +204,14 @@ namespace FDPort.Forms
             this.uiButton1.Text = "确定";
             this.uiButton1.Click += new System.EventHandler(this.uiButton1_Click);
             // 
+            // fieldRegexControl1
+            // 
+            this.fieldRegexControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.fieldRegexControl1.Location = new System.Drawing.Point(0, 0);
+            this.fieldRegexControl1.Name = "fieldRegexControl1";
+            this.fieldRegexControl1.Size = new System.Drawing.Size(933, 398);
+            this.fieldRegexControl1.TabIndex = 6;
+            // 
             // CmdNew
             // 
             this.AcceptButton = this.uiButton1;
@@ -234,5 +245,6 @@ namespace FDPort.Forms
         private Controls.FieldBitControl cmdBitControl1;
         private Controls.FieldFuncControl cmdFuncControl1;
         private Controls.FieldDataControl cmdDataControl1;
+        private FieldRegexControl fieldRegexControl1;
     }
 }

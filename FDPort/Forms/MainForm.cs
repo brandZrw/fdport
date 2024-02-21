@@ -1,4 +1,5 @@
-﻿using FDPort.Class;
+﻿using Fare;
+using FDPort.Class;
 using FDPort.Communication;
 using FDPort.DockPanel;
 using FDPort.FieldModuleClass;
@@ -10,6 +11,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -65,6 +67,9 @@ namespace FDPort.Forms
             chartDock.ChartInit();
             Project.param.sendMap.CollectionChanged += sendListDock.SendMap_CollectionChanged;
             dataRecOKThread = new ThreadQueue<DataRecOkQueueObj>(DataParseOKDeal);
+            //string a = "Fan_123";
+            //Match m = Regex.Match(a,@"Fan_(?<x>.*)");
+            //string res = m.Result("x:${x}");
         }
 
         private void DockInit()
@@ -94,25 +99,37 @@ namespace FDPort.Forms
             Project.param.portChoose = 0;
             Project.param.addTimestamp = true;
         }
-
+        void RecMapApply(string s)
+        {
+            if (Project.param.recvMap.ContainsKey(s))
+            {
+                Project.param.recvMap[s].Apply();
+                if (Project.param.recvMap[s].isShow)
+                {
+                    DataParseOk(s, Project.param.recvMap[s].ShowValue(), Project.param.recvMap[s].isShow, Convert.ToDecimal(Project.param.recvMap[s].GetValue()));
+                }
+                else
+                {
+                    DataParseOk(s, Project.param.recvMap[s].ShowValue(), Project.param.recvMap[s].isShow);
+                }
+            }
+        }
         /// <summary>
         /// 非比段类型接收匹配成功
         /// </summary>
         /// <param name="name">匹配的字段名</param>
         void DataNotBitParseOk(FieldModule m)
         {
-            if (Project.param.recvMap.ContainsKey(m.name))
+            if(m.type == FieldModule.CM_Type.CM_REGEX)
             {
-                Project.param.recvMap[m.name].Apply();
-                if (Project.param.recvMap[m.name].isShow)
+                foreach(string s in ((FieldRegex)m).groups)
                 {
-                    DataParseOk(m.name, Project.param.recvMap[m.name].ShowValue(), Project.param.recvMap[m.name].isShow, Convert.ToDecimal(Project.param.recvMap[m.name].GetValue()));
+                    RecMapApply(s);
                 }
-                else
-                {
-                    DataParseOk(m.name, Project.param.recvMap[m.name].ShowValue(), Project.param.recvMap[m.name].isShow);
-                }
+                return;
             }
+            RecMapApply(m.name);
+            
         }
         /// <summary>
         /// 比段类型接收匹配成功

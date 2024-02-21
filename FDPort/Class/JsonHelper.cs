@@ -46,6 +46,8 @@ namespace FDPort.Class
                         return jobj.ToObject<FieldFunc>();
                     case 4:
                         return jobj.ToObject<FieldData>();
+                    case 5:
+                        return jobj.ToObject<FieldRegex>();
                 }
             }
             else if(objectType == typeof(PortBase))

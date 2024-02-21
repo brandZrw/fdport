@@ -93,7 +93,13 @@ namespace FDPort.Communication
             }
         }
 
-        public override void Write(byte[] b, IPEndPoint point = null) => port.Write(b, 0, b.Length);
+        public override void Write(byte[] b, IPEndPoint point = null)
+        {
+            if(port.IsOpen)
+            {
+                port.Write(b, 0, b.Length);
+            }
+        }
 
         public override bool Connected() => port == null ? false : port.IsOpen;
 

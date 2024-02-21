@@ -123,6 +123,9 @@ namespace FDPort.Forms
                 case Keys.F5:
                     cmdDataGridList.CmdNewPage(4);
                     break;
+                case Keys.F6:
+                    cmdDataGridList.CmdNewPage(5);
+                    break;
 
             }
         }

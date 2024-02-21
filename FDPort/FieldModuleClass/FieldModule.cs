@@ -26,6 +26,7 @@ namespace FDPort.FieldModuleClass
             CM_BIT,      // bit类型
             CM_FUNC,     // 函数
             CM_DATA,     // 接收或发送的数据
+            CM_REGEX,       // 正则表达式
         };
         public CM_Type type { get; set; } // 字段类型
         private int _len;
@@ -63,26 +64,8 @@ namespace FDPort.FieldModuleClass
                     return Project.param.recvMap[link].GetValue();
                 }
             }
-            var interpreter = new Interpreter();
-            var variable = interpreter.DetectIdentifiers(link);
-            List<Parameter> param = new List<Parameter>();
-            foreach (string varStr in variable.UnknownIdentifiers)
-            {
-                if (Project.param.sendMap.ContainsKey(varStr))
-                {
-                    param.Add(new Parameter(varStr, Project.param.sendMap[varStr].GetNumValue()));
-                }
-                else
-                {
-                    if (Project.param.recvMap.ContainsKey(varStr))
-                    {
-                        FieldRecvParam l = Project.param.recvMap[varStr];
-                        param.Add(new Parameter(varStr, l.GetValue()));
-                    }
-                }
-            }
-            object res = interpreter.Eval(link, param.ToArray());
-            return res;
+            return null;
+            
         }
         /// <summary>
         /// 计算表达式
@@ -92,11 +75,38 @@ namespace FDPort.FieldModuleClass
         public object calc(string link)
         {
             object res = GetLink(link);
-            if (res.GetType().Equals(typeof(bool)))
+            if(res == null) // 需要计算
             {
-                res = res.Equals(true) ? 1 : 0;
+                var interpreter = new Interpreter();
+                var variable = interpreter.DetectIdentifiers(link);
+                List<Parameter> param = new List<Parameter>();
+                foreach (string varStr in variable.UnknownIdentifiers)
+                {
+                    if (Project.param.sendMap.ContainsKey(varStr))
+                    {
+                        param.Add(new Parameter(varStr, Project.param.sendMap[varStr].GetNumValue()));
+                    }
+                    else
+                    {
+                        if (Project.param.recvMap.ContainsKey(varStr))
+                        {
+                            FieldRecvParam l = Project.param.recvMap[varStr];
+                            param.Add(new Parameter(varStr, l.GetValue()));
+                        }
+                    }
+                }
+                object value = interpreter.Eval(link, param.ToArray());
+                if (value.GetType().Equals(typeof(bool)))
+                {
+                    value = value.Equals(true) ? 1 : 0;
+                }
+                return value;
             }
-            return res;
+            else
+            {
+                return res;
+            }
+            
         }
         /// <summary>
         /// 改变数组长度
@@ -163,68 +173,4 @@ namespace FDPort.FieldModuleClass
         }
     }
 
-    
-
-    
-
-    /// <summary>
-    /// python函数类
-    /// </summary>
-    public class FieldFunc : FieldModule
-    {
-        public string funcName { get; set; }
-        public string[] funcParam { get; set; }
-        public object returnValue { get; set; }
-        public object run(byte[] b)
-        {
-            string[] temp = new string[funcParam.Length];
-            for (int i = 0; i < funcParam.Length; i++)
-            {
-                temp[i] = calc(funcParam[i]).ToString();
-            }
-            return Project.RunPython("function\\" + funcName + ".py", b, temp);
-        }
-        public override object List2Value(byte[] t)
-        {
-            throw new NotImplementedException();
-        }
-        public override byte[] Value2List(object v)
-        {
-            byte[] b = (byte[])v;
-            returnValue = run(b);
-            if (returnValue == null)
-            {
-                return null;
-            }
-            int t = (int)returnValue;
-            return CopyTo(BitConverter.GetBytes(t));
-
-        }
-        public override bool IsParse(byte[] b, ref int useLen, byte[] vs = null)
-        {
-            useLen = len;
-            returnValue = run(b);
-            if (returnValue == null)
-            {
-                return false;
-            }
-            byte[] t = common.Object2Bytes(returnValue);
-            return common.ByteEquals(CopyTo(t), vs);
-            //return true;
-        }
-        public override string ToString()
-        {
-            StringBuilder sb = new StringBuilder("函数");
-            sb.Append(funcName);
-            sb.Append("(");
-            sb.Append(string.Join(",", funcParam));
-            sb.Append(");len:");
-            sb.Append(len.ToString());
-            return sb.ToString();
-        }
-    }
-
-    
-
-    
 }
